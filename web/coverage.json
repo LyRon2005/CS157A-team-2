@@ -1,0 +1,1440 @@
+{
+  "retrieved": "2026-09-20 UTC",
+  "buildingCount": 94,
+  "heightCount": 68,
+  "registryCount": 89,
+  "unmatched": [
+    {
+      "name": "Associated Students Community Garden",
+      "officialId": 980633,
+      "center": [
+        -121.877914,
+        37.333557
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980633",
+      "campus": "main"
+    },
+    {
+      "name": "Tennis Complex",
+      "officialId": 980650,
+      "center": [
+        -121.867752,
+        37.32159
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980650",
+      "campus": "south"
+    },
+    {
+      "name": "Beach Volleyball Courts",
+      "officialId": 980652,
+      "center": [
+        -121.867134,
+        37.321175
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980652",
+      "campus": "south"
+    },
+    {
+      "name": "Tennis Stadium Court",
+      "officialId": 980768,
+      "center": [
+        -121.867561,
+        37.32095
+      ],
+      "kind": "building",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980768",
+      "campus": "south"
+    },
+    {
+      "name": "Sports Field Facility",
+      "officialId": 980838,
+      "center": [
+        -121.865913,
+        37.321625
+      ],
+      "kind": "building",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980838",
+      "campus": "south"
+    },
+    {
+      "name": "Soccer Field",
+      "officialId": 980843,
+      "center": [
+        -121.866631,
+        37.320358
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980843",
+      "campus": "south"
+    },
+    {
+      "name": "Softball Field",
+      "officialId": 980845,
+      "center": [
+        -121.868423,
+        37.32206
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980845",
+      "campus": "south"
+    },
+    {
+      "name": "Spartan Golf Complex",
+      "officialId": 980853,
+      "center": [
+        -121.863197,
+        37.32148
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980853",
+      "campus": "south"
+    },
+    {
+      "name": "Baseball Practice Field",
+      "officialId": 980855,
+      "center": [
+        -121.866608,
+        37.322739
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980855",
+      "campus": "south"
+    }
+  ],
+  "regions": [
+    {
+      "id": "main",
+      "name": "Main Campus & Downtown",
+      "bounds": [
+        [
+          -121.8894405,
+          37.3311776
+        ],
+        [
+          -121.8748131,
+          37.3404912
+        ]
+      ],
+      "count": 63
+    },
+    {
+      "id": "south",
+      "name": "South Campus",
+      "bounds": [
+        [
+          -121.8754011,
+          37.317790099999996
+        ],
+        [
+          -121.862697,
+          37.3237091
+        ]
+      ],
+      "count": 15
+    },
+    {
+      "id": "moss",
+      "name": "Moss Landing",
+      "bounds": [
+        [
+          -121.7892812,
+          36.7930922
+        ],
+        [
+          -121.78597599999999,
+          36.804712200000004
+        ]
+      ],
+      "count": 14
+    },
+    {
+      "id": "timpany",
+      "name": "Timpany Center",
+      "bounds": [
+        [
+          -121.93848630000001,
+          37.312818899999996
+        ],
+        [
+          -121.9363782,
+          37.314644400000006
+        ]
+      ],
+      "count": 1
+    },
+    {
+      "id": "aviation",
+      "name": "Aviation & Technology",
+      "bounds": [
+        [
+          -121.8179216,
+          37.335355799999995
+        ],
+        [
+          -121.81641429999999,
+          37.3367907
+        ]
+      ],
+      "count": 1
+    }
+  ],
+  "registry": [
+    {
+      "name": "MLML Norte Facility",
+      "officialId": 972787,
+      "center": [
+        -121.787636,
+        36.803783
+      ],
+      "kind": "site",
+      "matched": [
+        "W223323247",
+        "W223323269",
+        "W223323239",
+        "W223323254",
+        "W223323287",
+        "W223323390",
+        "W223323398",
+        "W223323235",
+        "W223323417"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/972787",
+      "campus": "moss"
+    },
+    {
+      "name": "MLML Operations",
+      "officialId": 972788,
+      "center": [
+        -121.786476,
+        36.804123
+      ],
+      "kind": "site",
+      "matched": [
+        "W223323426"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/972788",
+      "campus": "moss"
+    },
+    {
+      "name": "MLML Aquaculture",
+      "officialId": 972789,
+      "center": [
+        -121.788696,
+        36.800571
+      ],
+      "kind": "site",
+      "matched": [
+        "W982159029",
+        "W223323277"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/972789",
+      "campus": "moss"
+    },
+    {
+      "name": "MLML Main Lab",
+      "officialId": 972790,
+      "center": [
+        -121.786774,
+        36.794479
+      ],
+      "kind": "site",
+      "matched": [
+        "W66354307",
+        "W984480772"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/972790",
+      "campus": "moss"
+    },
+    {
+      "name": "MLML Main Laboratory",
+      "officialId": 974346,
+      "center": [
+        -121.78775,
+        36.79425
+      ],
+      "kind": "building",
+      "matched": [
+        "W66354307"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974346",
+      "campus": "moss"
+    },
+    {
+      "name": "MLML Aquaculture Laboratory",
+      "officialId": 974350,
+      "center": [
+        -121.788559,
+        36.80064
+      ],
+      "kind": "building",
+      "matched": [
+        "W223323277"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974350",
+      "campus": "moss"
+    },
+    {
+      "name": "Timpany Center",
+      "officialId": 972823,
+      "center": [
+        -121.937279,
+        37.313675
+      ],
+      "kind": "building",
+      "matched": [
+        "R13298341"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/972823",
+      "campus": "timpany"
+    },
+    {
+      "name": "Art Foundry",
+      "officialId": 972824,
+      "center": [
+        -121.874626,
+        37.322945
+      ],
+      "kind": "building",
+      "matched": [
+        "W496536902"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/972824",
+      "campus": "south"
+    },
+    {
+      "name": "SJSU Aviation and Technology",
+      "officialId": 972825,
+      "center": [
+        -121.817169,
+        37.336067
+      ],
+      "kind": "building",
+      "matched": [
+        "W781096191"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/972825",
+      "campus": "aviation"
+    },
+    {
+      "name": "Habbas Law Athletics Center",
+      "officialId": 975699,
+      "center": [
+        -121.867722,
+        37.320034
+      ],
+      "kind": "building",
+      "matched": [
+        "W1077880724"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/975699",
+      "campus": "south"
+    },
+    {
+      "name": "Hammer Theater Center",
+      "officialId": 980622,
+      "center": [
+        -121.886444,
+        37.33379
+      ],
+      "kind": "building",
+      "matched": [
+        "W26174501"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980622",
+      "campus": "main"
+    },
+    {
+      "name": "International House",
+      "officialId": 980623,
+      "center": [
+        -121.875488,
+        37.335728
+      ],
+      "kind": "building",
+      "matched": [
+        "W359599137"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980623",
+      "campus": "main"
+    },
+    {
+      "name": "Associated Students Childhood Development Center",
+      "officialId": 980630,
+      "center": [
+        -121.877769,
+        37.333061
+      ],
+      "kind": "building",
+      "matched": [
+        "W363686847"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980630",
+      "campus": "main"
+    },
+    {
+      "name": "Associated Students Community Garden",
+      "officialId": 980633,
+      "center": [
+        -121.877914,
+        37.333557
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980633",
+      "campus": "main"
+    },
+    {
+      "name": "Hugh Gillis Hall",
+      "officialId": 974164,
+      "center": [
+        -121.884529,
+        37.336086
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774784"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974164",
+      "campus": "main"
+    },
+    {
+      "name": "Dudley Moorhead Hall",
+      "officialId": 974165,
+      "center": [
+        -121.883888,
+        37.33638
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774770"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974165",
+      "campus": "main"
+    },
+    {
+      "name": "Engineering",
+      "officialId": 974166,
+      "center": [
+        -121.881737,
+        37.337151
+      ],
+      "kind": "building",
+      "matched": [
+        "ENG"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974166",
+      "campus": "main"
+    },
+    {
+      "name": "Industrial Studies",
+      "officialId": 974167,
+      "center": [
+        -121.880783,
+        37.33757
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774737"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974167",
+      "campus": "main"
+    },
+    {
+      "name": "Clark Hall",
+      "officialId": 974171,
+      "center": [
+        -121.882576,
+        37.336254
+      ],
+      "kind": "building",
+      "matched": [
+        "CL"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974171",
+      "campus": "main"
+    },
+    {
+      "name": "Business Tower",
+      "officialId": 974174,
+      "center": [
+        -121.878929,
+        37.337173
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774833"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974174",
+      "campus": "main"
+    },
+    {
+      "name": "Boccardo Business Classroom Building",
+      "officialId": 974211,
+      "center": [
+        -121.878723,
+        37.336731
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774691"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974211",
+      "campus": "main"
+    },
+    {
+      "name": "Art and Design Building",
+      "officialId": 974212,
+      "center": [
+        -121.879822,
+        37.336185
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774609"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974212",
+      "campus": "main"
+    },
+    {
+      "name": "Science Building",
+      "officialId": 974215,
+      "center": [
+        -121.884514,
+        37.334759
+      ],
+      "kind": "building",
+      "matched": [
+        "SCI"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974215",
+      "campus": "main"
+    },
+    {
+      "name": "Washington Square Hall",
+      "officialId": 974216,
+      "center": [
+        -121.884155,
+        37.334282
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774768"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974216",
+      "campus": "main"
+    },
+    {
+      "name": "Health Building",
+      "officialId": 974217,
+      "center": [
+        -121.879158,
+        37.335773
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774724"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974217",
+      "campus": "main"
+    },
+    {
+      "name": "Music Building",
+      "officialId": 974220,
+      "center": [
+        -121.88073,
+        37.335743
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774728"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974220",
+      "campus": "main"
+    },
+    {
+      "name": "Dwight Bentel Hall",
+      "officialId": 974223,
+      "center": [
+        -121.882553,
+        37.335075
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774647"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974223",
+      "campus": "main"
+    },
+    {
+      "name": "Central Classroom Building",
+      "officialId": 974224,
+      "center": [
+        -121.881927,
+        37.335541
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774674"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974224",
+      "campus": "main"
+    },
+    {
+      "name": "Yoshihiro Uchida Hall",
+      "officialId": 974225,
+      "center": [
+        -121.883675,
+        37.333717
+      ],
+      "kind": "building",
+      "matched": [
+        "W649334874"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974225",
+      "campus": "main"
+    },
+    {
+      "name": "Sweeney Hall",
+      "officialId": 974241,
+      "center": [
+        -121.880989,
+        37.333965
+      ],
+      "kind": "building",
+      "matched": [
+        "R22496"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974241",
+      "campus": "main"
+    },
+    {
+      "name": "MacQuarrie Hall",
+      "officialId": 974242,
+      "center": [
+        -121.881844,
+        37.333595
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774678"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974242",
+      "campus": "main"
+    },
+    {
+      "name": "Interdisciplinary Science Building",
+      "officialId": 974243,
+      "center": [
+        -121.882858,
+        37.333122
+      ],
+      "kind": "building",
+      "matched": [
+        "W1078071070"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974243",
+      "campus": "main"
+    },
+    {
+      "name": "Duncan Hall",
+      "officialId": 974246,
+      "center": [
+        -121.882164,
+        37.3326
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774763"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974246",
+      "campus": "main"
+    },
+    {
+      "name": "Tower Hall",
+      "officialId": 974248,
+      "center": [
+        -121.88327,
+        37.335278
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774628"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974248",
+      "campus": "main"
+    },
+    {
+      "name": "Spartan Complex",
+      "officialId": 980468,
+      "center": [
+        -121.882523,
+        37.334167
+      ],
+      "kind": "building",
+      "matched": [
+        "R7974256"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980468",
+      "campus": "main"
+    },
+    {
+      "name": "Spartan Complex East",
+      "officialId": 980665,
+      "center": [
+        -121.881783,
+        37.334553
+      ],
+      "kind": "building",
+      "matched": [
+        "R7974256"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980665",
+      "campus": "main"
+    },
+    {
+      "name": "Instructional Resources Center",
+      "officialId": 1022145,
+      "center": [
+        -121.883545,
+        37.336262
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774770"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1022145",
+      "campus": "main"
+    },
+    {
+      "name": "Dining Commons",
+      "officialId": 1250555,
+      "center": [
+        -121.878517,
+        37.334129
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774754"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1250555",
+      "campus": "main"
+    },
+    {
+      "name": "Spartan Recreation and Aquatic Center (SRAC)",
+      "officialId": 1250580,
+      "center": [
+        -121.879555,
+        37.334522
+      ],
+      "kind": "building",
+      "matched": [
+        "W1078136775"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1250580",
+      "campus": "main"
+    },
+    {
+      "name": "Administration Building",
+      "officialId": 974170,
+      "center": [
+        -121.883003,
+        37.33675
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774774"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974170",
+      "campus": "main"
+    },
+    {
+      "name": "Faculty Office Building",
+      "officialId": 974244,
+      "center": [
+        -121.882622,
+        37.334629
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774806"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974244",
+      "campus": "main"
+    },
+    {
+      "name": "Simpkins Athletics Building",
+      "officialId": 1094823,
+      "center": [
+        -121.869461,
+        37.318562
+      ],
+      "kind": "building",
+      "matched": [
+        "W32828237"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1094823",
+      "campus": "south"
+    },
+    {
+      "name": "North Parking Garage",
+      "officialId": 1250557,
+      "center": [
+        -121.88076,
+        37.33942
+      ],
+      "kind": "building",
+      "matched": [
+        "R13509190"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1250557",
+      "campus": "main"
+    },
+    {
+      "name": "South Campus Parking Garage",
+      "officialId": 1250564,
+      "center": [
+        -121.865379,
+        37.320843
+      ],
+      "kind": "building",
+      "matched": [
+        "W956530357"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1250564",
+      "campus": "south"
+    },
+    {
+      "name": "South Parking Garage",
+      "officialId": 1250568,
+      "center": [
+        -121.880859,
+        37.333153
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774762"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1250568",
+      "campus": "main"
+    },
+    {
+      "name": "West Parking Garage",
+      "officialId": 1250573,
+      "center": [
+        -121.882988,
+        37.332432
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774765"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1250573",
+      "campus": "main"
+    },
+    {
+      "name": "Central Plant",
+      "officialId": 1250578,
+      "center": [
+        -121.878372,
+        37.336159
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774697"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1250578",
+      "campus": "main"
+    },
+    {
+      "name": "Simpkins Stadium Center",
+      "officialId": 977889,
+      "center": [
+        -121.869484,
+        37.320431
+      ],
+      "kind": "building",
+      "matched": [
+        "W32828228"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/977889",
+      "campus": "south"
+    },
+    {
+      "name": "Koret Center",
+      "officialId": 980262,
+      "center": [
+        -121.870232,
+        37.321129
+      ],
+      "kind": "building",
+      "matched": [
+        "W32828201"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980262",
+      "campus": "south"
+    },
+    {
+      "name": "Fieldhouse",
+      "officialId": 980644,
+      "center": [
+        -121.867165,
+        37.322601
+      ],
+      "kind": "building",
+      "matched": [
+        "W32828249"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980644",
+      "campus": "south"
+    },
+    {
+      "name": "Stephens Family Pitching and Hitting Cages",
+      "officialId": 980646,
+      "center": [
+        -121.867874,
+        37.322472
+      ],
+      "kind": "building",
+      "matched": [
+        "W839717524"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980646",
+      "campus": "south"
+    },
+    {
+      "name": "Softball and Tennis Facility",
+      "officialId": 980648,
+      "center": [
+        -121.867683,
+        37.322212
+      ],
+      "kind": "building",
+      "matched": [
+        "W1005481971"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980648",
+      "campus": "south"
+    },
+    {
+      "name": "Tennis Complex",
+      "officialId": 980650,
+      "center": [
+        -121.867752,
+        37.32159
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980650",
+      "campus": "south"
+    },
+    {
+      "name": "Beach Volleyball Courts",
+      "officialId": 980652,
+      "center": [
+        -121.867134,
+        37.321175
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980652",
+      "campus": "south"
+    },
+    {
+      "name": "Tennis Stadium Court",
+      "officialId": 980768,
+      "center": [
+        -121.867561,
+        37.32095
+      ],
+      "kind": "building",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980768",
+      "campus": "south"
+    },
+    {
+      "name": "Sports Field Facility",
+      "officialId": 980838,
+      "center": [
+        -121.865913,
+        37.321625
+      ],
+      "kind": "building",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980838",
+      "campus": "south"
+    },
+    {
+      "name": "Soccer Field",
+      "officialId": 980843,
+      "center": [
+        -121.866631,
+        37.320358
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980843",
+      "campus": "south"
+    },
+    {
+      "name": "Softball Field",
+      "officialId": 980845,
+      "center": [
+        -121.868423,
+        37.32206
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980845",
+      "campus": "south"
+    },
+    {
+      "name": "Spartan Golf Complex",
+      "officialId": 980853,
+      "center": [
+        -121.863197,
+        37.32148
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980853",
+      "campus": "south"
+    },
+    {
+      "name": "Baseball Practice Field",
+      "officialId": 980855,
+      "center": [
+        -121.866608,
+        37.322739
+      ],
+      "kind": "site",
+      "matched": [],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980855",
+      "campus": "south"
+    },
+    {
+      "name": "Provident Credit Union Events Center",
+      "officialId": 980866,
+      "center": [
+        -121.880104,
+        37.335285
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774723"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980866",
+      "campus": "main"
+    },
+    {
+      "name": "CEFCU Stadium",
+      "officialId": 1094457,
+      "center": [
+        -121.86837,
+        37.319752
+      ],
+      "kind": "site",
+      "matched": [
+        "W1077880724",
+        "W503822366"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/1094457",
+      "campus": "south"
+    },
+    {
+      "name": "University Theater",
+      "officialId": 980730,
+      "center": [
+        -121.884766,
+        37.335815
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774784"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980730",
+      "campus": "main"
+    },
+    {
+      "name": "Music Building Concert Hall",
+      "officialId": 980738,
+      "center": [
+        -121.881042,
+        37.335518
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774728"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980738",
+      "campus": "main"
+    },
+    {
+      "name": "Morris Dailey Auditorium",
+      "officialId": 980926,
+      "center": [
+        -121.88311,
+        37.33532
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774628"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980926",
+      "campus": "main"
+    },
+    {
+      "name": "YUH Spartan Gym",
+      "officialId": 980938,
+      "center": [
+        -121.88382,
+        37.333569
+      ],
+      "kind": "building",
+      "matched": [
+        "W649334874"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980938",
+      "campus": "main"
+    },
+    {
+      "name": "Dr. Martin Luther King, Jr. Library",
+      "officialId": 974247,
+      "center": [
+        -121.885025,
+        37.335564
+      ],
+      "kind": "building",
+      "matched": [
+        "MLK"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974247",
+      "campus": "main"
+    },
+    {
+      "name": "Campus Village C",
+      "officialId": 974234,
+      "center": [
+        -121.878075,
+        37.335461
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774740"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974234",
+      "campus": "main"
+    },
+    {
+      "name": "Campus Village B",
+      "officialId": 974235,
+      "center": [
+        -121.877235,
+        37.335224
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774742"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974235",
+      "campus": "main"
+    },
+    {
+      "name": "Campus Village A",
+      "officialId": 974236,
+      "center": [
+        -121.877441,
+        37.334557
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774741"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974236",
+      "campus": "main"
+    },
+    {
+      "name": "Joe West Hall",
+      "officialId": 974238,
+      "center": [
+        -121.878082,
+        37.334404
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774755"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974238",
+      "campus": "main"
+    },
+    {
+      "name": "Campus Village 2",
+      "officialId": 974239,
+      "center": [
+        -121.878616,
+        37.335087
+      ],
+      "kind": "building",
+      "matched": [
+        "W594034896"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974239",
+      "campus": "main"
+    },
+    {
+      "name": "Spartan Village on the Paseo",
+      "officialId": 974245,
+      "center": [
+        -121.888496,
+        37.332592
+      ],
+      "kind": "building",
+      "matched": [
+        "W39018242"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974245",
+      "campus": "main"
+    },
+    {
+      "name": "Washburn Hall",
+      "officialId": 974371,
+      "center": [
+        -121.879372,
+        37.33363
+      ],
+      "kind": "building",
+      "matched": [
+        "R10631685"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974371",
+      "campus": "main"
+    },
+    {
+      "name": "Facilities Development and Operations",
+      "officialId": 974168,
+      "center": [
+        -121.880264,
+        37.338169
+      ],
+      "kind": "building",
+      "matched": [
+        "W25790948"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974168",
+      "campus": "main"
+    },
+    {
+      "name": "Corporation Yard B",
+      "officialId": 974173,
+      "center": [
+        -121.879761,
+        37.338097
+      ],
+      "kind": "building",
+      "matched": [
+        "W25790942"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974173",
+      "campus": "main"
+    },
+    {
+      "name": "Computer Center",
+      "officialId": 974214,
+      "center": [
+        -121.883369,
+        37.335976
+      ],
+      "kind": "building",
+      "matched": [
+        "W25775903"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974214",
+      "campus": "main"
+    },
+    {
+      "name": "South Campus Storage Facility",
+      "officialId": 980830,
+      "center": [
+        -121.868095,
+        37.320965
+      ],
+      "kind": "building",
+      "matched": [
+        "W839706693"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980830",
+      "campus": "south"
+    },
+    {
+      "name": "Diaz Compean Student Union",
+      "officialId": 974365,
+      "center": [
+        -121.881165,
+        37.336369
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774831"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974365",
+      "campus": "main"
+    },
+    {
+      "name": "Student Union East",
+      "officialId": 974366,
+      "center": [
+        -121.880219,
+        37.336723
+      ],
+      "kind": "building",
+      "matched": [
+        "W25774831"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974366",
+      "campus": "main"
+    },
+    {
+      "name": "Spartan Memorial",
+      "officialId": 974367,
+      "center": [
+        -121.883339,
+        37.334217
+      ],
+      "kind": "building",
+      "matched": [
+        "W25780815"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974367",
+      "campus": "main"
+    },
+    {
+      "name": "Alquist Building",
+      "officialId": 974370,
+      "center": [
+        -121.886177,
+        37.333096
+      ],
+      "kind": "building",
+      "matched": [
+        "R5333616"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974370",
+      "campus": "main"
+    },
+    {
+      "name": "Modular Building",
+      "officialId": 974372,
+      "center": [
+        -121.879547,
+        37.337109
+      ],
+      "kind": "building",
+      "matched": [
+        "W411543435"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974372",
+      "campus": "main"
+    },
+    {
+      "name": "Associated Students House",
+      "officialId": 974373,
+      "center": [
+        -121.879143,
+        37.337475
+      ],
+      "kind": "building",
+      "matched": [
+        "W372288906"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/974373",
+      "campus": "main"
+    },
+    {
+      "name": "Student Wellness Center",
+      "officialId": 980869,
+      "center": [
+        -121.881317,
+        37.334797
+      ],
+      "kind": "building",
+      "matched": [
+        "W411545037"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980869",
+      "campus": "main"
+    },
+    {
+      "name": "Concessions",
+      "officialId": 980777,
+      "center": [
+        -121.869194,
+        37.320217
+      ],
+      "kind": "building",
+      "matched": [
+        "W839706698"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980777",
+      "campus": "south"
+    },
+    {
+      "name": "Concessions",
+      "officialId": 980779,
+      "center": [
+        -121.867783,
+        37.320499
+      ],
+      "kind": "building",
+      "matched": [
+        "W839706701"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980779",
+      "campus": "south"
+    },
+    {
+      "name": "Concessions",
+      "officialId": 980781,
+      "center": [
+        -121.867188,
+        37.31953
+      ],
+      "kind": "building",
+      "matched": [
+        "W839706704"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980781",
+      "campus": "south"
+    },
+    {
+      "name": "Concessions",
+      "officialId": 980783,
+      "center": [
+        -121.868256,
+        37.318882
+      ],
+      "kind": "building",
+      "matched": [
+        "W839706703"
+      ],
+      "url": "https://map.sjsu.edu/?id=2189#!m/980783",
+      "campus": "south"
+    }
+  ],
+  "notes": [
+    "OSM footprints are mapped outlines, not a certified as-built survey.",
+    "LiDAR heights date to 2006; OSM height tags may also derive from historical sources.",
+    "Unknown heights are drawn as 0.5 m footprint plates, not estimated building heights.",
+    "Official directory contains facilities, outdoor sites and aliases; it is not a complete property register."
+  ]
+}

@@ -1,0 +1,638 @@
+{
+  "reviewed": "2026-09-23",
+  "scope": "All 57 footprints in the current main-campus map; not a complete inventory of all SJSU property.",
+  "buildings": [
+    {
+      "id": "W25774774",
+      "name": "Administration Building",
+      "named": true,
+      "count": 2,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "2 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774609",
+      "name": "Art and Design Building",
+      "named": true,
+      "count": 3,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "3 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W372288906",
+      "name": "Associated Students House",
+      "named": true,
+      "count": 2,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "2 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774691",
+      "name": "Boccardo Business Classroom Building",
+      "named": true,
+      "count": 3,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "3 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation. Garden-level naming is not resolved by this table.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774833",
+      "name": "Business Tower",
+      "named": true,
+      "count": 9,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "9 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "additionalSources": [
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU%20Final%20Campus%20Master%20Plan.pdf#page=86"
+      ],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W411542756",
+      "name": "Campus ATM Center",
+      "named": true,
+      "status": "unresolved",
+      "note": "No unambiguous total count found in the reviewed public sources."
+    },
+    {
+      "id": "W594034896",
+      "name": "Campus Village 2",
+      "named": true,
+      "count": 10,
+      "source": "https://www.sjsu.edu/housing/docs/HousingBrochure_2020.pdf",
+      "note": "Ten-story residence hall. Exterior height is unavailable in this dataset.",
+      "reviewed": "2026-09-22",
+      "levels": [],
+      "summary": "10 stories reported · 2020 housing publication"
+    },
+    {
+      "id": "W25774741",
+      "name": "Campus Village A",
+      "named": true,
+      "count": 8,
+      "source": "https://www.sjsu.edu/housing/housing-options/faculty-staff-graduate-students.php",
+      "note": "Eight stories. Underground parking is not included.",
+      "reviewed": "2026-09-22",
+      "levels": [],
+      "summary": "8 stories reported; underground parking excluded"
+    },
+    {
+      "id": "W25774742",
+      "name": "Campus Village B",
+      "named": true,
+      "count": 15,
+      "source": "https://www.sjsu.edu/housing/docs/uhsbrochure2223.pdf",
+      "note": "Fifteen stories at the highest point. Wings have different heights, so floor bands are omitted.",
+      "variableHeight": true,
+      "reviewed": "2026-09-22",
+      "levels": [],
+      "summary": "15 stories reported · 2022–23 housing publication"
+    },
+    {
+      "id": "W25774740",
+      "name": "Campus Village C",
+      "named": true,
+      "status": "conflicting",
+      "infoOnly": true,
+      "summary": "Floor count under review",
+      "note": "The 2015 assessment lists seven floors; the 2021 Housing Fire Report describes eight stories. The discrepancy remains unresolved.",
+      "source": "https://www.sjsu.edu/housing/docs/SJSU_Fire_Report-2021.pdf#page=4",
+      "additionalSources": [
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87"
+      ],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774674",
+      "name": "Central Classroom Building",
+      "named": true,
+      "count": 2,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "2 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774697",
+      "name": "Central Plant",
+      "named": true,
+      "count": 1,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "1 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "CL",
+      "name": "Clark Hall",
+      "named": true,
+      "count": 5,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "5 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25775903",
+      "name": "Computer Center",
+      "named": true,
+      "status": "unresolved",
+      "note": "No unambiguous total count found in the reviewed public sources."
+    },
+    {
+      "id": "W25790942",
+      "name": "Corporation Yard B",
+      "named": true,
+      "status": "unresolved",
+      "note": "No unambiguous total count found in the reviewed public sources."
+    },
+    {
+      "id": "W1020998411",
+      "name": "Ancillary structure · OSM w1020998411",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W1078136776",
+      "name": "Ancillary structure · OSM w1078136776",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W1078136777",
+      "name": "Ancillary structure · OSM w1078136777",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W1460567278",
+      "name": "Ancillary structure · OSM w1460567278",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W25790802",
+      "name": "Ancillary structure · OSM w25790802",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W359599136",
+      "name": "Ancillary structure · OSM w359599136",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W372243565",
+      "name": "Ancillary structure · OSM w372243565",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W411544401",
+      "name": "Ancillary structure · OSM w411544401",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W791962166",
+      "name": "Ancillary structure · OSM w791962166",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W791962171",
+      "name": "Ancillary structure · OSM w791962171",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W973338163",
+      "name": "Ancillary structure · OSM w973338163",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W973338176",
+      "name": "Ancillary structure · OSM w973338176",
+      "named": false,
+      "status": "unresolved",
+      "note": "Unnamed ancillary footprint; no reliable match to a documented building."
+    },
+    {
+      "id": "W25774831",
+      "name": "Diaz Compean Student Union",
+      "named": true,
+      "status": "partial",
+      "infoOnly": true,
+      "summary": "Floors 1–3 documented in the west wing",
+      "note": "FD&O documents floors 1, 2 and 3 of Student Union West (SSGE). This does not establish a total floor count for the entire complex.",
+      "source": "https://sjsu.edu/fdo/our-projects/space-optimization.php",
+      "additionalSources": [],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774754",
+      "name": "Dining Commons",
+      "named": true,
+      "count": 1,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "1 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "MLK",
+      "name": "Dr. Martin Luther King, Jr. Library",
+      "named": true,
+      "count": 8,
+      "source": "https://events.sjsu.edu/king",
+      "note": "Eight above-ground floors. The lower level is not represented in the exterior model.",
+      "reviewed": "2026-09-22",
+      "levels": [],
+      "summary": "8 above-ground floors reported; lower level excluded"
+    },
+    {
+      "id": "W25774770",
+      "name": "Dudley Moorhead Hall",
+      "named": true,
+      "count": 3,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "3 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation. This footprint includes different building volumes; uniform floor bands are omitted.",
+      "variableHeight": true,
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774763",
+      "name": "Duncan Hall",
+      "named": true,
+      "status": "special-levels",
+      "infoOnly": true,
+      "summary": "8 stories, including mechanical penthouse",
+      "note": "The campus master plan includes a mechanical penthouse in its eight-story description. Eight ordinary selectable floors would be misleading.",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU%20Final%20Campus%20Master%20Plan.pdf#page=86",
+      "additionalSources": [
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87"
+      ],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774647",
+      "name": "Dwight Bentel Hall",
+      "named": true,
+      "count": 2,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "2 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "ENG",
+      "name": "Engineering",
+      "named": true,
+      "count": 4,
+      "status": "documented-levels",
+      "source": "https://gcp-web.sjsu.edu/engineering/docs/FA24%20Engineering%20Buildings.pdf",
+      "summary": "Floors 1–4 documented · Fall 2024",
+      "note": "SJSU Engineering floor maps explicitly label the first, second, third and fourth floors. Floor elevations and room availability are not modeled.",
+      "additionalSources": [
+        "https://gcp-web.sjsu.edu/engineering/docs/FA24%20Engineering%20Buildings.pdf"
+      ],
+      "variableHeight": true,
+      "reviewed": "2026-09-23",
+      "levels": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "W25790948",
+      "name": "Facilities Development and Operations",
+      "named": true,
+      "status": "unresolved",
+      "note": "No unambiguous total count found in the reviewed public sources."
+    },
+    {
+      "id": "W25774806",
+      "name": "Faculty Office Building",
+      "named": true,
+      "count": 2,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "2 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774724",
+      "name": "Health Building",
+      "named": true,
+      "count": 4,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "4 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774784",
+      "name": "Hugh Gillis Hall",
+      "named": true,
+      "count": 3,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "3 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774737",
+      "name": "Industrial Studies",
+      "named": true,
+      "count": 2,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "2 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W1078071070",
+      "name": "Interdisciplinary Science Building",
+      "named": true,
+      "count": 8,
+      "source": "https://events.sjsu.edu/isb",
+      "note": "Eight stories, completed in 2023. Exterior height is unavailable in this dataset.",
+      "reviewed": "2026-09-22",
+      "levels": [],
+      "summary": "8 stories reported in source"
+    },
+    {
+      "id": "W25774755",
+      "name": "Joe West Hall",
+      "named": true,
+      "count": 12,
+      "source": "https://www.sjsu.edu/housing/docs/HousingBrochure_2020.pdf",
+      "note": "Twelve-story residence hall.",
+      "reviewed": "2026-09-22",
+      "levels": [],
+      "summary": "12 stories reported · 2020 housing publication"
+    },
+    {
+      "id": "W25774678",
+      "name": "MacQuarrie Hall",
+      "named": true,
+      "count": 5,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "5 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W411543435",
+      "name": "Modular Building",
+      "named": true,
+      "status": "unresolved",
+      "note": "No unambiguous total count found in the reviewed public sources."
+    },
+    {
+      "id": "W25774728",
+      "name": "Music Building",
+      "named": true,
+      "count": 2,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "2 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774723",
+      "name": "Provident Credit Union Events Center",
+      "named": true,
+      "count": 3,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "3 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation. This footprint includes different building volumes; uniform floor bands are omitted.",
+      "variableHeight": true,
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "SCI",
+      "name": "Science Building",
+      "named": true,
+      "status": "conflicting",
+      "infoOnly": true,
+      "summary": "Floor count under review",
+      "note": "The 2015 assessment and Draft EIR describe three floors/stories; the final master plan describes two. No count is selected until the discrepancy is resolved.",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU%20Final%20Campus%20Master%20Plan.pdf#page=86",
+      "additionalSources": [
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU%20CMP%20Draft%20EIR.pdf"
+      ],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774762",
+      "name": "South Parking Garage",
+      "named": true,
+      "status": "special-levels",
+      "infoOnly": true,
+      "summary": "4 stories + roof parking level",
+      "note": "The Draft EIR describes four stories plus a roof parking level. The assessment and master plan use five floors/stories. Parking decks are not represented as five ordinary bookable floors.",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU%20CMP%20Draft%20EIR.pdf#page=71",
+      "additionalSources": [
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU%20Final%20Campus%20Master%20Plan.pdf#page=86"
+      ],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "R7974256",
+      "name": "Spartan Complex",
+      "named": true,
+      "status": "mixed-volumes",
+      "infoOnly": true,
+      "summary": "One- and two-story sections documented",
+      "note": "The 2006 feasibility study describes different one- and two-story sections, including annexes. Later renovation and the combined map footprint prevent a verified uniform count.",
+      "source": "https://www.sjsu.edu/fdo/docs/spartan_complex_feasibility_study.pdf",
+      "additionalSources": [],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25780815",
+      "name": "Spartan Memorial",
+      "named": true,
+      "count": 1,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "1 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W1078136775",
+      "name": "Spartan Recreation and Aquatic Center (SRAC)",
+      "named": true,
+      "status": "partial",
+      "infoOnly": true,
+      "summary": "Second-floor track documented",
+      "note": "The construction manager documents a second-floor running track; this alone does not verify the complete floor count.",
+      "source": "https://cumming-group.com/wp-content/uploads/2021/04/SJSU-Case-Study-4.26.21.pdf",
+      "additionalSources": [],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W411545037",
+      "name": "Student Wellness Center",
+      "named": true,
+      "count": 3,
+      "status": "documented",
+      "source": "https://www.ratcliffarch.com/projects/sjsu-student-wellness-center",
+      "summary": "3 floors · architect documentation",
+      "note": "The project architect describes the completed Student Wellness Center as a three-story facility.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "R22496",
+      "name": "Sweeney Hall",
+      "named": true,
+      "count": 4,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "4 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774628",
+      "name": "Tower Hall",
+      "named": true,
+      "status": "mixed-volumes",
+      "infoOnly": true,
+      "summary": "Tower and auditorium have different heights",
+      "note": "The assessment lists Tower Hall / Morris Dailey as 2/1 floors; the EIR describes the clock tower as four stories. This combined footprint cannot be represented by one uniform floor count.",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "additionalSources": [
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU%20CMP%20Draft%20EIR.pdf"
+      ],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "R10631685",
+      "name": "Washburn Hall",
+      "named": true,
+      "count": 3,
+      "source": "https://www.sjsu.edu/housing/docs/HousingBrochure_2021.pdf",
+      "note": "Three stories in the source snapshot. Future campus redevelopment is not modeled.",
+      "reviewed": "2026-09-22",
+      "levels": [],
+      "summary": "3 stories reported · 2021 housing publication"
+    },
+    {
+      "id": "W25774768",
+      "name": "Washington Square Hall",
+      "named": true,
+      "count": 2,
+      "status": "historical",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+      "summary": "2 floors · 2015 assessment",
+      "note": "The March 13, 2015 facility assessment, reproduced in the 2017 plan, lists this floor count. Current configuration and level names require confirmation.",
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W25774765",
+      "name": "West Parking Garage",
+      "named": true,
+      "status": "special-levels",
+      "infoOnly": true,
+      "summary": "4 stories + roof parking level",
+      "note": "The Draft EIR describes four stories plus a roof parking level. The assessment and master plan use five floors/stories. Parking decks are not represented as five ordinary bookable floors.",
+      "source": "https://www.sjsu.edu/campusmasterplan/docs/SJSU%20CMP%20Draft%20EIR.pdf#page=71",
+      "additionalSources": [
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=87",
+        "https://www.sjsu.edu/campusmasterplan/docs/SJSU%20Final%20Campus%20Master%20Plan.pdf#page=86"
+      ],
+      "reviewed": "2026-09-22",
+      "levels": []
+    },
+    {
+      "id": "W649334874",
+      "name": "Yoshihiro Uchida Hall",
+      "named": true,
+      "status": "mixed-volumes",
+      "infoOnly": true,
+      "summary": "One- and two-story sections documented",
+      "note": "The 2006 feasibility study describes different one- and two-story sections, including annexes. Later renovation and the combined map footprint prevent a verified uniform count.",
+      "source": "https://www.sjsu.edu/fdo/docs/spartan_complex_feasibility_study.pdf",
+      "additionalSources": [],
+      "reviewed": "2026-09-22",
+      "levels": []
+    }
+  ]
+}
