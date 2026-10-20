@@ -1,0 +1,173 @@
+/* Account UI styles. Red borders and error text identify fields that need correction. */
+/* Account controls and dialogs. The map stylesheet is independent. */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+/* Header buttons and the signed-in name. */
+.account-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.account-actions button {
+  padding: 10px 15px;
+  border: 1px solid #d9dfd5;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 12px;
+}
+.account-actions .primary {
+  background: var(--ink);
+  color: #fff6da;
+}
+#member-name {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+/* Short account messages outside the dialog. */
+#account-status {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  max-width: 90%;
+  padding: 10px 18px;
+  background: #fffdf8;
+  border: 1px solid #d5ddcf;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px #162e4320;
+  font-size: 12px;
+}
+#account-status:empty {
+  display: none;
+}
+/* Keep the form inside the visible screen and allow scrolling. */
+#auth-dialog {
+  width: min(480px, calc(100% - 28px));
+  max-height: calc(100svh - 32px);
+  padding: 32px;
+  overflow: auto;
+}
+#auth-dialog .eyebrow {
+  margin-top: 8px;
+}
+#auth-dialog h2 {
+  font-size: 34px;
+  margin-bottom: 10px;
+}
+#auth-subtitle {
+  margin: 0 0 22px;
+}
+#auth-form label {
+  margin: 0 0 6px;
+}
+#auth-form input {
+  padding: 11px 12px;
+  box-shadow: none;
+}
+#auth-form small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 5px;
+}
+.auth-field {
+  margin: 0 0 15px;
+}
+#signup-fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+/* Show name fields side by side when space allows. */
+.auth-names {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+#auth-submit {
+  width: 100%;
+  font-size: 13px;
+  padding: 13px;
+  margin-top: 4px;
+}
+#auth-message {
+  min-height: 22px;
+  margin: 4px 0 8px;
+  font-size: 12px;
+}
+#auth-message.error {
+  color: #9e302b;
+}
+/* Keep the editable username beside the fixed, non-editable email suffix. */
+.email-input { display: flex; align-items: stretch; }
+.email-input input { min-width: 0; flex: 1; border-radius: 8px 0 0 8px; }
+#email-suffix {
+  display: flex; align-items: center; padding: 0 12px;
+  border: 1px solid #d9dfd5; border-left: 0; border-radius: 0 8px 8px 0;
+  background: #edf0e9; color: var(--ink); font-size: 13px; white-space: nowrap;
+}
+#auth-form input[aria-invalid="true"] { border-color: #9e302b; }
+#auth-form .field-error { color: #9e302b; font-size: 11px; }
+#auth-form .field-error:empty { display: none; }
+#auth-form input[readonly] { opacity: 0.7; }
+@media (max-width: 380px) {
+  .auth-names { grid-template-columns: 1fr; gap: 0; }
+}
+/* Link for switching between signup and login. */
+.auth-switch-row {
+  text-align: center;
+  margin: 20px 0 0;
+  font-size: 12px;
+}
+#auth-switch {
+  border: 0;
+  background: none;
+  color: #785717;
+  font-weight: 600;
+  padding: 6px;
+  text-decoration: underline;
+}
+#email-note {
+  font-size: 10px;
+  text-align: center;
+  margin-bottom: 0;
+  color: var(--muted);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+/* Make account controls fit narrow screens. */
+@media (max-width: 700px) {
+  header {
+    height: auto;
+    min-height: 76px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px 20px;
+  }
+  header nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+  .account-actions {
+    gap: 7px;
+  }
+  .account-actions button {
+    padding: 9px 11px;
+  }
+  #member-name {
+    max-width: 110px;
+  }
+  #auth-dialog {
+    padding: 27px 22px;
+  }
+}

@@ -1,0 +1,13 @@
+# Team setup template. Copy this file to local.properties and fill in your own settings.
+# Do not share local.properties or put real passwords in this example.
+# localhost means MySQL on this computer, not one shared database for the whole team.
+# Tomcat reads the private file from -Dsjsu.config or the SJSU_CONFIG environment variable.
+# DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD and DB_SSL_MODE can override these settings.
+# For a local course demo, Tomcat and MySQL can run on the same computer.
+# For a remote MySQL server, use VERIFY_IDENTITY with a trusted certificate authority.
+db.host=localhost
+db.port=3306
+db.name=sjsu_classrooms
+db.user=sjsu_app
+db.password=replace-locally
+db.sslMode=PREFERRED

@@ -1,5 +1,15 @@
+/build/
 /bin/
-/data/
+/config/local.properties
+/src/main/webapp/WEB-INF/lib/*.jar
 __pycache__/
 *.pyc
 .metadata/
+*.log
+*.class
+*.war
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db

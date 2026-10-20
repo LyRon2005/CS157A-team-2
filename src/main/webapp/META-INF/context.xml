@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Tomcat-specific settings. SameSite Strict limits cross-site cookie use.
+An empty Manager pathname disables saving sessions to disk. Restarting Tomcat logs users out.
+-->
+<Context>
+  <CookieProcessor sameSiteCookies="strict"/>
+  <Manager pathname=""/>
+</Context>

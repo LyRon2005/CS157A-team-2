@@ -1,0 +1,283 @@
+<!doctype html>
+<!--
+Homepage entry point served by Tomcat. This file describes the page structure.
+Edit css/ for appearance and js/ for behavior. This page does not connect to MySQL.
+Use relative asset URLs so the app works under /SJSUClassrooms/.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SJSUClassrooms · Find your place</title>
+    <link href="vendor/maplibre-gl.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/auth.css" rel="stylesheet" />
+    <link href="css/campus.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Header: guest buttons and signed-in controls. auth.js switches between them. -->
+    <header>
+      <a class="brand" href="./" aria-label="SJSUClassrooms home"
+        ><span class="brand-icon">S</span><b>SJSU<small>CLASSROOMS</small></b></a
+      >
+      <nav>
+        <a href="#explore">Explore campus</a
+        ><button id="how">How it works</button>
+      </nav>
+      <div class="account-actions" id="guest-actions">
+        <button id="sign-in" data-auth="login">Sign in</button
+        ><button class="primary" data-auth="signup">Sign up</button>
+      </div>
+      <div class="account-actions" id="member-actions" hidden>
+        <span id="member-name"></span><button id="logout">Log out</button>
+      </div>
+    </header>
+    <!-- Main content: building search and the campus map. -->
+    <main id="explore">
+      <section class="intro">
+        <span class="eyebrow">YOUR CAMPUS. YOUR SPACE.</span>
+        <h1>Great things <br />start <em>here.</em></h1>
+        <p>
+          Find a place to focus, connect,<br />and bring your next idea to life.
+        </p>
+        <div class="search-box">
+          <label for="search">Find your building</label
+          ><input
+            id="search"
+            type="search"
+            placeholder="⌕  Search campus…"
+            autocomplete="off"
+          />
+          <div id="results" aria-label="Building search results"></div>
+          <p id="no-results" hidden>No buildings found. Try another name.</p>
+        </div>
+        <div class="quick-links">
+          <span>START EXPLORING</span
+          ><button data-building="MLK">King Library <b>↗</b></button
+          ><button data-building="ENG">Engineering <b>↗</b></button
+          ><button data-building="CL">Clark Hall <b>↗</b></button>
+        </div>
+        <div class="intro-footer">
+          <span>✳</span>
+          <p>A little curiosity.<br />A campus of possibilities.</p>
+        </div>
+      </section>
+      <section class="map-area" aria-label="Explore the 3D campus">
+        <div
+          id="map"
+          role="region"
+          aria-label="Interactive SJSU Main Campus map"
+        ></div>
+        <div class="map-heading">
+          ● &nbsp; MAIN CAMPUS <span>3D EXPLORER</span>
+        </div>
+        <!-- Local campus clock: the slider previews a time; Live follows San Jose. -->
+        <div class="campus-sky" aria-hidden="true"><i class="bird"></i><i class="bird"></i><i class="bird"></i><div class="starlight"></div></div>
+        <section class="time-panel" aria-label="Campus lighting controls">
+          <div class="time-top"><span id="time-symbol" aria-hidden="true">☀</span><div><output id="time-output" for="campus-time">12:00</output><small id="time-status">Live · San José</small></div></div>
+          <label for="campus-time">Time of day</label>
+          <input id="campus-time" type="range" min="0" max="1439" step="1" value="720" aria-describedby="lighting-note" />
+          <div class="time-scale" aria-hidden="true"><span>00:00</span><span>12:00</span><span>23:59</span></div>
+          <div class="time-options"><label><input type="checkbox" id="time-live" checked />Live time</label><label><input type="checkbox" id="campus-motion" checked />Animation</label></div>
+          <small id="lighting-note">Illustrative lighting &amp; campus life</small>
+        </section>
+        <div class="compass" aria-hidden="true">N<br />↗</div>
+        <div id="map-loading" role="status">Preparing your campus…</div>
+        <div id="map-error" hidden role="alert">
+          The 3D map could not load. Try reloading this page.
+        </div>
+        <div class="map-caption" id="map-caption">
+          <span>↖</span>
+          <div>
+            <strong>Your next space is a click away.</strong
+            ><small>Select a building to take a closer look.</small>
+          </div>
+        </div>
+        <button id="reset" class="reset">↙ &nbsp; Campus overview</button>
+        <div class="map-credit">Main Campus · View from Boccardo Gate</div>
+        <aside id="detail" hidden aria-label="Selected building">
+          <button
+            id="close-detail"
+            class="close"
+            aria-label="Back to campus overview"
+          >
+            ×</button
+          ><span class="eyebrow">EXPLORE THIS BUILDING</span>
+          <h2 id="detail-name"></h2>
+          <!-- A fresh image element is created per selection to avoid stale image callbacks. -->
+          <figure class="building-photo" id="building-photo" hidden></figure>
+          <p id="photo-status" class="photo-status" hidden role="status"></p>
+          <p id="floor-summary"></p>
+          <div id="floors" aria-label="Building floors"></div>
+          <p id="floor-message" role="status"></p>
+          <!-- Reserved for a future review feature. Do not insert fake ratings or reviews. -->
+          <section class="review-section" aria-labelledby="reviews-heading"><h3 id="reviews-heading">Reviews</h3><div class="review-space" id="building-reviews"></div></section>
+          <details>
+            <summary>About this building’s data</summary>
+            <p id="floor-note"></p>
+            <a id="floor-source" target="_blank" rel="noreferrer"
+              >View floor-count source ↗</a
+            >
+          </details>
+        </aside>
+      </section>
+    </main>
+    <footer>
+      <span>Made for campus life.</span
+      ><span>Explore → Choose a building → Find your floor</span
+      ><a href="sources.html" target="_blank" rel="noreferrer"
+        >Map data & credits ↗</a
+      >
+    </footer>
+    <!-- Dialogs collect a user decision without leaving the page. -->
+    <dialog
+      id="confirm-dialog"
+      aria-labelledby="dialog-title"
+      aria-describedby="dialog-copy"
+    >
+      <form method="dialog">
+        <span class="dialog-icon">⌂</span
+        ><span class="eyebrow">LET’S TAKE A CLOSER LOOK</span>
+        <h2 id="dialog-title">Your next space?</h2>
+        <p id="dialog-copy">Would you like to explore this building?</p>
+        <strong id="confirm-name"></strong>
+        <p class="dialog-note">
+          View its photo and explore the floor preview.
+        </p>
+        <div class="dialog-actions">
+          <button value="cancel" autofocus>Keep exploring</button
+          ><button value="confirm" class="primary">
+            Yes, explore building ↗
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="help-dialog" aria-labelledby="help-title">
+      <form method="dialog">
+        <span class="eyebrow">A SPACE FOR WHAT’S NEXT</span>
+        <h2 id="help-title">Make yourself at home.</h2>
+        <ol>
+          <li>Search for a building or select one on the map.</li>
+          <li>Confirm to zoom in and view available building information.</li>
+          <li>Use the clock to preview campus by day or night. Reviews will arrive later.</li>
+        </ol>
+        <button class="primary" value="close">Let’s explore</button>
+      </form>
+    </dialog>
+    <div id="account-status" role="status" aria-live="polite"></div>
+    <dialog
+      id="auth-dialog"
+      aria-labelledby="auth-title"
+      aria-describedby="auth-subtitle"
+    >
+      <button
+        type="button"
+        id="auth-close"
+        class="close"
+        aria-label="Close account form"
+      >
+        ×
+      </button>
+      <span class="eyebrow">YOUR CAMPUS CONNECTION</span>
+      <h2 id="auth-title">Welcome back.</h2>
+      <p id="auth-subtitle">Sign in with your 9-digit student ID.</p>
+      <!-- Account form: JavaScript shows field errors. The server checks the same values again. -->
+      <form id="auth-form" novalidate>
+        <div class="auth-field">
+          <label for="student-id">Student ID</label
+          ><input
+            id="student-id"
+            name="studentId"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]{9}"
+            minlength="9"
+            autocomplete="username"
+            required
+            aria-describedby="student-id-hint"
+          /><small id="student-id-hint"
+            >Exactly 9 digits, including any leading zeros.</small
+          >
+        </div>
+        <fieldset id="signup-fields" hidden disabled>
+          <div class="auth-names">
+            <div class="auth-field">
+              <label for="first-name">First name</label
+              ><input
+                id="first-name"
+                name="firstName"
+                autocomplete="given-name"
+                required
+              />
+            </div>
+            <div class="auth-field">
+              <label for="last-name">Last name</label
+              ><input
+                id="last-name"
+                name="lastName"
+                autocomplete="family-name"
+                required
+              />
+            </div>
+          </div>
+          <div class="auth-field">
+            <label for="sjsu-email">SJSU email</label
+            ><div class="email-input">
+              <input id="sjsu-email" name="email" type="text"
+                autocomplete="email" autocapitalize="none" spellcheck="false"
+                required placeholder="your.name" aria-describedby="email-hint email-suffix" />
+              <span id="email-suffix">@sjsu.edu</span>
+            </div><small id="email-hint">Enter your email username, or paste your full SJSU email. Maximum 64 characters before @sjsu.edu.</small>
+          </div>
+        </fieldset>
+        <div class="auth-field">
+          <label for="auth-password">Password</label
+          ><input
+            id="auth-password"
+            name="password"
+            type="password"
+            minlength="8"
+            autocomplete="current-password"
+            required
+            aria-describedby="password-hint"
+          /><small id="password-hint"
+            >8–128 characters. Your SJSUClassrooms password, not your university
+            password.</small
+          >
+        </div>
+        <div id="confirm-field" class="auth-field" hidden>
+          <label for="confirm-password">Confirm password</label
+          ><input
+            id="confirm-password"
+            name="confirmPassword"
+            type="password"
+            minlength="8"
+            autocomplete="new-password"
+            required
+            disabled
+          />
+        </div>
+        <p id="auth-message" role="alert" aria-live="polite"></p>
+        <button id="auth-submit" class="primary" type="submit">Sign in</button>
+      </form>
+      <p class="auth-switch-row">
+        <span id="auth-switch-copy">New to SJSUClassrooms?</span>
+        <button id="auth-switch" type="button">Create an account</button>
+      </p>
+      <p id="email-note" hidden>
+        Class project account. Email ownership is not verified.
+      </p>
+    </dialog>
+    <!-- Load the map library first, data second, and behavior scripts last. -->
+    <script src="vendor/maplibre-gl.js"></script>
+    <script src="data/main-scene.js"></script>
+    <script src="data/floor-data.js"></script>
+    <script src="data/floor-options.js"></script>
+    <script src="data/building-photos.js"></script>
+    <script src="js/campus-time.js"></script>
+    <script src="js/building-photo.js"></script>
+    <script src="js/campus-life.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

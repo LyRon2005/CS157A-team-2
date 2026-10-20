@@ -1,0 +1,327 @@
+/* Map-only atmosphere and controls. Account pages keep their own colors. */
+.time-panel {
+  position:absolute;
+  left:24px;
+  top:65px;
+  width:270px;
+  padding:14px 17px;
+  border:1px solid #ffffffa0;
+  border-radius:16px;
+  background:#fffdf5ed;
+  box-shadow:0 8px 30px #102b4212;
+  backdrop-filter:blur(12px);
+  z-index:2;
+}
+.time-top {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.time-top output {
+  font-size:26px;
+  font-weight:600;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-1px;
+}
+.time-top small {
+  display:block;
+  font-size:10px;
+  color:#65737c;
+}
+.time-top #time-symbol {
+  font-size:30px;
+  color:#b48636;
+}
+.time-panel label {
+  margin:0;
+}
+.time-panel input[type=range] {
+  display:block;
+  width:100%;
+  height:25px;
+  margin:8px 0 0;
+  padding:0;
+  box-shadow:none;
+  accent-color:#a57a32;
+  background:none;
+  cursor:pointer;
+}
+.time-scale,.time-options {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-size:9px;
+  color:#65737c;
+}
+.time-options {
+  border-top:1px solid #dce0d6;
+  margin-top:9px;
+  padding-top:9px;
+  color:#344e5e;
+}
+.time-options label {
+  display:flex;
+  gap:6px;
+  align-items:center;
+  font-size:10px;
+  cursor:pointer;
+}
+.time-options input {
+  width:14px;
+  height:14px;
+  box-shadow:none;
+  padding:0;
+  accent-color:#234c50;
+}
+/* The scenery never catches clicks. Birds and stars are decorative, not live campus data. */
+.campus-sky {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+.bird {
+  position:absolute;
+  left:-5%;
+  top:33%;
+  width:12px;
+  height:5px;
+  border-top:2px solid #44665c;
+  border-radius:50%;
+  animation:campus-flight 32s linear infinite;
+  opacity:.6;
+}
+.bird::after {
+  content:'';
+  position:absolute;
+  left:10px;
+  top:-2px;
+  width:12px;
+  height:5px;
+  border-top:2px solid #44665c;
+  border-radius:50%;
+}
+.bird:nth-child(2) {
+  animation-delay:-13s;
+  top:40%;
+  scale:.7;
+}
+.bird:nth-child(3) {
+  animation-delay:-23s;
+  top:29%;
+  scale:.8;
+}
+.starlight {
+  position:absolute;
+  inset:0;
+  opacity:0;
+  background-image:radial-gradient(circle at 12% 24%,#fff2c9 0 1px,transparent 2px),radial-gradient(circle at 63% 13%,#fff2c9 0 1px,transparent 2px),radial-gradient(circle at 80% 43%,#fff2c9 0 1px,transparent 2px),radial-gradient(circle at 34% 18%,#fff2c9 0 1px,transparent 2px);
+  background-size:300px 240px;
+  transition:opacity 1s;
+}
+.campus-sky::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse at 80% 0%,#ffdc971a,transparent 60%);
+  transition:background 1s;
+}
+.map-area[data-period=night] .starlight {
+  opacity:.5;
+  animation:campus-stars 6s ease-in-out infinite alternate;
+}
+.map-area[data-period=night] .bird {
+  visibility:hidden;
+}
+.map-area[data-period=night] .map-heading,.map-area[data-period=night] .compass,.map-area[data-period=night] .map-credit {
+  color:#d3dfed;
+}
+.map-area[data-period=night] .map-heading span {
+  background:#223b50;
+  border-color:#466178;
+}
+.map-area[data-period=night] .time-panel {
+  background:#182e43ed;
+  color:#f4e7c6;
+  border-color:#527083;
+}
+.map-area[data-period=night] .time-panel small,.map-area[data-period=night] .time-scale,.map-area[data-period=night] .time-options {
+  color:#c5d5df;
+}
+.map-area[data-period=night] .time-options {
+  border-color:#476070;
+}
+.motion-paused .campus-sky * {
+  animation-play-state:paused!important;
+}
+@keyframes campus-flight {
+  from {
+    transform:translate(0,0);
+  }
+  to {
+    transform:translate(1100px,-90px);
+  }
+}
+@keyframes campus-stars {
+  from {
+    opacity:.25;
+  }
+  to {
+    opacity:.65;
+  }
+}
+/* Keep the photo and source together. Reviews are intentionally empty until implemented. */
+#detail {
+  top:65px;
+  width:304px;
+  max-height:calc(100% - 145px);
+  padding:23px;
+}
+.building-photo {
+  margin:16px 0;
+}
+.building-photo img {
+  display:block;
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  border-radius:9px;
+  background:#e6ece4;
+}
+.building-photo figcaption {
+  font-size:9px;
+  line-height:1.5;
+  color:#65737c;
+  margin-top:7px;
+}
+.building-photo a {
+  display:inline-block;
+  margin-right:6px;
+}
+.photo-status {
+  padding:25px 14px;
+  background:#edf0e8;
+  border-radius:9px;
+  color:#65737c;
+  font-size:11px;
+}
+.review-section {
+  border-top:1px solid #e0e3da;
+  margin-top:20px;
+  padding-top:12px;
+}
+.review-section h3 {
+  font-size:14px;
+  font-weight:600;
+  margin:0;
+}
+.review-space {
+  min-height:90px;
+}
+.quick-links button:disabled,#results button:disabled {
+  opacity:.45;
+  cursor:default;
+}
+@media(min-width:1001px) and (max-width:1200px) {
+  .time-panel {
+    width:220px;
+    left:16px;
+  }
+  #detail {
+    width:270px;
+    right:14px;
+  }
+}
+/* On smaller screens details sit below the map, so photos never hide the selected building. */
+@media(max-width:1000px) {
+  main {
+    height:auto;
+    max-height:none;
+  }
+  .map-area {
+    min-height:680px;
+    overflow:visible;
+  }
+  #map {
+    height:680px;
+    bottom:auto;
+  }
+  .campus-sky {
+    height:680px;
+    bottom:auto;
+  }
+  .time-panel {
+    left:16px;
+    top:60px;
+    width:245px;
+  }
+  #detail {
+    position:relative;
+    top:auto;
+    bottom:auto;
+    right:auto;
+    width:auto;
+    max-height:none;
+    margin:680px 14px 20px;
+    padding:22px;
+  }
+  .map-area:has(#detail:not([hidden])) .reset,.reset {
+    top:580px;
+    bottom:auto;
+  }
+  .map-caption {
+    top:505px;
+    bottom:auto;
+  }
+  .map-credit {
+    top:640px;
+    bottom:auto;
+  }
+  .building-photo img {
+    height:auto;
+    max-height:260px;
+  }
+  .review-space {
+    min-height:110px;
+  }
+}
+@media(max-width:700px) {
+  .map-area {
+    height:auto;
+    min-height:620px;
+  }
+  #map,.campus-sky {
+    height:620px;
+  }
+  .time-panel {
+    top:55px;
+    width:230px;
+    padding:10px 14px;
+  }
+  .time-top output {
+    font-size:23px;
+  }
+  #detail {
+    margin-top:620px;
+  }
+  .map-area:has(#detail:not([hidden])) .reset,.reset {
+    top:532px;
+    bottom:auto;
+  }
+  .map-caption {
+    top:450px;
+    bottom:auto;
+  }
+  .map-credit {
+    top:580px;
+    bottom:auto;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  .campus-sky * {
+    animation:none!important;
+  }
+  .starlight {
+    transition:none;
+  }
+}

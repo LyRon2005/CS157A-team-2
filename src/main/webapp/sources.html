@@ -1,0 +1,239 @@
+<!doctype html>
+<!--
+Data source page. It explains map coverage and known limits.
+It reads the bundled map inventory, not the MySQL account database.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sources & coverage · SJSU</title>
+    <style>
+      body {
+        max-width: 1100px;
+        margin: 50px auto;
+        padding: 0 25px;
+        font:
+          15px/1.7 "Segoe UI",
+          sans-serif;
+        color: #243c31;
+        background: #f5f7f0;
+      }
+      a {
+        color: #256f58;
+      }
+      h1 {
+        font-size: 32px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        background: white;
+        font-size: 12px;
+      }
+      th,
+      td {
+        padding: 9px;
+        border: 1px solid #d9dfd2;
+        text-align: left;
+      }
+      th {
+        background: #e5eddf;
+      }
+      code {
+        background: #e3e9de;
+        padding: 2px 5px;
+      }
+      .notice {
+        padding: 18px;
+        background: #fff2d6;
+        border-radius: 6px;
+      }
+      li {
+        margin: 9px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="./">← Back to map</a>
+    <h1>Data sources & coverage</h1>
+    <p class="notice">
+      <strong>The map currently shows Main Campus only: 57 footprints.</strong>
+      The 94 footprints listed below remain in the source archive. The overview
+      faces 58.8° from the Boccardo Gate side toward Lucas Gate. Confirming a
+      building selection zooms to it.
+      <a
+        href="https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf"
+        >SJSU's Facilities Development Plan, page 21</a
+      >
+      identifies Boccardo Gateway at Paseo de San Carlos and 4th Street. SJSU
+      has several entrances; Boccardo is the reference for this sjsuclassrooms.
+    </p>
+    <p>
+      The 2D ground layer uses the OSM snapshot: 490 path segments, 147 road
+      segments, 82 green areas, 2 water areas and 10 tree locations within Main
+      Campus. Counts represent clipped map features, not distinct streets. Tree
+      canopies use a symbolic 2.2 m radius, not a measured size. The camera
+      provides an elevated overview from the entrance side, not an eye-level
+      view.
+    </p>
+    <h2>Homepage floor data</h2>
+    <p>
+      All 57 main-campus footprints have demo floor choices. Thirty use
+      published counts (21 retain the historical 2015 assessment label); the
+      remaining 27 use unverified map level tags or a one-floor placeholder,
+      labeled Estimated. The underlying research separately records conflicting,
+      partial and unknown evidence. Floor bands are schematic equal-height
+      divisions of the mapped exterior, not surveyed floor elevations or
+      interior plans. Buildings without a known exterior height remain footprint
+      plates. The archive below covers more sites than the main-campus homepage.
+      No room availability or booking service is currently provided.
+    </p>
+    <p id="counts"></p>
+    <p class="notice">
+      This model uses public mapping data. It is not a certified survey of all
+      SJSU property. Footprints use geographic coordinates, but the sources may
+      be outdated or incomplete. Current heights and complete coverage have not
+      been verified.
+    </p>
+    <ul>
+      <li>
+        <a href="https://map.sjsu.edu/">Official SJSU map</a>: names, locations
+        and outdoor building/facility listings. Indoor rooms, non-SJSU ParkSJ
+        garages and commercial locations are excluded.
+      </li>
+      <li>
+        <a href="https://www.openstreetmap.org/copyright"
+          >OpenStreetMap — © OpenStreetMap contributors, ODbL</a
+        >: footprints from the map API, preserving courtyard holes and
+        multipolygon relations. Area and bounding dimensions are calculated in
+        UTM zone 10N (EPSG:32610). Length and width describe the minimum rotated
+        rectangle enclosing a structure, not individual wall dimensions.
+      </li>
+      <li>
+        <a
+          href="https://geo.sanjoseca.gov/server/rest/services/DOT/DOT_Basemap_InfrastructureMaintenance/MapServer/13"
+          >City of San José Building Footprints</a
+        >: supplemental heights where footprint overlap exceeds an IoU of 0.72,
+        converted from US survey feet to meters. The metadata describes a 2006
+        LiDAR survey with no subsequent updates. These heights are not assigned
+        to identified newer buildings: ISB, SRAC, CV2, Habbas, Student Wellness
+        and South Campus Garage.
+      </li>
+      <li>
+        <code>unknown</code> heights are displayed as 0.5 m footprint plates,
+        not estimated building heights. OSM floor counts are stored separately
+        and are not converted into heights.
+      </li>
+      <li>
+        Duplicate names and connected structures are recorded as aliases.
+        Unnamed ancillary structures retain their OSM identifiers. One facility
+        may contain multiple footprints; footprint counts are not administrative
+        building counts.
+      </li>
+      <li>
+        The source archive includes structures matched to the SJSU directory,
+        within the OSM campus boundary or attributed to SJSU in OSM. The current
+        map filters this archive to the Main Campus boundary.
+      </li>
+      <li>
+        Legacy sample room labels in the archived dataset are not live room
+        inventory. The old TSV booking API has been removed.
+      </li>
+    </ul>
+    <p>
+      <a href="data/buildings.geojson" download>Download footprint GeoJSON</a> ·
+      <a href="data/coverage.json" download>Download coverage report JSON</a>
+    </p>
+    <h2>Directory locations without matched footprints</h2>
+    <p>
+      These locations remain in the source registry. Most are outdoor sports
+      areas. The current Main Campus view does not display off-campus location
+      markers.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Location</th>
+          <th>Region</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody id="missing"></tbody>
+    </table>
+    <h2>Integrated structure inventory</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name / ID</th>
+          <th>Region</th>
+          <th>Area m²</th>
+          <th>Height m</th>
+          <th>Height source</th>
+          <th>Footprint</th>
+        </tr>
+      </thead>
+      <tbody id="inventory"></tbody>
+    </table>
+    <!-- Load the archive before the script below builds the source tables. -->
+    <script src="data/campus-data.js"></script>
+    <script>
+      const { geo, meta } = CAMPUS_DATA;
+      document.getElementById("counts").textContent =
+        `Snapshot ${meta.retrieved}: ${meta.buildingCount} footprints, ${meta.heightCount} with sourced heights, ${meta.buildingCount - meta.heightCount} without heights; ${meta.registryCount} filtered outdoor directory entries.`;
+      // Build cells with textContent so data is shown as text, not executable HTML.
+      function row(target, values, url) {
+        const tr = document.createElement("tr");
+        for (const value of values) {
+          const td = document.createElement("td");
+          td.textContent = value;
+          tr.append(td);
+        }
+        const td = document.createElement("td"),
+          a = document.createElement("a");
+        a.href = url;
+        a.textContent = "Source ↗";
+        a.target = "_blank";
+        td.append(a);
+        tr.append(td);
+        document.getElementById(target).append(tr);
+      }
+      meta.unmatched.forEach((r) => row("missing", [r.name, r.campus], r.url));
+      geo.features.forEach((f) => {
+        const p = f.properties;
+        row(
+          "inventory",
+          [
+            p.name,
+            p.campus,
+            p.area,
+            p.height ?? "Not available",
+            p.heightSource,
+          ],
+          p.sourceUrl,
+        );
+      });
+    </script>
+  <!-- Photo credits stay with the frontend and do not require a database. -->
+    <section><h2>Building photographs</h2>
+      <p>Reference photographs for teaching buildings and King Library. Images were resized to WebP for this class demo. They are not live views. University photos retain their original rights; Commons photos retain the license linked below.</p>
+      <ul id="photo-credits"></ul>
+    </section>
+    <script src="data/main-scene.js"></script>
+    <script src="data/building-photos.js"></script>
+    <script>
+      // Use safe text nodes and show a source and license for every downloaded image.
+      for (const [id, photo] of Object.entries(window.BUILDING_PHOTOS)) {
+        const item = document.createElement('li');
+        const name = window.MAIN_SCENE.geo.features.find(f => f.properties.id === id)?.properties.name || id;
+        const source = document.createElement('a');
+        source.href = photo.source; source.textContent = name + ' — ' + photo.author;
+        const license = document.createElement('a');
+        license.href = photo.licenseUrl || photo.source; license.textContent = photo.license;
+        item.append(source, document.createTextNode(' · '), license);
+        if (photo.rights) item.append(document.createTextNode(' · ' + photo.rights));
+        document.getElementById('photo-credits').append(item);
+      }
+    </script>
+  </body>
+</html>
