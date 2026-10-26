@@ -139,7 +139,13 @@ function selectFloor(n) {
 }
 // Fill the detail panel, create floor buttons and move the camera after confirmation.
 function selectBuilding(b) {
-  current = b;
+    current = b;
+    window.selectedBuilding = b;
+    window.dispatchEvent(
+      new CustomEvent("building-selected", {
+        detail: b
+      })
+  );
   window.showBuildingPhoto(b);
   for (const btn of document.querySelectorAll("[data-building]"))
     btn.disabled = btn.dataset.building === b.id;

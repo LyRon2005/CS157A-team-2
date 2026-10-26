@@ -12,6 +12,9 @@
   let mode = "login",
     csrfToken = "",
     busy = false;
+  window.SJSUAuth = {
+    getCsrfToken: () => csrfToken
+  };
   // Create one error area per field and link it to the input for screen readers.
   const inputs = [...form.querySelectorAll("input")];
   let lastStudentId = "";

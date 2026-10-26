@@ -111,7 +111,24 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
           <div id="floors" aria-label="Building floors"></div>
           <p id="floor-message" role="status"></p>
           <!-- Reserved for a future review feature. Do not insert fake ratings or reviews. -->
-          <section class="review-section" aria-labelledby="reviews-heading"><h3 id="reviews-heading">Reviews</h3><div class="review-space" id="building-reviews"></div></section>
+          
+          <section class="review-section" aria-labelledby="reviews-heading">
+            <h3 id="reviews-heading">Reviews</h3>
+            <div id="building-reviews"></div>
+            <form id="review-form">
+            <label for="review-text">Write a review</label>
+            <textarea
+                id="review-text"
+                name="writtenReview"
+                maxlength="1000"
+                required
+          ></textarea>
+          <button type="submit" class="primary">Submit Review</button>
+            <p id="review-message" role="status"></p>
+            </form>
+          </section>
+
+
           <details>
             <summary>About this building’s data</summary>
             <p id="floor-note"></p>
@@ -279,5 +296,6 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
     <script src="js/campus-life.js"></script>
     <script src="js/app.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/review.js"></script>
   </body>
 </html>

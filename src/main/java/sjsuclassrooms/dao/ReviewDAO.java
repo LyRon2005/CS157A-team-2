@@ -123,4 +123,26 @@ public final class ReviewDAO {
             }
         }
     }
-}
+
+    public int findBuildingId(String buildingName) throws SQLException {
+        String sql = """
+                SELECT Building_ID
+                FROM Building
+                WHERE Building_name = ?
+                """;
+
+    try (Connection connection = database.connect();
+         PreparedStatement statement = connection.prepareStatement(sql)) {
+
+        statement.setString(1, buildingName);
+
+        try (ResultSet result = statement.executeQuery()) {
+                if (!result.next()) {
+                    return -1;
+                }
+
+                return result.getInt("Building_ID");
+            }
+        }
+    }
+}   
