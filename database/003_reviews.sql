@@ -1,35 +1,31 @@
-CREATE TABLE Reviews(
-    Review_ID INT PRIMARY KEY,
-    UserID CHAR(9) NOT NULL,
+CREATE TABLE IF NOT EXISTS Reviews (
+    Review_Id INT PRIMARY KEY,
+    UserId CHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     written_review VARCHAR(1000) NOT NULL,
     date_created DATETIME NOT NULL,
 
-    FOREIGN KEY(UserID)
+    FOREIGN KEY (UserId)
         REFERENCES Users(UserId)
 );
 
-CREATE TABLE BuildingReview(
+CREATE TABLE IF NOT EXISTS BuildingReview (
+    Review_Id INT PRIMARY KEY,
+    Building_ID INT NOT NULL,
 
-    elevator_rating INT NOT NULL,
-    bathroom_rating INT NOT NULL,
-    lounging_rating INT NOT NULL,
-    study_spot_rating INT NOT NULL,
-    
-    FOREIGN KEY(Review_ID)
-        REFERENCES Reviews(Review_ID),
-    Foreign KEY(Building_ID)
-        REFERENCES Building(Building_ID),
+    FOREIGN KEY (Review_Id)
+        REFERENCES Reviews(Review_Id),
+
+    FOREIGN KEY (Building_ID)
+        REFERENCES Building(Building_ID)
 );
 
-CREATE TABLE ClassroomReview(
-    desk_rating INT NOT NULL,
-    comfort_rating INT NOT NULL ,
-    lighting_rating INT NOT NULL,
-    spaciousness_rating INT NOT NULL 
-    technology_rating INT NOT NULL,
-    
-    FOREIGN KEY(Review_ID)
-        REFERENCES Reviews(Review_ID),
-    Foreign KEY(Classroom_ID)
-        REFERENCES Classrooms(Classroom_ID)
+CREATE TABLE IF NOT EXISTS ClassroomReview (
+    Review_Id INT PRIMARY KEY,
+    Classroom_id INT NOT NULL,
+
+    FOREIGN KEY (Review_Id)
+        REFERENCES Reviews(Review_Id),
+
+    FOREIGN KEY (Classroom_id)
+        REFERENCES Classrooms(Classroom_id)
 );

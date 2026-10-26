@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Eclipse project identity and builders. The web project builders enable Run on Server.
-Do not confuse the project name with the physical folder name.
--->
 <projectDescription>
 	<name>SJSUClassrooms</name>
 	<comment></comment>
@@ -32,4 +28,15 @@ Do not confuse the project name with the physical folder name.
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
+	<filteredResources>
+		<filter>
+			<id>1792530457840</id>
+			<name></name>
+			<type>30</type>
+			<matcher>
+				<id>org.eclipse.core.resources.regexFilterMatcher</id>
+				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
 </projectDescription>

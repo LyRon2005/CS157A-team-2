@@ -19,6 +19,9 @@ public final class CreateTables {
         // Now select the database and run the Users table script. Resources close automatically.
         try (Connection c = database.connect(); Statement s = c.createStatement()) {
             s.executeUpdate(Files.readString(Path.of("database/001_users.sql")));
+            s.executeUpdate(Files.readString(Path.of("database/002_locations.sql")));
+            s.executeUpdate(Files.readString(Path.of("database/002_building_data.sql"))); 
+            s.executeUpdate(Files.readString(Path.of("database/003_reviews.sql")));
         }
         System.out.println("Database " + database.name() + " and Users table are ready. Existing data was preserved.");
     }
