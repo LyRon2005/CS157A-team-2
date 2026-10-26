@@ -77,18 +77,12 @@ It reads the bundled map inventory, not the MySQL account database.
       provides an elevated overview from the entrance side, not an eye-level
       view.
     </p>
-    <h2>Homepage floor data</h2>
-    <p>
-      All 57 main-campus footprints have demo floor choices. Thirty use
-      published counts (21 retain the historical 2015 assessment label); the
-      remaining 27 use unverified map level tags or a one-floor placeholder,
-      labeled Estimated. The underlying research separately records conflicting,
-      partial and unknown evidence. Floor bands are schematic equal-height
-      divisions of the mapped exterior, not surveyed floor elevations or
-      interior plans. Buildings without a known exterior height remain footprint
-      plates. The archive below covers more sites than the main-campus homepage.
-      No room availability or booking service is currently provided.
-    </p>
+    <h2>Indoor floor directory</h2>
+    <p>The old schematic floor bands and estimated floor buttons have been removed.
+    The indoor browser uses published university plans with source dates.
+    Historical room lists are reference material, not current availability.
+    Unknown floors, room locations and main-lobby photos are left unverified,
+    rather than filled with invented data. See the indoor sources below.</p>
     <p id="counts"></p>
     <p class="notice">
       This model uses public mapping data. It is not a certified survey of all
@@ -216,11 +210,11 @@ It reads the bundled map inventory, not the MySQL account database.
     </script>
   <!-- Photo credits stay with the frontend and do not require a database. -->
     <section><h2>Building photographs</h2>
-      <p>Reference photographs for teaching buildings and King Library. Images were resized to WebP for this class demo. They are not live views. University photos retain their original rights; Commons photos retain the license linked below.</p>
+      <p>Reference images for teaching, housing, service and other campus buildings. The catalog contains 35 building photographs and two official garage location diagrams. Eight named buildings and twelve unnamed map structures currently use their own mapped outline, explicitly labeled as not a photograph. Images were resized to WebP for this class demo. They are not live views. University photos retain their original rights; Commons photos retain the license linked below.</p>
       <ul id="photo-credits"></ul>
     </section>
     <script src="data/main-scene.js"></script>
-    <script src="data/building-photos.js"></script>
+    <script src="data/building-photos.js?v=buildings-20261025-3"></script>
     <script>
       // Use safe text nodes and show a source and license for every downloaded image.
       for (const [id, photo] of Object.entries(window.BUILDING_PHOTOS)) {
@@ -235,5 +229,5 @@ It reads the bundled map inventory, not the MySQL account database.
         document.getElementById('photo-credits').append(item);
       }
     </script>
-  </body>
+  <section style="max-width:900px;margin:40px auto;padding:24px"><h2>Indoor directory and review redesign</h2><p>Floor plans are university publications, not a current room availability feed. Historical plans and room rosters come from the Fall 2011 utilization report (drawings have their own revision dates). Engineering maps were published in the Fall 2024 guide. Room pins are manually checked only where provided; missing pins are not guessed.</p><ul><li><a href="https://www.sjsu.edu/fdo/docs/SJSU_Campus_Utilization_Report.pdf">SJSU Campus Utilization Report</a></li><li><a href="https://www.sjsu.edu/engineering/docs/FA24%20Engineering%20Buildings.pdf">Engineering floor maps, 2024</a></li><li><a href="https://booking.sjlibrary.org/maps">King Library official interactive floor directory</a></li><li><a href="https://www.sjsu.edu/campusmasterplan/docs/SJSU_Facility_Development_Plan_2017.pdf#page=66">Engineering upper-level lobby and Clark lobby photos, SJSU 2017, page 66</a></li><li><a href="https://www.sjsu.edu/fdo/docs/ISB_Final%20MND.pdf#page=14">ISB planning height: approximately 148 ft, not an as-built measurement</a></li><li><a href="https://events.sjsu.edu/isb">ISB: eight stories confirmed by SJSU</a></li></ul><p>Photos and floor drawings remain copyright of their respective owners; included as attributed university reference material for this course project. A missing main-lobby photograph is labeled explicitly. Classroom reviews are a disabled UI preview. Building reviews contain actual submitted text, without invented ratings.</p></section></body>
 </html>

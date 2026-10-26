@@ -147,6 +147,7 @@
   // Use the server response to show the guest buttons or the signed-in user.
   function renderAccount(data) {
     csrfToken = data.csrfToken || "";
+    window.dispatchEvent(new CustomEvent("auth-changed"));
     byId("guest-actions").hidden = !!data.user;
     byId("member-actions").hidden = !data.user;
     byId("member-name").textContent = data.user

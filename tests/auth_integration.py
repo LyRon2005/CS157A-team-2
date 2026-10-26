@@ -84,7 +84,7 @@ with tempfile.TemporaryDirectory(prefix='sjsu-tomcat-test-') as folder:
         java('sjsuclassrooms.config.CreateTables')
         process = start()
         assert json.loads(request('/api/auth/me')[1]) == {'user': None}
-        for asset in ['/', '/js/auth.js', '/css/auth.css', '/js/app.js', '/data/main-scene.js', '/data/floor-options.js', '/vendor/maplibre-gl.js']:
+        for asset in ['/', '/js/auth.js', '/css/auth.css', '/js/app.js', '/data/main-scene.js', '/data/building-directory.js', '/vendor/maplibre-gl.js']:
             assert request(asset)[0] == 200, asset
         for forbidden in ['/../config/local.properties', '/%2e%2e/config/local.properties', '/api/bookings']:
             assert request(forbidden)[0] == 404

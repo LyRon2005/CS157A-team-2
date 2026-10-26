@@ -1,9 +1,9 @@
-CREATE TABLE Building (
+CREATE TABLE IF NOT EXISTS Building (
     Building_ID INT PRIMARY KEY,
     Building_name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE Classrooms (
+CREATE TABLE IF NOT EXISTS Classrooms (
     Classroom_id INT PRIMARY KEY,
     Classroom_Num VARCHAR(20) NOT NULL,
     Capacity INT,

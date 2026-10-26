@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Reviews (
-    Review_Id INT PRIMARY KEY,
+    Review_Id INT AUTO_INCREMENT PRIMARY KEY,
     UserId CHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     written_review VARCHAR(1000) NOT NULL,
     date_created DATETIME NOT NULL,

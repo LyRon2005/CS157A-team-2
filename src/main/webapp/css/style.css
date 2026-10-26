@@ -360,34 +360,11 @@ h2 {
   color: #6d7c7b;
   font-size: 24px;
 }
-#floor-summary {
-  font-size: 12px;
-  color: var(--muted);
-}
-#floors {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 7px;
-  margin: 18px 0;
-}
-#floors button {
-  padding: 9px 0;
-  background: #f0f2eb;
-  border: 1px solid #dde1d5;
-  border-radius: 6px;
-  color: var(--ink);
-  font-size: 11px;
-}
-#floors button[aria-pressed="true"] {
-  background: var(--ink);
-  color: #ffe4a6;
-  border-color: var(--ink);
-}
-#floor-message {
-  font-size: 11px;
-  color: #5a6d6d;
-  min-height: 34px;
-}
+
+
+
+
+
 .coming-soon {
   padding-top: 15px;
   border-top: 1px solid #e1e4dc;
@@ -658,18 +635,9 @@ summary:focus-visible {
     font-size: 21px;
     margin: 9px 0;
   }
-  #floors {
-    grid-template-columns: repeat(8, 1fr);
-    margin: 10px 0;
-    gap: 5px;
-  }
-  #floor-summary {
-    margin: 5px 0;
-  }
-  #floor-message {
-    min-height: 0;
-    margin: 8px 0;
-  }
+
+
+
   .coming-soon {
     margin: 8px 0;
     padding-top: 8px;

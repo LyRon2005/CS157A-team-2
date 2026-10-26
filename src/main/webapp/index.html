@@ -10,9 +10,10 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>SJSUClassrooms · Find your place</title>
     <link href="vendor/maplibre-gl.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet" />
-    <link href="css/auth.css" rel="stylesheet" />
-    <link href="css/campus.css" rel="stylesheet" />
+    <link href="css/style.css?v=buildings-20261025-3" rel="stylesheet" />
+    <link href="css/auth.css?v=buildings-20261025-3" rel="stylesheet" />
+    <link href="css/campus.css?v=buildings-20261025-3" rel="stylesheet" />
+    <link href="css/explorer.css?v=buildings-20261025-3" rel="stylesheet" />
   </head>
   <body>
     <!-- Header: guest buttons and signed-in controls. auth.js switches between them. -->
@@ -107,41 +108,46 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
           <!-- A fresh image element is created per selection to avoid stale image callbacks. -->
           <figure class="building-photo" id="building-photo" hidden></figure>
           <p id="photo-status" class="photo-status" hidden role="status"></p>
-          <p id="floor-summary"></p>
-          <div id="floors" aria-label="Building floors"></div>
-          <p id="floor-message" role="status"></p>
-          <!-- Reserved for a future review feature. Do not insert fake ratings or reviews. -->
-          
+          <p id="building-data-note" class="data-note"></p>
+          <div class="building-actions">
+            <button id="change-building" type="button">← Change building</button>
+            <button id="write-review" class="primary" type="button">Write a review ↗</button>
+            <button id="browse-rooms" class="rooms-action" type="button">Explore floors &amp; rooms <span>→</span></button>
+          </div>
+          <p id="exploration-note" class="data-note" hidden>Reviews are open for this building. Floor and room exploration is available for teaching buildings only.</p>
           <section class="review-section" aria-labelledby="reviews-heading">
-            <h3 id="reviews-heading">Reviews</h3>
+            <div class="review-heading"><div><span class="eyebrow">SHARED BY YOUR COMMUNITY</span><h3 id="reviews-heading">Campus voices</h3></div>
+              <label class="sort-label">Sort<select id="review-sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></label>
+            </div>
+            <p id="review-status" role="status"></p>
             <div id="building-reviews"></div>
-            <form id="review-form">
-            <label for="review-text">Write a review</label>
-            <textarea
-                id="review-text"
-                name="writtenReview"
-                maxlength="1000"
-                required
-          ></textarea>
-          <button type="submit" class="primary">Submit Review</button>
-            <p id="review-message" role="status"></p>
-            </form>
+            <button id="review-more" type="button" hidden>Load more reviews</button>
+            <button id="review-retry" type="button" hidden>Try again</button>
           </section>
-
-
-          <details>
-            <summary>About this building’s data</summary>
-            <p id="floor-note"></p>
-            <a id="floor-source" target="_blank" rel="noreferrer"
-              >View floor-count source ↗</a
-            >
-          </details>
         </aside>
+      </section>
+      <section id="indoor-view" hidden aria-labelledby="indoor-title">
+        <button id="back-building" class="back-link" type="button">← Back to building</button>
+        <div class="indoor-hero">
+          <div><span class="eyebrow">A CLOSER LOOK INSIDE</span><h1 id="indoor-title" tabindex="-1"></h1><p>Find your floor.<br><em>Discover your next space.</em></p><p class="data-note">Room directory · not live classroom availability</p></div>
+          <figure id="lobby-photo"></figure>
+        </div>
+        <div class="indoor-layout">
+          <nav class="floor-nav" aria-label="Choose a floor"><span class="eyebrow">EXPLORE BY LEVEL</span><div id="floor-list"></div></nav>
+          <section class="floor-content" aria-labelledby="floor-title">
+            <h2 id="floor-title">Choose a floor</h2><p id="plan-note" class="data-note"></p>
+            <a id="plan-source" target="_blank" rel="noreferrer" hidden>View university source ↗</a>
+            <a id="plan-large" target="_blank" rel="noreferrer" hidden>Open larger plan ↗</a>
+            <div class="floor-workspace"><div><div id="plan-frame"></div><p id="plan-status" role="status"></p></div>
+            <div><label for="room-search">Find a room</label><input id="room-search" type="search" placeholder="Room number…"><div id="room-list"></div></div></div>
+          </section>
+        </div>
+        <section id="classroom-preview" hidden aria-labelledby="classroom-title"><span class="eyebrow">CLASSROOM REVIEWS · COMING SOON</span><h2 id="classroom-title" tabindex="-1"></h2><p>Room experiences will appear here when classroom reviews are available.</p><fieldset disabled><legend>Review preview</legend><label for="classroom-draft">Your classroom experience</label><textarea id="classroom-draft" placeholder="What would you tell another Spartan?" maxlength="1000"></textarea><button type="button">Classroom reviews are not available yet</button></fieldset></section>
       </section>
     </main>
     <footer>
       <span>Made for campus life.</span
-      ><span>Explore → Choose a building → Find your floor</span
+      ><span>Explore → Read reviews → Discover rooms</span
       ><a href="sources.html" target="_blank" rel="noreferrer"
         >Map data & credits ↗</a
       >
@@ -159,7 +165,7 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
         <p id="dialog-copy">Would you like to explore this building?</p>
         <strong id="confirm-name"></strong>
         <p class="dialog-note">
-          View its photo and explore the floor preview.
+          Read community reviews and explore its rooms.
         </p>
         <div class="dialog-actions">
           <button value="cancel" autofocus>Keep exploring</button
@@ -176,7 +182,8 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
         <ol>
           <li>Search for a building or select one on the map.</li>
           <li>Confirm to zoom in and view available building information.</li>
-          <li>Use the clock to preview campus by day or night. Reviews will arrive later.</li>
+          <li>Read building reviews, or sign in to share your experience.</li>
+        <li>Explore floors and room plans. Classroom reviews are coming soon.</li>
         </ol>
         <button class="primary" value="close">Let’s explore</button>
       </form>
@@ -285,17 +292,19 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
         Class project account. Email ownership is not verified.
       </p>
     </dialog>
+    <dialog id="review-dialog" aria-labelledby="review-dialog-title"><button id="review-close" class="close" type="button" aria-label="Close review">×</button><span class="eyebrow">YOUR EXPERIENCE MATTERS</span><h2 id="review-dialog-title">Share your perspective.</h2><p id="review-target"></p><form id="review-form"><label for="review-text">What should other Spartans know?</label><textarea id="review-text" name="writtenReview" required maxlength="1000" rows="6" placeholder="Tell us about the study spaces, atmosphere, or your experience here…"></textarea><div class="editor-meta"><small>Be helpful. Be respectful. Keep personal details private.</small><output id="review-length">0 / 1,000</output></div><p id="review-message" role="status"></p><button id="review-submit" type="submit" class="primary">Publish review ↗</button></form></dialog>
+    <dialog id="delete-dialog" aria-labelledby="delete-title"><h2 id="delete-title">Delete your review?</h2><p>This removes your review from this building.</p><form method="dialog"><button value="cancel">Keep review</button><button value="delete" class="primary">Delete review</button></form></dialog>
     <!-- Load the map library first, data second, and behavior scripts last. -->
     <script src="vendor/maplibre-gl.js"></script>
-    <script src="data/main-scene.js"></script>
-    <script src="data/floor-data.js"></script>
-    <script src="data/floor-options.js"></script>
-    <script src="data/building-photos.js"></script>
-    <script src="js/campus-time.js"></script>
-    <script src="js/building-photo.js"></script>
-    <script src="js/campus-life.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/review.js"></script>
+    <script src="data/main-scene.js?v=buildings-20261025-3"></script>
+    <script src="data/building-photos.js?v=buildings-20261025-3"></script>
+    <script src="data/building-directory.js?v=buildings-20261025-3"></script>
+    <script src="js/campus-time.js?v=buildings-20261025-3"></script>
+    <script src="js/building-photo.js?v=buildings-20261025-3"></script>
+    <script src="js/campus-life.js?v=buildings-20261025-3"></script>
+    <script src="js/app.js?v=buildings-20261025-3"></script>
+    <script src="js/auth.js?v=buildings-20261025-3"></script>
+    <script src="js/review.js?v=buildings-20261025-3"></script>
+    <script src="js/building-browser.js?v=buildings-20261025-3"></script>
   </body>
 </html>

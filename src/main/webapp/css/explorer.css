@@ -1,0 +1,55 @@
+/* Warm stone, deep green and restrained gold keep the campus at the center. */
+:root{--paper:#fbfaf6;--deep:#183d36;--gold:#a0783b;--line:#dedfd5}
+[hidden]{display:none!important}
+button,a,input,textarea,select{touch-action:manipulation}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #aa7d35;outline-offset:3px}
+body.building-open #explore{grid-template-columns:1fr;height:auto;max-height:none}
+body.building-open .intro{display:none}
+body.building-open .map-area{height:max(820px,calc(100svh - 88px));min-height:820px}
+#detail{width:420px;right:24px;top:78px;max-height:calc(100% - 115px);padding:30px;border-radius:22px;background:#fbfaf6f5;border:1px solid #ffffffba;box-shadow:0 20px 80px #173f3520;scrollbar-width:thin}
+#detail h2{font-size:32px;letter-spacing:-1px;max-width:330px;line-height:1.14}
+#detail .building-photo{margin:18px 0 10px}
+#detail .building-photo img{height:175px;width:100%;object-fit:cover;border-radius:12px}
+#detail .building-photo figcaption{font-size:10px;line-height:1.5;color:#65716b}
+.data-note{font-size:12px!important;line-height:1.65;color:#65716b}
+.building-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:20px 0 28px}
+.building-actions button{padding:12px;font-size:12px;border:1px solid var(--line);border-radius:9px;background:transparent;color:var(--deep)}
+.building-actions .primary{background:var(--deep);color:#fff;border-color:var(--deep)}
+.building-actions .rooms-action{grid-column:1/-1;text-align:left;background:#eeeee4;padding:15px}.rooms-action span{float:right}
+.review-section{border-top:1px solid var(--line);padding-top:24px;margin-top:0;min-height:200px}
+.review-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}.review-heading h3{font:25px Georgia;margin:8px 0}
+.review-heading .eyebrow{font-size:8px;letter-spacing:1.4px}.sort-label{font-size:10px;color:#64716b;display:flex;flex-direction:column;gap:4px}
+select{font:inherit;border:1px solid var(--line);border-radius:6px;padding:7px;background:var(--paper);color:var(--deep)}
+#review-status{font-size:12px;line-height:1.7;color:#62716a;margin:15px 0}
+.review-card{border-top:1px solid #e5e5dd;padding:20px 0;animation:review-in .25s ease-out}.review-card p{font-size:13px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere;color:#304c43;margin:12px 0}
+.review-author{display:flex;gap:10px;align-items:center}.avatar{width:36px;height:36px;display:grid;place-items:center;background:#e4e9dd;border-radius:50%;color:#365d4e;font:18px Georgia}
+.review-author strong{display:block;font-size:12px}.review-author time{display:block;margin-top:4px;font-size:10px;color:#79827b}
+.review-tools{display:flex;gap:14px}.review-tools button{font-size:11px;border:0;background:none;padding:4px 0;color:#516d60;text-decoration:underline;text-underline-offset:3px}
+#review-more,#review-retry{border:1px solid var(--line);background:transparent;border-radius:8px;padding:11px 20px;color:var(--deep)}
+#review-dialog{width:min(560px,calc(100vw - 32px));padding:36px;border:1px solid #e4e3d8;border-radius:22px;background:var(--paper);color:var(--deep);max-height:90vh;overflow:auto}
+#review-dialog h2{font-size:34px;letter-spacing:-1px;margin-top:14px}#review-target{font-size:14px;color:#6c795f}
+#review-form{display:block}#review-form label{display:block;text-align:left;font-size:13px;margin:24px 0 10px}
+textarea{box-sizing:border-box;display:block;width:100%;font-family:inherit;font-size:14px;line-height:1.65;border:1px solid #ccd3c6;border-radius:10px;padding:14px;background:white;color:#25463c;resize:vertical;min-height:130px}
+textarea:focus{outline:2px solid #a7bda9;outline-offset:2px}.editor-meta{display:flex;justify-content:space-between;gap:15px;margin-top:10px;color:#788174}.editor-meta small{max-width:270px;font-size:11px;line-height:1.5}.editor-meta output{font-size:10px;white-space:nowrap}#review-message{font-size:12px;line-height:1.6}#review-submit{width:100%;padding:14px;border-radius:9px;margin-top:16px}
+#delete-dialog{padding:30px;border-radius:18px;border:0;background:var(--paper)}#delete-dialog button{padding:12px;margin:10px 8px 0 0;border:1px solid var(--line);border-radius:8px}
+body.indoor-open #explore{display:block;padding:32px 5vw 60px;background:var(--paper)}body.indoor-open .map-area,body.indoor-open .intro{display:none}
+#indoor-view{max-width:1450px;margin:auto;color:var(--deep)}.back-link{border:0;background:none;color:var(--deep);padding:8px 0;font-size:13px;margin-bottom:28px}
+.indoor-hero{display:grid;grid-template-columns:1.1fr 1fr;gap:50px;align-items:center;padding-bottom:45px;border-bottom:1px solid var(--line)}.indoor-hero h1{font:clamp(32px,4vw,62px)/1.05 Georgia;margin:20px 0;letter-spacing:-2px}.indoor-hero p{font-size:18px;line-height:1.6}.indoor-hero em{font-family:Georgia;color:#8b713f}.indoor-hero figure{margin:0;min-width:0}.interior-image{height:290px;border-radius:18px;overflow:hidden;background:#e4e7db;position:relative}.interior-image img{width:100%;height:100%;object-fit:cover}.rotated-photo img{position:absolute;width:290px;height:100%;min-height:450px;left:50%;top:50%;transform:translate(-50%,-50%) rotate(90deg);object-fit:cover}.indoor-hero figcaption{font-size:11px;color:#6f7b70;line-height:1.5;margin-top:12px}.indoor-hero figcaption a{display:block;margin-top:5px;color:#536e5a}.lobby-placeholder{display:grid;place-items:center;height:290px;background:#e9ecdf;border-radius:18px;color:#79856d;font:20px Georgia;text-align:center;padding:20px}
+.indoor-layout{display:grid;grid-template-columns:175px minmax(0,1fr);gap:35px;padding-top:35px}.floor-nav{display:block;align-self:start}.floor-nav .eyebrow{font-size:9px}.floor-nav button{display:block;width:100%;padding:13px 15px;margin-top:8px;text-align:left;border:1px solid transparent;border-radius:8px;background:transparent;color:#4b6354;font-size:13px}.floor-nav button[aria-pressed=true]{background:var(--deep);color:white}.floor-nav p{font-size:13px;line-height:1.7}
+.floor-content h2{font-size:30px;margin:0 0 10px}.floor-content>a{font-size:12px;color:#7d6539}.floor-workspace{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:24px;margin-top:24px}#plan-frame{position:relative;background:white;border:1px solid var(--line);border-radius:12px;overflow:hidden}#plan-frame>img{display:block;width:100%;height:auto}.plan-placeholder{min-height:300px;display:grid;place-items:center;padding:35px;color:#7b8476;text-align:center;background:repeating-linear-gradient(0deg,#f1f2e9,#f1f2e9 29px,#e8ebe0 30px)}
+.room-pin{position:absolute;transform:translate(-50%,-50%);border:1px solid #fff;border-radius:20px;font-size:10px;padding:4px 6px;background:#224d40e8;color:white;box-shadow:0 2px 7px #0003}.room-pin[aria-pressed=true]{background:#a47120;outline:3px solid #e2b865;z-index:2}
+.floor-workspace label{font-size:12px;display:block;margin-bottom:8px}#room-search{width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--line);border-radius:8px;background:white;color:var(--deep)}#room-list{max-height:650px;overflow:auto;margin-top:12px}.room-card{width:100%;border:1px solid var(--line);border-radius:8px;padding:13px;margin-bottom:8px;text-align:left;background:white;color:var(--deep)}.room-card strong{display:block;font-size:13px}.room-card small{display:block;font-size:10px;line-height:1.5;color:#75816c;margin-top:5px}.room-card[aria-pressed=true]{border-color:#927644;background:#f4efdf}.empty-state,#plan-status{font-size:12px;line-height:1.7;color:#75816c}
+#classroom-preview{margin:40px 0 0 210px;padding:30px;background:#eef0e6;border:1px solid #dde2d2;border-radius:16px}#classroom-preview p{font-size:14px;line-height:1.7}#classroom-preview fieldset{border:0;padding:0;opacity:.65}#classroom-preview legend{font-size:12px;margin-bottom:12px}#classroom-preview label{font-size:12px;display:block;margin:10px 0}#classroom-preview button{padding:12px;border:1px solid var(--line);border-radius:8px;margin-top:12px}
+@keyframes review-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:1000px){body.building-open .map-area{height:1100px;min-height:1100px}#detail{top:430px;bottom:auto;left:20px;right:20px;width:auto;max-height:620px}body.building-open .time-panel{transform:scale(.8);transform-origin:top left}.indoor-hero{gap:25px}.floor-workspace{grid-template-columns:1fr}.indoor-layout{grid-template-columns:140px minmax(0,1fr);gap:20px}#room-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:300px}#classroom-preview{margin-left:160px}}
+@media(max-width:600px){.indoor-hero{grid-template-columns:1fr}.indoor-hero h1{letter-spacing:-1px}.interior-image,.lobby-placeholder{height:220px}.indoor-layout{display:block}.floor-nav{margin-bottom:25px}.floor-nav>div{display:flex;overflow:auto;gap:5px}.floor-nav button{white-space:nowrap;width:auto}.floor-workspace{gap:20px}#room-list{grid-template-columns:repeat(2,1fr)}#classroom-preview{margin-left:0;padding:20px}#detail{padding:22px;left:12px;right:12px}.review-heading{align-items:flex-start}#review-dialog{padding:24px}#review-dialog h2{font-size:29px}}
+@media(prefers-reduced-motion:reduce){.review-card{animation:none}}
+/* The selected view owns its layout, including the older campus stylesheet's mobile rules. */
+body.building-open #map,body.building-open .campus-sky{height:100%;bottom:0}
+body.building-open #detail{position:absolute;margin:0}
+#plan-large{display:inline-block;margin-left:18px}
+@media(max-width:1000px){body.building-open .map-area{overflow:hidden}body.building-open .map-area .reset{top:370px;bottom:auto}body.building-open .map-credit{display:none}body.building-open .time-panel{top:45px}}
+.building-outline{display:block;width:100%;height:175px;border-radius:12px;background:linear-gradient(135deg,#e7ede5,#f5f1e6)}
+.building-outline path{fill:#406658;stroke:#a88343;stroke-width:3;stroke-linejoin:round}
+.building-outline text{fill:#4d6257;font:11px sans-serif;letter-spacing:2px}
+#detail .building-photo img.location-image{object-fit:contain;background:#f0f0ea}

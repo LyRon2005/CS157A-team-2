@@ -1,13 +1,6 @@
-/*
- * Map behavior for the homepage. No MySQL queries run in this file.
- * index.html must load MapLibre, MAIN_SCENE and DEMO_FLOORS before this script.
- * A building ID connects the map footprint to its floor data.
- * Floor bands are a visual preview, not measured indoor plans or bookable rooms.
- */
+// Campus map and building selection. Indoor navigation lives in building-browser.js.
 const $ = (id) => document.getElementById(id);
-const scene = window.MAIN_SCENE,
-  geo = scene.geo,
-  floorData = window.DEMO_FLOORS;
+const scene = window.MAIN_SCENE, geo = scene.geo;
 const buildings = geo.features.map((f) => ({
   ...f.properties,
   geometry: f.geometry,
@@ -17,7 +10,6 @@ let map,
   current = null,
   pending = null,
   selectedMarker = null;
-const empty = { type: "FeatureCollection", features: [] };
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const duration = reduced ? 0 : 1100;
 // Remember the clicked building and ask for confirmation before moving the camera.
@@ -72,16 +64,9 @@ function bounds(b) {
     [Math.max(...pts.map((p) => p[0])), Math.max(...pts.map((p) => p[1]))],
   ];
 }
-// Color the selected building. Hide its full solid shape when floor bands replace it.
+// Color the selected building. Indoor plans are shown in a separate view.
 function paintSelection() {
   if (!ready) return;
-  const sliced = current && floorFeatures(current).features.length > 0;
-  map.setPaintProperty("campus-buildings", "fill-extrusion-height", [
-    "case",
-    ["==", ["get", "id"], sliced ? current.id : ""],
-    0,
-    ["get", "renderHeight"],
-  ]);
   map.setPaintProperty("campus-buildings", "fill-extrusion-color", [
     "case",
     ["==", ["get", "id"], current?.id || ""],
@@ -95,49 +80,20 @@ function paintSelection() {
 }
 // Zoom toward the selected building and leave room for the detail panel.
 function focusBuilding() {
-  if (!ready || !current) return;
+  if (!ready || !current || document.body.classList.contains("indoor-open")) return;
   const w = map.getContainer().clientWidth;
   const pad =
     window.innerWidth > 1000
-      ? { left: 45, right: 345, top: 220, bottom: 120 }
-      : { left: 28, right: 28, top: 245, bottom: 110 };
+      ? { left: 45, right: 480, top: 150, bottom: 100 }
+      : { left: 28, right: 28, top: 100, bottom: 720 };
   const cam = map.cameraForBounds(bounds(current), {
     bearing: scene.bearing,
     padding: pad,
-    maxZoom: w > 700 ? 18.8 : 18,
+    maxZoom: w > 700 ? (current.renderHeight > 35 ? 18 : 18.5) : 17.8,
   });
   if (cam) map.flyTo({ ...cam, pitch: 52, bearing: scene.bearing, duration });
 }
-// Split the known display height into equal visual bands. These are not surveyed floor heights.
-function floorFeatures(b, selected = 0) {
-  const f = floorData[b.id];
-  if (!f || !b.height) return empty;
-  const step = Number(b.renderHeight) / f.count;
-  return {
-    type: "FeatureCollection",
-    features: f.levels.map((n, i) => ({
-      type: "Feature",
-      geometry: b.geometry,
-      properties: {
-        id: b.id,
-        floor: n,
-        base: i * step,
-        top: (i + 1) * step - Math.min(0.18, step * 0.08),
-        selected: n === selected,
-      },
-    })),
-  };
-}
-// Update the selected floor button and its map color. Room data is not connected yet.
-function selectFloor(n) {
-  for (const btn of $("floors").children)
-    btn.setAttribute("aria-pressed", String(Number(btn.dataset.floor) === n));
-  $("floor-message").textContent =
-    `Floor ${n} selected. Room details will be added later.`;
-  if (ready && current)
-    map.getSource("floor-bands").setData(floorFeatures(current, n));
-}
-// Fill the detail panel, create floor buttons and move the camera after confirmation.
+// Fill the detail panel and move the camera after confirmation.
 function selectBuilding(b) {
     current = b;
     window.selectedBuilding = b;
@@ -155,33 +111,11 @@ function selectBuilding(b) {
   $("detail").hidden = false;
   $("map-caption").hidden = true;
   $("detail-name").textContent = b.named ? b.name : "Campus building";
-  $("floors").replaceChildren();
-  const f = floorData[b.id];
-  $("floor-summary").textContent = f
-    ? f.summary ||
-      `${f.count} above-ground floors${f.variableHeight ? " at the highest point" : ""}`
-    : "Floor information is being updated.";
-  $("floor-message").textContent = "Choose a floor · schematic demo preview.";
-  $("floor-note").textContent =
-    (f?.note || "Floor information has not been verified yet.") +
-    (!b.height
-      ? " Exterior height is unknown, so this building remains a footprint plate."
-      : "");
-  $("floor-source").hidden = !f;
-  if (f) $("floor-source").href = f.source;
-  for (const n of f?.levels || []) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.textContent = String(n).padStart(2, "0");
-    btn.dataset.floor = n;
-    btn.setAttribute("aria-label", `Floor ${n}`);
-    btn.setAttribute("aria-pressed", "false");
-    btn.onclick = () => selectFloor(n);
-    $("floors").append(btn);
-  }
+  document.body.classList.add("building-open");
+  $("reviews-heading").textContent = "Campus voices";
+  map?.resize();
   paintSelection();
   if (ready) {
-    map.getSource("floor-bands").setData(floorFeatures(b));
     selectedMarker?.remove();
     const el = document.createElement("div");
     el.className = "building-label";
@@ -204,6 +138,10 @@ function selectBuilding(b) {
 // Clear the selection and return to the fixed main-campus entrance view.
 function overview() {
   current = null;
+  window.selectedBuilding = null;
+  document.body.classList.remove("building-open", "indoor-open");
+  $("indoor-view").hidden = true;
+  window.dispatchEvent(new CustomEvent("building-cleared"));
   for (const btn of document.querySelectorAll("[data-building]")) btn.disabled = false;
   if ($("search").value) $("search").oninput();
   $("detail").hidden = true;
@@ -212,7 +150,6 @@ function overview() {
   selectedMarker = null;
   if (!ready) return;
   paintSelection();
-  map.getSource("floor-bands").setData(empty);
   const small = map.getContainer().clientWidth < 700;
   const cam = map.cameraForBounds(scene.bounds, {
     bearing: scene.bearing,
@@ -229,6 +166,7 @@ function overview() {
 }
 $("reset").onclick = overview;
 $("close-detail").onclick = overview;
+window.CampusNavigation = { overview, refocus: () => { map?.resize(); focusBuilding(); } };
 // Create the map once. Show a helpful fallback if the browser cannot render it.
 try {
   map = new maplibregl.Map({
@@ -308,34 +246,16 @@ try {
         "fill-extrusion-opacity": 1,
       },
     });
-    // Start with no floor bands. Selecting a building will supply their geometry.
-    map.addSource("floor-bands", { type: "geojson", data: empty });
-    map.addLayer({
-      id: "floor-bands",
-      type: "fill-extrusion",
-      source: "floor-bands",
-      paint: {
-        "fill-extrusion-base": ["get", "base"],
-        "fill-extrusion-height": ["get", "top"],
-        "fill-extrusion-color": [
-          "case",
-          ["get", "selected"],
-          "#ffe7a2",
-          "#d7b977",
-        ],
-        "fill-extrusion-opacity": 1,
-      },
-    });
     // Find the rendered shape below the pointer, then open the confirmation dialog.
     map.on("click", (e) => {
       const hits = map.queryRenderedFeatures(e.point, {
-        layers: ["floor-bands", "campus-buildings", "footprints"],
+        layers: ["campus-buildings", "footprints"],
       });
       if (hits.length) requestBuilding(hits[0].properties.id);
     });
     map.on("mousemove", (e) => {
       const hits = map.queryRenderedFeatures(e.point, {
-        layers: ["floor-bands", "campus-buildings", "footprints"],
+        layers: ["campus-buildings", "footprints"],
       });
       map.getCanvas().style.cursor = hits.length && hits[0].properties.id !== current?.id ? "pointer" : "";
     });

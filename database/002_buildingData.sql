@@ -43,4 +43,17 @@ INSERT INTO Building (Building_ID, Building_name) VALUES
 (42, 'Washburn Hall'),
 (43, 'Washington Square Hall'),
 (44, 'West Parking Garage'),
-(45, 'Yoshihiro Uchida Hall');
+(45, 'Yoshihiro Uchida Hall'),
+(46, 'Ancillary structure · OSM w1020998411'),
+(47, 'Ancillary structure · OSM w1078136776'),
+(48, 'Ancillary structure · OSM w1078136777'),
+(49, 'Ancillary structure · OSM w1460567278'),
+(50, 'Ancillary structure · OSM w25790802'),
+(51, 'Ancillary structure · OSM w359599136'),
+(52, 'Ancillary structure · OSM w372243565'),
+(53, 'Ancillary structure · OSM w411544401'),
+(54, 'Ancillary structure · OSM w791962166'),
+(55, 'Ancillary structure · OSM w791962171'),
+(56, 'Ancillary structure · OSM w973338163'),
+(57, 'Ancillary structure · OSM w973338176')
+ON DUPLICATE KEY UPDATE Building_ID = Building.Building_ID;
