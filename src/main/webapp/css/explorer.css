@@ -53,3 +53,16 @@ body.building-open #detail{position:absolute;margin:0}
 .building-outline path{fill:#406658;stroke:#a88343;stroke-width:3;stroke-linejoin:round}
 .building-outline text{fill:#4d6257;font:11px sans-serif;letter-spacing:2px}
 #detail .building-photo img.location-image{object-fit:contain;background:#f0f0ea}
+
+#duncan-classroom { margin:40px 0 0 210px; padding:30px; border:1px solid var(--line); border-radius:18px; background:var(--paper); }
+#duncan-classroom h2 { font:32px Georgia,serif; }
+.feature-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:22px 0 30px; }
+.feature-item { padding:18px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+.feature-item strong,.feature-item span { display:block; }
+.feature-item span { margin-top:6px; font-size:12px; color:#65737c; }
+.rating-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.rating-list span { padding:5px 10px; background:#e9eee9; border-radius:6px; font-size:12px; }
+#duncan-classroom > button { padding:12px; margin-right:14px; border:1px solid var(--line); border-radius:8px; }
+#duncan-classroom > a { display:inline-block; margin-top:14px; }
+@media(max-width:1000px) { #duncan-classroom { margin-left:160px; } .feature-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) { #duncan-classroom { margin-left:0; padding:20px; } .feature-grid { grid-template-columns:1fr; } }

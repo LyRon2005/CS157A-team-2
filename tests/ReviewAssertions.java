@@ -16,8 +16,8 @@ public final class ReviewAssertions {
             s.execute("SET FOREIGN_KEY_CHECKS=0");
             try{s.executeUpdate("ALTER TABLE Reviews MODIFY Review_Id INT NOT NULL");}
             finally{s.execute("SET FOREIGN_KEY_CHECKS=1");}
-            s.executeUpdate("INSERT INTO Reviews VALUES (500,'001234567','Legacy review',CURRENT_TIMESTAMP)");
-            s.executeUpdate("INSERT INTO BuildingReview VALUES (500,22)");
+            s.executeUpdate("INSERT INTO Reviews (Review_Id,UserId,written_review,date_created) VALUES (500,'001234567','Legacy review',CURRENT_TIMESTAMP)");
+            s.executeUpdate("INSERT INTO BuildingReview (Review_Id,Building_ID) VALUES (500,22)");
         }
         CreateTables.main(new String[0]);
         ReviewDAO dao=new ReviewDAO(db);
@@ -36,6 +36,38 @@ public final class ReviewAssertions {
         }
         int classroomId=dao.insertClassroomReview(new ClassroomReview(0,"001234567","Classroom DAO",LocalDateTime.now(),9001));
         if(dao.delete(classroomId,22,"001234567"))throw new AssertionError("Building delete touched classroom review");
+        int duncanReview = dao.insertClassroomReview(new ClassroomReview(
+                0,"001234567","Duncan classroom test",LocalDateTime.now(),200010));
+        try (var connection = db.connect(); var statement = connection.createStatement()) {
+            statement.executeUpdate("UPDATE ClassroomReview SET comfort_rating=4 WHERE Review_Id=" + duncanReview);
+            for (int invalid : new int[]{0,6}) {
+                try {
+                    statement.executeUpdate("UPDATE ClassroomReview SET comfort_rating=" + invalid + " WHERE Review_Id=" + duncanReview);
+                    throw new AssertionError("Invalid rating accepted");
+                } catch (SQLException expected) {
+                    if (expected.getErrorCode()!=3819) throw expected;
+                }
+            }
+            try {
+                statement.executeUpdate("UPDATE ClassroomFeatures SET Quantity=0 WHERE FeatureId=20001");
+                throw new AssertionError("Zero feature quantity accepted");
+            } catch (SQLException expected) {
+                if (expected.getErrorCode()!=3819) throw expected;
+            }
+            try {
+                statement.executeUpdate("INSERT INTO ClassroomFeatures VALUES (999999,20001,1)");
+                throw new AssertionError("Orphan feature accepted");
+            } catch (SQLException expected) {
+                if (!"23000".equals(expected.getSQLState())) throw expected;
+            }
+            statement.executeUpdate("UPDATE ClassroomFeatures SET Quantity=99 WHERE FeatureId=20001");
+        }
+        CreateTables.main(new String[0]);
+        try (var connection = db.connect(); var statement = connection.createStatement();
+             var result = statement.executeQuery("SELECT COUNT(*) FROM ClassroomFeatures WHERE FeatureId=20001 AND Quantity<>99")) {
+            result.next();
+            if(result.getInt(1)!=0) throw new AssertionError("Setup overwrote edited feature quantities");
+        }
         System.out.println("PASS: legacy migration preserves relationships, generated IDs, transaction rollback and classroom DAO compatibility.");
     }
 }

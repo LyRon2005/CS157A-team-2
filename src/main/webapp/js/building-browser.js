@@ -1,10 +1,13 @@
-// Source-backed room browser. Classroom reviews are a UI preview only.
+// Source-backed plans. Duncan Hall also reads room features and reviews from MySQL.
 (() => {
   const el=id=>document.getElementById(id);
   let building=null, directory=null, floor=null;
   const make=(tag,content,cls)=>{const node=document.createElement(tag);if(content)node.textContent=content;if(cls)node.className=cls;return node;};
   function roomSelected(room){
-    el('classroom-preview').hidden=false;el('classroom-title').textContent=`${building.name} · Room ${room.number}`;
+    window.DuncanClassrooms.hide();
+    el('classroom-preview').hidden=directory?.databaseId===20;
+    if(directory?.databaseId===20) window.DuncanClassrooms.show(room.number);
+    el('classroom-title').textContent=`${building.name} · Room ${room.number}`;
     el('classroom-title').focus({preventScroll:true});
     for(const pin of el('plan-frame').querySelectorAll('button'))pin.setAttribute('aria-pressed',String(pin.dataset.room===room.number));
     for(const button of el('room-list').querySelectorAll('button'))button.setAttribute('aria-pressed',String(button.dataset.room===room.number));
@@ -15,9 +18,10 @@
     const query=el('room-search').value.trim().toLowerCase();
     const available=(floor?.rooms||[]).filter(r=>r.number.toLowerCase().includes(query));
     if(!available.length){el('room-list').append(make('p',query?'No matching rooms.':'A verified room list is not available for this floor.','empty-state'));return;}
-    for(const room of available){const button=make('button',null,'room-card');button.type='button';button.dataset.room=room.number;button.setAttribute('aria-pressed','false');button.append(make('strong',`Room ${room.number}`),make('small',room.kind));button.onclick=()=>roomSelected(room);el('room-list').append(button);}
+    for(const room of available){const button=make('button',null,'room-card');button.type='button';button.dataset.room=room.number;button.setAttribute('aria-pressed','false');button.append(make('strong',`Room ${room.number}`),make('small',room.kind));const summary=window.DuncanClassrooms.summary(directory?.databaseId,room.number);if(summary)button.append(make('small',summary,'feature-summary'));button.onclick=()=>roomSelected(room);el('room-list').append(button);}
   }
   function selectFloor(value){
+    window.DuncanClassrooms.hide();
     floor=value;el('floor-title').textContent=value.label;el('plan-note').textContent=value.note;
     el('plan-large').hidden=!value.image;if(value.image)el('plan-large').href=value.image;
     el('plan-source').href=value.source;el('plan-source').hidden=!value.source;
@@ -36,6 +40,12 @@
     if(!building || directory?.teaching !== true)return;
     document.body.classList.add('indoor-open');el('indoor-view').hidden=false;el('indoor-title').textContent=building.name;
     el('indoor-title').focus({preventScroll:true});el('indoor-view').scrollIntoView({behavior:'instant',block:'start'});
+    if(directory.databaseId===20) {
+      const selected=building.id;
+      window.DuncanClassrooms.load().then(()=>{
+        if(building?.id===selected && document.body.classList.contains('indoor-open')) rooms();
+      });
+    }
     const figure=el('lobby-photo');figure.replaceChildren();
     const interior=directory.interior,exterior=window.BUILDING_PHOTOS[building.id];
     const photo=interior||exterior;
@@ -49,11 +59,13 @@
     if(directory.floors?.length)selectFloor(directory.floors[0]);
     else{el('floor-list').append(make('p','Floor directory coming soon.'));el('floor-title').textContent='Inside this building';el('plan-note').textContent='No public floor directory has been verified for this building.';el('plan-source').hidden=true;el('plan-large').hidden=true;el('plan-frame').replaceChildren();el('plan-status').textContent='';rooms();}
   }
+  window.addEventListener('building-cleared',()=>window.DuncanClassrooms.hide());
   el('room-search').oninput=rooms;
   el('change-building').onclick=()=>window.CampusNavigation.overview();
   el('browse-rooms').onclick=indoor;
   el('back-building').onclick=()=>{document.body.classList.remove('indoor-open');el('indoor-view').hidden=true;window.CampusNavigation.refocus();el('browse-rooms').focus({preventScroll:true});el('map').scrollIntoView({behavior:'instant',block:'start'});};
   window.addEventListener('building-selected',e=>{
+    window.DuncanClassrooms.hide();
     building=e.detail;directory=window.BUILDING_DIRECTORY[building.id]||{floors:[]};
     el('browse-rooms').hidden=directory.teaching !== true;
     el('exploration-note').hidden=directory.teaching === true;

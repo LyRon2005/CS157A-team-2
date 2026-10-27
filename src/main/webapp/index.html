@@ -10,10 +10,11 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>SJSUClassrooms · Find your place</title>
     <link href="vendor/maplibre-gl.css" rel="stylesheet" />
-    <link href="css/style.css?v=buildings-20261025-3" rel="stylesheet" />
-    <link href="css/auth.css?v=buildings-20261025-3" rel="stylesheet" />
-    <link href="css/campus.css?v=buildings-20261025-3" rel="stylesheet" />
-    <link href="css/explorer.css?v=buildings-20261025-3" rel="stylesheet" />
+    <link href="css/style.css?v=duncan-20261026-3" rel="stylesheet" />
+    <link href="css/auth.css?v=duncan-20261026-3" rel="stylesheet" />
+    <link href="css/campus.css?v=duncan-20261026-3" rel="stylesheet" />
+    <link href="css/explorer.css?v=duncan-20261026-3" rel="stylesheet" />
+    <link href="css/atelier.css?v=duncan-20261026-3" rel="stylesheet" />
   </head>
   <body>
     <!-- Header: guest buttons and signed-in controls. auth.js switches between them. -->
@@ -36,10 +37,10 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
     <!-- Main content: building search and the campus map. -->
     <main id="explore">
       <section class="intro">
-        <span class="eyebrow">YOUR CAMPUS. YOUR SPACE.</span>
-        <h1>Great things <br />start <em>here.</em></h1>
+        <span class="eyebrow">SAN JOSE STATE UNIVERSITY</span>
+        <h1>Find your <br />place to <em>thrive.</em></h1>
         <p>
-          Find a place to focus, connect,<br />and bring your next idea to life.
+          An everyday campus. <br />Extraordinary possibilities.
         </p>
         <div class="search-box">
           <label for="search">Find your building</label
@@ -69,6 +70,7 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
           role="region"
           aria-label="Interactive SJSU Main Campus map"
         ></div>
+        <div id="building-hover" role="tooltip" hidden></div>
         <div class="map-heading">
           ● &nbsp; MAIN CAMPUS <span>3D EXPLORER</span>
         </div>
@@ -142,6 +144,18 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
             <div><label for="room-search">Find a room</label><input id="room-search" type="search" placeholder="Room number…"><div id="room-list"></div></div></div>
           </section>
         </div>
+        <section id="duncan-classroom" hidden aria-labelledby="duncan-title">
+          <span class="eyebrow">DUNCAN HALL · CLASSROOM DETAILS</span>
+          <h2 id="duncan-title" tabindex="-1"></h2>
+          <p id="duncan-status" role="status"></p>
+          <p id="duncan-provenance" class="data-note"></p>
+          <div id="duncan-features" class="feature-grid"></div>
+          <h3>Classroom reviews</h3>
+          <div id="duncan-reviews"></div>
+          <p class="data-note">Showing up to 100 latest reviews. Writing classroom reviews is coming soon.</p>
+          <button type="button" disabled>Write a classroom review · Coming soon</button>
+          <a id="duncan-search-link" href="classrooms">Open classroom search ↗</a>
+        </section>
         <section id="classroom-preview" hidden aria-labelledby="classroom-title"><span class="eyebrow">CLASSROOM REVIEWS · COMING SOON</span><h2 id="classroom-title" tabindex="-1"></h2><p>Room experiences will appear here when classroom reviews are available.</p><fieldset disabled><legend>Review preview</legend><label for="classroom-draft">Your classroom experience</label><textarea id="classroom-draft" placeholder="What would you tell another Spartan?" maxlength="1000"></textarea><button type="button">Classroom reviews are not available yet</button></fieldset></section>
       </section>
     </main>
@@ -296,15 +310,16 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
     <dialog id="delete-dialog" aria-labelledby="delete-title"><h2 id="delete-title">Delete your review?</h2><p>This removes your review from this building.</p><form method="dialog"><button value="cancel">Keep review</button><button value="delete" class="primary">Delete review</button></form></dialog>
     <!-- Load the map library first, data second, and behavior scripts last. -->
     <script src="vendor/maplibre-gl.js"></script>
-    <script src="data/main-scene.js?v=buildings-20261025-3"></script>
-    <script src="data/building-photos.js?v=buildings-20261025-3"></script>
-    <script src="data/building-directory.js?v=buildings-20261025-3"></script>
-    <script src="js/campus-time.js?v=buildings-20261025-3"></script>
-    <script src="js/building-photo.js?v=buildings-20261025-3"></script>
-    <script src="js/campus-life.js?v=buildings-20261025-3"></script>
-    <script src="js/app.js?v=buildings-20261025-3"></script>
-    <script src="js/auth.js?v=buildings-20261025-3"></script>
-    <script src="js/review.js?v=buildings-20261025-3"></script>
-    <script src="js/building-browser.js?v=buildings-20261025-3"></script>
+    <script src="data/main-scene.js?v=duncan-20261026-3"></script>
+    <script src="data/building-photos.js?v=duncan-20261026-3"></script>
+    <script src="data/building-directory.js?v=duncan-20261026-3"></script>
+    <script src="js/campus-time.js?v=duncan-20261026-3"></script>
+    <script src="js/building-photo.js?v=duncan-20261026-3"></script>
+    <script src="js/campus-life.js?v=duncan-20261026-3"></script>
+    <script src="js/app.js?v=duncan-20261026-3"></script>
+    <script src="js/auth.js?v=duncan-20261026-3"></script>
+    <script src="js/review.js?v=duncan-20261026-3"></script>
+    <script src="js/duncan-classrooms.js?v=duncan-20261026-3"></script>
+    <script src="js/building-browser.js?v=duncan-20261026-3"></script>
   </body>
 </html>

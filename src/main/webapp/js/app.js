@@ -16,6 +16,7 @@ const duration = reduced ? 0 : 1100;
 function requestBuilding(id) {
   const b = buildings.find((b) => b.id === id);
   if (!b || current?.id === id || $("confirm-dialog").open) return;
+  $("building-hover").hidden = true;
   pending = b;
   $("confirm-name").textContent = b.named ? b.name : "Campus building";
   $("confirm-dialog").returnValue = "";
@@ -70,12 +71,12 @@ function paintSelection() {
   map.setPaintProperty("campus-buildings", "fill-extrusion-color", [
     "case",
     ["==", ["get", "id"], current?.id || ""],
-    "#c59b51",
+    "#c7a361",
     ["==", ["get", "category"], "housing"],
     window.CampusTime.buildingColor("#a7b8a8", "#527180"),
     ["==", ["get", "category"], "parking"],
     window.CampusTime.buildingColor("#91a4a1", "#435c73"),
-    window.CampusTime.buildingColor("#6f9384", "#476c86"),
+    window.CampusTime.buildingColor(current ? "#91a4ab" : "#789398", "#476c86"),
   ]);
 }
 // Zoom toward the selected building and leave room for the detail panel.
@@ -91,7 +92,8 @@ function focusBuilding() {
     padding: pad,
     maxZoom: w > 700 ? (current.renderHeight > 35 ? 18 : 18.5) : 17.8,
   });
-  if (cam) map.flyTo({ ...cam, pitch: 52, bearing: scene.bearing, duration });
+  if (cam) map.flyTo({ ...cam, pitch: 52, bearing: scene.bearing, duration,
+    easing: (t) => 1 - Math.pow(1 - t, 3) });
 }
 // Fill the detail panel and move the camera after confirmation.
 function selectBuilding(b) {
@@ -140,6 +142,7 @@ function overview() {
   current = null;
   window.selectedBuilding = null;
   document.body.classList.remove("building-open", "indoor-open");
+  $("building-hover").hidden = true;
   $("indoor-view").hidden = true;
   window.dispatchEvent(new CustomEvent("building-cleared"));
   for (const btn of document.querySelectorAll("[data-building]")) btn.disabled = false;
@@ -257,9 +260,21 @@ try {
       const hits = map.queryRenderedFeatures(e.point, {
         layers: ["campus-buildings", "footprints"],
       });
-      map.getCanvas().style.cursor = hits.length && hits[0].properties.id !== current?.id ? "pointer" : "";
+      const hit = hits.find((feature) => feature.properties.id !== current?.id);
+      const tooltip = $("building-hover");
+      const show = hit && !$("confirm-dialog").open && !map.isMoving();
+      map.getCanvas().style.cursor = show ? "pointer" : "";
+      tooltip.hidden = !show;
+      if (show) {
+        tooltip.textContent = hit.properties.name || "Campus building";
+        const width = map.getContainer().clientWidth;
+        tooltip.style.left = Math.max(8, Math.min(e.point.x + 16, width - 236)) + "px";
+        tooltip.style.top = Math.max(8, e.point.y - 44) + "px";
+      }
     });
     const el = document.createElement("div");
+    map.getCanvas().addEventListener("mouseleave", () => { $("building-hover").hidden = true; });
+    map.on("movestart", () => { $("building-hover").hidden = true; });
     el.className = "gate-label";
     el.textContent = "BOCCARDO GATE ↗";
     new maplibregl.Marker({ element: el, anchor: "top" })

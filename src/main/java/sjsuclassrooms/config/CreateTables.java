@@ -21,6 +21,9 @@ public final class CreateTables {
             runSqlFile(s, "database/002_locations.sql");
             runSqlFile(s, "database/002_buildingData.sql");
             runSqlFile(s, "database/003_reviews.sql");
+            runSqlFile(s, "database/004_review_ratings.sql");
+            runSqlFile(s, "database/005_features.sql");
+            runSqlFile(s, "database/006_duncan_demo.sql");
             // Older review tables used IDs chosen by Java. Keep rows and let MySQL assign new IDs.
             try (var columns = c.getMetaData().getColumns(database.name(), null, "%", "Review_Id")) {
                 boolean upgrade = false;
@@ -46,6 +49,17 @@ public final class CreateTables {
         for (String part : sql.split(";")) {
             String command = part.trim();
             if (!command.isEmpty()) {
+                // Our ALTER scripts only add individual columns. Skip an existing column on reruns.
+                java.util.regex.Matcher addColumn = java.util.regex.Pattern.compile(
+                        "(?is)^ALTER TABLE (\\w+) ADD COLUMN (\\w+)\\s+.*"
+                ).matcher(command);
+                if (addColumn.matches()) {
+                    Connection connection = statement.getConnection();
+                    try (var columns = connection.getMetaData().getColumns(
+                            connection.getCatalog(), null, addColumn.group(1), addColumn.group(2))) {
+                        if (columns.next()) continue;
+                    }
+                }
                 statement.executeUpdate(command);
             }
         }

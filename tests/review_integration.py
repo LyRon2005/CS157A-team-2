@@ -131,7 +131,32 @@ with tempfile.TemporaryDirectory(prefix='sjsu-tomcat-test-') as folder:
         assert post(dict(action='delete',reviewId=review))[0]==200
         assert post(dict(action='delete',reviewId=review))[0]==404
         print('PASS: review reading, validation, CSRF, ownership, edit/delete, concurrent IDs, pagination, sorting and repeated setup.',flush=True)
+        # Read-only Duncan Hall flow, including explicit demo coverage.
+        status,text,_=request('/api/classrooms',client=guest)
+        assert status==200,(status,text)
+        rooms=json.loads(text)['rooms']
+        assert len(rooms)==66 and all(r['demo'] for r in rooms)
+        assert sum(len(r['features'])==6 for r in rooms)==46
+        assert sum(len(r['features'])==0 for r in rooms)==3
+        assert all(r['capacity'] is None for r in rooms)
+        first=next(r for r in rooms if r['number']=='010')
+        assert first['id']==200010
+        detail=json.loads(request('/api/classrooms?id=200010')[1])
+        assert detail['reviews']==[] and detail['room']['number']=='010'
+        assert request('/api/classrooms?id=9001')[0]==404
+        assert request('/api/classrooms?id=abc')[0]==400
+        assert request('/api/classrooms',dict(writtenReview='Not implemented'))[0]==405
+        for path in ['/classrooms','/classrooms?building=Duncan&classroom=010','/classrooms?id=200010']:
+            status,text,_=request(path)
+            assert status==200 and 'Failed to load' not in text,(path,text)
+        assert 'There was no classrooms found' in request('/classrooms?building=Engineering')[1]
         java('sjsuclassrooms.tests.ReviewAssertions')
+        detail=json.loads(request('/api/classrooms?id=200010')[1])
+        assert detail['reviews'][0]['text']=='Duncan classroom test'
+        assert detail['reviews'][0]['ratings']['comfort_rating']==4
+        assert detail['reviews'][0]['ratings']['wifi_Rating'] is None
+        assert '001234567' not in request('/classrooms?id=200010')[1]
+        print('PASS: Duncan search, room features, demo distribution, review reading, rating boundaries and rerun preservation.',flush=True)
         if os.environ.get('REVIEW_UI_TEST'):
             print('UI_URL='+url,flush=True)
             print('UI_STOP_FILE='+str(work/'finish-ui'),flush=True)
