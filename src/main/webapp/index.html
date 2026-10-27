@@ -10,11 +10,12 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>SJSUClassrooms · Find your place</title>
     <link href="vendor/maplibre-gl.css" rel="stylesheet" />
-    <link href="css/style.css?v=schema-20261026-4" rel="stylesheet" />
-    <link href="css/auth.css?v=schema-20261026-4" rel="stylesheet" />
-    <link href="css/campus.css?v=schema-20261026-4" rel="stylesheet" />
-    <link href="css/explorer.css?v=schema-20261026-4" rel="stylesheet" />
-    <link href="css/atelier.css?v=schema-20261026-4" rel="stylesheet" />
+    <link href="css/base.css?v=rooms-database-20261027" rel="stylesheet" />
+    <link href="css/auth.css?v=rooms-database-20261027" rel="stylesheet" />
+    <link href="css/campus.css?v=rooms-database-20261027" rel="stylesheet" />
+    <link href="css/building-explorer.css?v=rooms-database-20261027" rel="stylesheet" />
+    <link href="css/theme.css?v=rooms-database-20261027" rel="stylesheet" />
+    <link href="css/reviews.css?v=rooms-database-20261027" rel="stylesheet" />
   </head>
   <body>
     <!-- Header: guest buttons and signed-in controls. auth.js switches between them. -->
@@ -31,7 +32,7 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
         ><button class="primary" data-auth="signup">Sign up</button>
       </div>
       <div class="account-actions" id="member-actions" hidden>
-        <span id="member-name"></span><button id="logout">Log out</button>
+        <a class="my-reviews-link" href="my-reviews.html">My reviews</a><span id="member-name"></span><button id="logout">Log out</button>
       </div>
     </header>
     <!-- Main content: building search and the campus map. -->
@@ -121,7 +122,7 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
             <div class="review-heading"><div><span class="eyebrow">SHARED BY YOUR COMMUNITY</span><h3 id="reviews-heading">Campus voices</h3></div>
               <label class="sort-label">Sort<select id="review-sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></label>
             </div>
-            <p id="review-status" role="status"></p>
+            <div id="building-rating-summary"></div><p id="review-status" role="status"></p>
             <div id="building-reviews"></div>
             <button id="review-more" type="button" hidden>Load more reviews</button>
             <button id="review-retry" type="button" hidden>Try again</button>
@@ -131,32 +132,37 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
       <section id="indoor-view" hidden aria-labelledby="indoor-title">
         <button id="back-building" class="back-link" type="button">← Back to building</button>
         <div class="indoor-hero">
-          <div><span class="eyebrow">A CLOSER LOOK INSIDE</span><h1 id="indoor-title" tabindex="-1"></h1><p>Find your floor.<br><em>Discover your next space.</em></p><p class="data-note">Room directory · not live classroom availability</p></div>
+          <div><span class="eyebrow">ROOM DIRECTORY</span><h1 id="indoor-title" tabindex="-1"></h1><p>Find a space. Share your experience.</p></div>
           <figure id="lobby-photo"></figure>
         </div>
         <div class="indoor-layout">
-          <nav class="floor-nav" aria-label="Choose a floor"><span class="eyebrow">EXPLORE BY LEVEL</span><div id="floor-list"></div></nav>
+          <nav class="floor-nav" aria-label="Choose a floor"><span class="eyebrow">FLOORS</span><div id="floor-list"></div></nav>
           <section class="floor-content" aria-labelledby="floor-title">
-            <h2 id="floor-title">Choose a floor</h2><p id="plan-note" class="data-note"></p>
-            <a id="plan-source" target="_blank" rel="noreferrer" hidden>View university source ↗</a>
-            <a id="plan-large" target="_blank" rel="noreferrer" hidden>Open larger plan ↗</a>
+            <h2 id="floor-title">Choose a floor</h2>
+            <a id="plan-source" target="_blank" rel="noreferrer" hidden>Source ↗</a>
+            <a id="plan-large" target="_blank" rel="noreferrer" hidden>Full floor plan ↗</a>
             <div class="floor-workspace"><div><div id="plan-frame"></div><p id="plan-status" role="status"></p></div>
             <div><label for="room-search">Find a room</label><input id="room-search" type="search" placeholder="Room number…"><div id="room-list"></div></div></div>
           </section>
         </div>
-        <section id="duncan-classroom" hidden aria-labelledby="duncan-title">
-          <span class="eyebrow">DUNCAN HALL · CLASSROOM DETAILS</span>
-          <h2 id="duncan-title" tabindex="-1"></h2>
+        <dialog id="duncan-classroom" class="room-overlay" aria-labelledby="duncan-title">
+          <header class="room-overlay-header"><div><span class="eyebrow">CLASSROOM</span>
+          <h2 id="duncan-title" tabindex="-1"></h2></div><button id="close-classroom" type="button" aria-label="Close classroom details">×</button></header>
+          <div class="room-overlay-body"><section class="room-overview" aria-label="Room information"><h3>Amenities</h3>
           <p id="duncan-status" role="status"></p>
-          <p id="duncan-provenance" class="data-note"></p>
+
           <div id="duncan-features" class="feature-grid"></div>
-          <h3>Classroom reviews</h3>
+          </section><section class="room-community" aria-label="Room reviews"><div class="classroom-review-heading"><h3>Reviews</h3><button id="classroom-write-review" class="primary" type="button" disabled>Write a review</button></div>
+          <div id="classroom-rating-summary"></div>
+          <label class="sort-label">Sort reviews<select id="classroom-review-sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></label>
+          <p id="classroom-review-status" role="status"></p>
           <div id="duncan-reviews"></div>
-          <p class="data-note">Showing up to 100 latest reviews. Writing classroom reviews is coming soon.</p>
-          <button type="button" disabled>Write a classroom review · Coming soon</button>
-          <a id="duncan-search-link" href="classrooms">Open classroom search ↗</a>
-        </section>
-        <section id="classroom-preview" hidden aria-labelledby="classroom-title"><span class="eyebrow">CLASSROOM REVIEWS · COMING SOON</span><h2 id="classroom-title" tabindex="-1"></h2><p>Room experiences will appear here when classroom reviews are available.</p><fieldset disabled><legend>Review preview</legend><label for="classroom-draft">Your classroom experience</label><textarea id="classroom-draft" placeholder="What would you tell another Spartan?" maxlength="1000"></textarea><button type="button">Classroom reviews are not available yet</button></fieldset></section>
+          <button id="classroom-review-more" type="button" hidden>Load more reviews</button>
+          <button id="classroom-review-retry" type="button" hidden>Try again</button>
+          <a id="duncan-search-link" href="classrooms">Browse classrooms ↗</a>
+          </section></div>
+        </dialog>
+        <dialog id="classroom-preview" class="room-overlay" aria-labelledby="classroom-title"><header class="room-overlay-header"><div><span class="eyebrow">CLASSROOM DETAILS</span><h2 id="classroom-title" tabindex="-1"></h2></div><button id="close-classroom-preview" type="button" aria-label="Close classroom preview">×</button></header><div class="room-overlay-body"><p>Room details are coming soon.</p></div></dialog>
       </section>
     </main>
     <footer>
@@ -306,20 +312,21 @@ Use relative asset URLs so the app works under /SJSUClassrooms/.
         Class project account. Email ownership is not verified.
       </p>
     </dialog>
-    <dialog id="review-dialog" aria-labelledby="review-dialog-title"><button id="review-close" class="close" type="button" aria-label="Close review">×</button><span class="eyebrow">YOUR EXPERIENCE MATTERS</span><h2 id="review-dialog-title">Share your perspective.</h2><p id="review-target"></p><form id="review-form"><label for="review-text">What should other Spartans know?</label><textarea id="review-text" name="writtenReview" required maxlength="1000" rows="6" placeholder="Tell us about the study spaces, atmosphere, or your experience here…"></textarea><div class="editor-meta"><small>Be helpful. Be respectful. Keep personal details private.</small><output id="review-length">0 / 1,000</output></div><p id="review-message" role="status"></p><button id="review-submit" type="submit" class="primary">Publish review ↗</button></form></dialog>
-    <dialog id="delete-dialog" aria-labelledby="delete-title"><h2 id="delete-title">Delete your review?</h2><p>This removes your review from this building.</p><form method="dialog"><button value="cancel">Keep review</button><button value="delete" class="primary">Delete review</button></form></dialog>
+    <dialog id="review-dialog" aria-labelledby="review-dialog-title"><button id="review-close" class="close" type="button" aria-label="Close review">×</button><span class="eyebrow">YOUR EXPERIENCE MATTERS</span><h2 id="review-dialog-title">Share your perspective.</h2><p id="review-target"></p><form id="review-form"><label for="review-text">What should other Spartans know?</label><textarea id="review-text" name="writtenReview" required maxlength="1000" rows="6" placeholder="Tell us about the study spaces, atmosphere, or your experience here…"></textarea><div class="editor-meta"><small>Be helpful. Be respectful. Keep personal details private.</small><output id="review-length">0 / 1,000</output></div><p class="data-note">Rate only what you experienced. N/A leaves a criterion unrated.</p><fieldset id="review-ratings" class="rating-editor" aria-label="Review ratings"></fieldset><p id="review-message" role="status"></p><button id="review-submit" type="submit" class="primary">Publish review ↗</button></form></dialog>
+    <dialog id="delete-dialog" aria-labelledby="delete-title"><h2 id="delete-title">Delete your review?</h2><p>This permanently removes your review and its scores.</p><form method="dialog"><button value="cancel">Keep review</button><button value="delete" class="primary">Delete review</button></form></dialog>
     <!-- Load the map library first, data second, and behavior scripts last. -->
     <script src="vendor/maplibre-gl.js"></script>
-    <script src="data/main-scene.js?v=schema-20261026-4"></script>
-    <script src="data/building-photos.js?v=schema-20261026-4"></script>
-    <script src="data/building-directory.js?v=schema-20261026-4"></script>
-    <script src="js/campus-time.js?v=schema-20261026-4"></script>
-    <script src="js/building-photo.js?v=schema-20261026-4"></script>
-    <script src="js/campus-life.js?v=schema-20261026-4"></script>
-    <script src="js/app.js?v=schema-20261026-4"></script>
-    <script src="js/auth.js?v=schema-20261026-4"></script>
-    <script src="js/review.js?v=schema-20261026-4"></script>
-    <script src="js/duncan-classrooms.js?v=schema-20261026-4"></script>
-    <script src="js/building-browser.js?v=schema-20261026-4"></script>
+    <script src="data/main-scene.js?v=rooms-database-20261027"></script>
+    <script src="data/building-photos.js?v=rooms-database-20261027"></script>
+    <script src="data/building-directory.js?v=rooms-database-20261027"></script>
+    <script src="js/campus-time.js?v=rooms-database-20261027"></script>
+    <script src="js/building-photo.js?v=rooms-database-20261027"></script>
+    <script src="js/campus-life.js?v=rooms-database-20261027"></script>
+    <script src="js/campus-map.js?v=rooms-database-20261027"></script>
+    <script src="js/auth.js?v=rooms-database-20261027"></script>
+    <script src="js/review-criteria.js?v=rooms-database-20261027"></script>
+    <script src="js/reviews.js?v=rooms-database-20261027"></script>
+    <script src="js/duncan-classrooms.js?v=rooms-database-20261027"></script>
+    <script src="js/building-browser.js?v=rooms-database-20261027"></script>
   </body>
 </html>

@@ -7,7 +7,7 @@ import jakarta.servlet.http.*;
 import sjsuclassrooms.config.Database;
 
 @WebServlet("/classrooms")
-public class ClassroomSearch extends HttpServlet {
+public class ClassroomSearchServlet extends HttpServlet {
 
     // manages the classroom search requests from users
     protected void doGet(HttpServletRequest req, HttpServletResponse response) throws IOException {
@@ -19,7 +19,7 @@ public class ClassroomSearch extends HttpServlet {
 
         // the display for the HTML page
         outp.println("<!DOCTYPE html><html><head><meta charset='UTF-8'>");
-        outp.println("<title>SJSU Classroom Search</title></head><body>");
+        outp.println("<meta name='viewport' content='width=device-width,initial-scale=1'><link rel='stylesheet' href='css/building-explorer.css?v=rooms-refined-20261027'><link rel='stylesheet' href='css/reviews.css?v=rooms-refined-20261027'><title>Classrooms · SJSUClassrooms</title></head><body class='classroom-directory'><main>");
         outp.println("<p><a href='" + req.getContextPath() + "/'>Back to home</a></p>");
 
 
@@ -48,7 +48,7 @@ public class ClassroomSearch extends HttpServlet {
             outp.println("<p>Failed to load the classrooms.</p>");
         }
 
-        outp.println("</body></html>");
+        outp.println("<footer><a href='sources.html'>Data &amp; credits</a></footer></main></body></html>");
     }
 
     // search classrooms functional requirement
@@ -67,10 +67,10 @@ public class ClassroomSearch extends HttpServlet {
         }
 
         // classroom search display
-        outp.println("<h1>Search Duncan Hall Classrooms</h1><p>Demo room records use historical room numbers. Features are simulated, not a current campus inventory.</p>");
+        outp.println("<span class='eyebrow'>DUNCAN HALL</span><h1>Find your classroom.</h1>");
         outp.println("<form method='get' action='classrooms'>");
-        outp.println("Building: <input name='building' value='" + html(building) + "'> ");
-        outp.println("Classroom: <input name='classroom' value='" + html(classroom) + "'> ");
+        outp.println("<label>Building<input name='building' value='" + html(building) + "'></label> ");
+        outp.println("<label>Room number<input name='classroom' value='" + html(classroom) + "'></label> ");
         outp.println("<button type='submit'>Search</button></form><hr>");
 
         // traverses the database for classrooms that match the given building and classroom from the user
@@ -87,9 +87,9 @@ public class ClassroomSearch extends HttpServlet {
             stmt.setString(2, "%" + classroom + "%");
 
             try (ResultSet rs = stmt.executeQuery()) {
-                outp.println("<table border='1' cellpadding='8'>");
+                outp.println("<div class='directory-table'><table>");
                 outp.println("<tr><th>Building</th><th>Room</th><th>Capacity</th>"
-                        + "<th>Type</th><th>Reviews</th></tr>");
+                        + "<th>Reviews</th></tr>");
 
                 int count = 0;
 
@@ -103,12 +103,11 @@ public class ClassroomSearch extends HttpServlet {
                     outp.println("<td>" + html(rs.getString("building_name")) + "</td>");
                     outp.println("<td>" + html(rs.getString("classroom_num")) + "</td>");
                     outp.println("<td>" + html(rs.getString("capacity")) + "</td>");
-                    outp.println("<td>" + html(rs.getString("classroom_type")) + "</td>");
                     outp.println("<td><a href='classrooms?id=" + id + "'>View Reviews</a></td>");
                     outp.println("</tr>");
                 }
 
-                outp.println("</table>");
+                outp.println("</table></div>");
 
                 // for if there weren't any classrooms that were found from the query
                 if (count == 0) {
@@ -119,7 +118,7 @@ public class ClassroomSearch extends HttpServlet {
     }
 
     // View Classroom Reviews Functional Requirement
-    private void viewReviews(int classroomId, PrintWriter outp, Connection con) throws SQLException {
+    private void viewReviews(int classroomId, PrintWriter outp, Connection con) throws Exception {
         outp.println("<p><a href='classrooms'>Back to classroom search</a></p>");
 
         // retrieves the classroom's review and ratings
@@ -134,7 +133,7 @@ public class ClassroomSearch extends HttpServlet {
                 + "LEFT JOIN ClassroomReviews cr ON cr.classroomId = c.classroomId "
                 + "LEFT JOIN Reviews r ON r.reviewID = cr.reviewID "
                 + "LEFT JOIN Users u ON u.userID = r.userID "
-                + "WHERE c.buildingId = 20 AND c.classroomId = ? ORDER BY r.date_created DESC";
+                + "WHERE c.buildingId = 20 AND c.classroomId = ? ORDER BY r.date_created DESC, r.reviewID DESC";
 
         // executes query
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -150,7 +149,16 @@ public class ClassroomSearch extends HttpServlet {
                         classroomFound = true;
 
                         outp.println("<h1>" + html(rs.getString("building_name")) + " - Classroom " + html(rs.getString("classroom_num")) + "</h1>");
-                        outp.println("<h2>Classroom Reviews</h2>");
+                        outp.println("<h2>Community ratings</h2>");
+                        var summary = new sjsuclassrooms.dao.ReviewRatingDAO(Database.forServer()).summary(sjsuclassrooms.dao.ReviewRatingDAO.Target.CLASSROOM, classroomId);
+                        outp.println("<div class='score-grid'>");
+                        String[] labels={"Cleanliness","Wi-Fi","Air conditioning","Desk space","Seating comfort","Space","Lighting","Technology"};
+                        int label=0;
+                        for (var entry : summary.averages().entrySet()) {
+                            String name=labels[label++];
+                            if(entry.getValue()!=null) outp.println("<div class='score-item'><span>"+name+"</span><strong>"+String.format(java.util.Locale.ROOT,"%.1f / 5",entry.getValue())+"</strong></div>");
+                        }
+                        outp.println("</div><h2>Reviews</h2>");
                     }
 
                     // displays the review info if it exists
@@ -161,16 +169,7 @@ public class ClassroomSearch extends HttpServlet {
                         outp.println("<hr>");
                         outp.println("<p><b>Author:</b>" + html(rs.getString("author")) + " | <b>Date:</b> " + html(rs.getString("date_created")) + "</p>");
                         outp.println("<p>" + html(rs.getString("written_review")) + "</p>");
-                        outp.println("<p>Cleanliness: " + rating(rs, "cleanliness_rating")
-                                + " | Wi-Fi: " + rating(rs, "wifi_rating")
-                                + " | AC: " + rating(rs, "ac_rating") + "</p>");
 
-                        outp.println("<p>Lighting: " + rating(rs, "lighting_rating")
-                                + " | Seating: " + rating(rs, "seating_comfort_rating")
-                                + " | Space: " + rating(rs, "spaciousness_rating") + "</p>");
-
-                        outp.println("<p>Desk space: " + rating(rs, "desk_space_rating")
-                                + " | Technology: " + rating(rs, "technology_rating") + "</p>");
                     }
                 }
 

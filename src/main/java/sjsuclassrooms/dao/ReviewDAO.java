@@ -128,9 +128,9 @@ public final class ReviewDAO {
                 WHERE b.buildingId = ?
                 """;
         if (oldest) {
-            sql += " ORDER BY r.reviewID ASC";
+            sql += " ORDER BY r.date_created ASC, r.reviewID ASC";
         } else {
-            sql += " ORDER BY r.reviewID DESC";
+            sql += " ORDER BY r.date_created DESC, r.reviewID DESC";
         }
         sql += " LIMIT 21 OFFSET ?";
 

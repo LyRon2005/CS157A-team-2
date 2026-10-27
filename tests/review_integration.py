@@ -86,6 +86,7 @@ with tempfile.TemporaryDirectory(prefix='sjsu-tomcat-test-') as folder:
     process=None
     try:
         java('sjsuclassrooms.config.CreateTables')
+        java('sjsuclassrooms.tests.ReviewAssertions', 'seed')
         process=start()
         guest=urllib.request.build_opener()
         def signup(student,email,client):
@@ -112,7 +113,7 @@ with tempfile.TemporaryDirectory(prefix='sjsu-tomcat-test-') as folder:
         review=json.loads(text)['reviewId']
         public=json.loads(request('/api/reviews?buildingId=22',client=guest)[1])['reviews'][0]
         assert public['text']==original and not public['mine']
-        assert set(public)=={'id','author','text','created','mine'}
+        assert set(public)=={'id','author','text','created','mine','ratings'}
         for action in ['update','delete']:
             assert post(dict(action=action,reviewId=review,writtenReview='not mine'),other,otherToken)[0]==404
         assert post(dict(action='update',reviewId=review,writtenReview='Updated review'))[0]==200
@@ -139,9 +140,16 @@ with tempfile.TemporaryDirectory(prefix='sjsu-tomcat-test-') as folder:
         assert status==200,(status,text)
         rooms=json.loads(text)['rooms']
         assert len(rooms)==66 and all(r['demo'] for r in rooms)
-        assert sum(len(r['features'])==6 for r in rooms)==46
-        assert sum(len(r['features'])==0 for r in rooms)==3
+        assert all(not r['features'] for r in rooms), 'Setup must not fabricate room amenities'
         assert all(r['capacity'] is None for r in rooms)
+        assert [r['id'] for r in json.loads(request('/api/classrooms?buildingId=20&floor=0')[1])['rooms']]==[200010,200031,200035]
+        assert all(r['floor']==int(r['number'][0]) for r in rooms)
+        assert [r['number'] for r in json.loads(request('/api/classrooms?buildingId=20&floor=1')[1])['rooms']]==['135','181','183','185']
+        assert json.loads(request('/api/classrooms?buildingId=20&floor=99')[1])['rooms']==[]
+        assert json.loads(request('/api/classrooms?buildingId=22&floor=0')[1])['rooms']==[]
+        assert request('/api/classrooms?floor=abc')[0]==400
+        assert request('/api/classrooms?floor=32768')[0]==400
+        assert request('/api/classrooms?buildingId=-1')[0]==400
         first=next(r for r in rooms if r['number']=='010')
         assert first['id']==200010
         detail=json.loads(request('/api/classrooms?id=200010')[1])
@@ -159,9 +167,103 @@ with tempfile.TemporaryDirectory(prefix='sjsu-tomcat-test-') as folder:
         assert detail['reviews'][0]['ratings']['seating_comfort_rating']==4
         assert detail['reviews'][0]['ratings']['wifi_rating'] is None
         assert '001234567' not in request('/classrooms?id=200010')[1]
-        print('PASS: Duncan search, room features, demo distribution, review reading, rating boundaries and rerun preservation.',flush=True)
+        print('PASS: Duncan search, room features, empty initial amenities, review reading, rating boundaries and rerun preservation.',flush=True)
         java('sjsuclassrooms.tests.SchemaAlignmentAssertions')
         assert request('/api/classrooms?id=200010')[0]==200
+        # Ratings work end to end for both targets, including clearing and ownership.
+        building_scores=dict(cleanliness_rating='5',wifi_rating='4',ac_rating='',elevator_rating='3',bathroom_rating='5',lounging_area_rating='4',study_spot_rating='5')
+        status,text,_=post(dict(writtenReview='Rated building',**building_scores))
+        assert status==201,(status,text)
+        rated_id=json.loads(text)['reviewId']
+        page=json.loads(request('/api/reviews?buildingId=22')[1])
+        assert page['reviews'][0]['ratings']['wifi_rating']==4
+        assert page['summary']['averages']['wifi_rating']==4 and page['summary']['counts']['wifi_rating']==1
+        assert page['summary']['averages']['ac_rating'] is None
+        assert post(dict(action='update',reviewId=rated_id,writtenReview='Retain scores'))[0]==200
+        assert json.loads(request('/api/reviews?buildingId=22')[1])['reviews'][0]['ratings']['wifi_rating']==4
+        assert post(dict(action='update',reviewId=rated_id,writtenReview='Clear score',wifi_rating=''))[0]==200
+        assert json.loads(request('/api/reviews?buildingId=22')[1])['summary']['counts']['wifi_rating']==0
+        for value in ['0','6','-1','1.5','NaN',' 3','03','3e0','★','null']:
+            assert post(dict(writtenReview='Invalid',wifi_rating=value))[0]==400
+        assert post(dict(writtenReview='Wrong subtype',technology_rating='4'))[0]==400
+        assert post(dict(writtenReview='Ambiguous',classroomId='200010'))[0]==400
+        assert request('/api/reviews?buildingId=20&classroomId=200010')[0]==400
+        def classroom_post(data,client=opener,csrf=token):
+            return request('/api/reviews',dict(classroomId=200010,**data),{'X-CSRF-Token':csrf},client=client)
+        assert classroom_post(dict(writtenReview='Guest'),guest)[0]==401
+        assert classroom_post(dict(writtenReview='CSRF'),csrf='')[0]==403
+        classroom_scores=dict(cleanliness_rating='5',wifi_rating='2',ac_rating='4',desk_space_rating='3',seating_comfort_rating='4',spaciousness_rating='5',lighting_rating='4',technology_rating='5')
+        status,text,_=classroom_post(dict(writtenReview='Rated classroom',**classroom_scores))
+        assert status==201,(status,text)
+        classroom_review=json.loads(text)['reviewId']
+        page=json.loads(request('/api/reviews?classroomId=200010',client=guest)[1])
+        assert page['reviews'][0]['ratings']=={k:int(v) for k,v in classroom_scores.items()}
+        assert not page['reviews'][0]['mine'] and page['summary']['averages']['seating_comfort_rating']==4
+        assert classroom_post(dict(action='update',reviewId=classroom_review,writtenReview='Not owner'),other,otherToken)[0]==404
+        assert classroom_post(dict(action='delete',reviewId=classroom_review),other,otherToken)[0]==404
+        assert post(dict(action='delete',reviewId=classroom_review))[0]==404
+        assert classroom_post(dict(action='update',reviewId=classroom_review,writtenReview='Edited classroom',wifi_rating='5'))[0]==200
+        assert json.loads(request('/api/reviews?classroomId=200010')[1])['summary']['averages']['wifi_rating']==5
+        assert request('/api/reviews?classroomId=9001')[0]==404
+        assert classroom_post(dict(writtenReview='Wrong subtype',elevator_rating='3'))[0]==400
+        java('sjsuclassrooms.config.CreateTables')
+        assert json.loads(request('/api/reviews?classroomId=200010')[1])['reviews'][0]['ratings']['wifi_rating']==5
+        assert classroom_post(dict(action='delete',reviewId=classroom_review))[0]==200
+        assert classroom_post(dict(action='delete',reviewId=classroom_review))[0]==404
+        assert json.loads(request('/api/reviews?classroomId=200010')[1])['summary']['counts']['wifi_rating']==0
+        print('PASS: building/classroom scores, averages, NULL handling, edits, deletion, ownership, target isolation and invalid rating rejection.',flush=True)
+        # Private history: no caller-selected user ID, owner-only detail, both subtypes.
+        assert request('/api/reviews?mine=1',client=guest)[0]==401
+        status,text,_=request('/api/reviews?mine=1')
+        assert status==200,(status,text)
+        mine=json.loads(text)
+        assert mine['hasMore'] and len(mine['reviews'])==20
+        personal=mine['reviews'][0]
+        assert set(personal)=={'id','kind','targetId','targetName','editable','text','created','ratings'}
+        assert json.loads(request('/api/reviews?mine=1',client=other)[1])['reviews']==[]
+        assert request('/api/reviews?mine=1&reviewId='+str(personal['id']),client=other)[0]==404
+        assert request('/api/reviews?mine=1&reviewId='+str(personal['id']))[0]==200
+        classroom_history=json.loads(request('/api/reviews?mine=1&type=classroom')[1])['reviews']
+        assert classroom_history and all(r['kind']=='classroom' for r in classroom_history)
+        assert any(r['targetId']==200010 and r['editable'] for r in classroom_history)
+        assert any(r['targetId']==9001 and not r['editable'] for r in classroom_history)
+        building_history=json.loads(request('/api/reviews?mine=1&type=building')[1])['reviews']
+        assert all(r['kind']=='building' for r in building_history)
+        next_page=json.loads(request('/api/reviews?mine=1&offset=20')[1])['reviews']
+        assert next_page and not {r['id'] for r in mine['reviews']} & {r['id'] for r in next_page}
+        for query in ['mine=1&userID=001234568','mine=1&type=invalid','mine=1&offset=-1','mine=1&mine=1','mine=2','mine=1&buildingId=20']:
+            assert request('/api/reviews?'+query)[0]==400,query
+        assert request('/my-reviews.html')[0]==200
+        assert request('/js/my-reviews.js')[0]==200
+        print('PASS: private review history, owner-only detail, filters, pagination and invalid query rejection.',flush=True)
+        status,body,_=post(dict(writtenReview='学'*1000))
+        assert status==201,(status,body)
+        unicode_id=json.loads(body)['reviewId']
+        assert post(dict(action='delete',reviewId=unicode_id))[0]==200
+        assert post(dict(writtenReview='学'*1001))[0]==400
+        assert post(dict(writtenReview='a'*17000))[0]==400
+        room_page=request('/classrooms?id=200010')[1]
+        assert 'Community ratings' in room_page and '<p>Cleanliness:' not in room_page
+        print('PASS: floor filtering, invalid filters, 1000 Unicode characters, oversized review rejection, aggregate classroom display.',flush=True)
+        sort_client=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+        signup('009876543','sorttester@sjsu.edu',sort_client)
+        java('sjsuclassrooms.tests.ReviewAssertions','sort-fixtures')
+        for query, expected_count in [('buildingId=57',24),('classroomId=200031',24),('mine=1',48),('mine=1&type=building',24),('mine=1&type=classroom',24)]:
+            orders={}
+            for order in ['newest','oldest']:
+                rows=[]
+                while True:
+                    status,body,_=request('/api/reviews?'+query+'&sort='+order+'&offset='+str(len(rows)),client=sort_client)
+                    assert status==200,(status,body)
+                    page=json.loads(body);rows.extend(page['reviews'])
+                    if not page['hasMore']:break
+                keys=[(r['created'],r['id']) for r in rows]
+                assert len(rows)==expected_count and len(set(r['id'] for r in rows))==expected_count
+                assert keys==sorted(keys,reverse=order=='newest'),(query,order,keys)
+                assert rows[0]['created'].startswith('2020' if order=='newest' else '2019')
+                orders[order]=[r['id'] for r in rows]
+            assert orders['newest']==list(reversed(orders['oldest']))
+        print('PASS: chronological review sorting with imported dates, tied timestamps, both targets, personal filters and pagination.',flush=True)
         if os.environ.get('REVIEW_UI_TEST'):
             print('UI_URL='+url,flush=True)
             print('UI_STOP_FILE='+str(work/'finish-ui'),flush=True)

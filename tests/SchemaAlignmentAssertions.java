@@ -25,7 +25,7 @@ public final class SchemaAlignmentAssertions {
         List<String> before;
         try(var c=db.connect(); var statement=c.createStatement()) {
             before=snapshot(c);
-            var rename=SchemaAlignment.class.getDeclaredMethod("renameColumn", Connection.class,String.class,String.class,String.class);
+            var rename=SchemaMigration.class.getDeclaredMethod("renameColumn", Connection.class,String.class,String.class,String.class);
             rename.setAccessible(true);
             rename.invoke(null,c,"Users","userID","UserId");
             rename.invoke(null,c,"Users","first_name","First_Name");
@@ -68,7 +68,7 @@ public final class SchemaAlignmentAssertions {
                 r.next(); if(r.getInt(1)!=15)throw new AssertionError("Expected 15 tables");
             }
             try(var r=s.executeQuery("SELECT COUNT(*) FROM Features WHERE feature_scope='classroom'")) {
-                r.next(); if(r.getInt(1)!=6)throw new AssertionError("Feature scope migration failed");
+                r.next(); if(r.getInt(1)!=1)throw new AssertionError("Feature scope must follow existing classroom relationships");
             }
         }
         System.out.println("PASS: legacy schema renamed, 15 tables, account/review/room data preserved, repeat setup safe.");

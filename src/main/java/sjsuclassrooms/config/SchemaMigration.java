@@ -3,8 +3,8 @@ package sjsuclassrooms.config;
 import java.sql.*;
 
 // Rename the older project schema without dropping tables or copying account data.
-public final class SchemaAlignment {
-    private SchemaAlignment() {}
+public final class SchemaMigration {
+    private SchemaMigration() {}
 
     public static void migrate(Connection connection) throws SQLException {
         // Do not guess how numeric IDs in a different database should be converted.
@@ -34,13 +34,19 @@ public final class SchemaAlignment {
             {"BuildingFeatures", "FeatureId", "featureId"}, {"BuildingFeatures", "Quantity", "quantity"}
         };
         for (String[] change : changes) renameColumn(connection, change[0], change[1], change[2]);
+        // The first digit of classroom_num determines the floor; no separate value is stored.
+        if (columnName(connection, "Classrooms", "floor_number") != null) {
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate("ALTER TABLE Classrooms DROP COLUMN floor_number");
+            }
+        }
         if (tableExists(connection, "Features") && columnName(connection, "Features", "feature_scope") == null) {
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate("ALTER TABLE Features ADD COLUMN feature_scope VARCHAR(20) NOT NULL DEFAULT 'unspecified'");
-                statement.executeUpdate("""
+                if (tableExists(connection, "ClassroomFeatures") && tableExists(connection, "BuildingFeatures")) statement.executeUpdate("""
                         UPDATE Features SET feature_scope = 'classroom'
-                        WHERE featureId BETWEEN 20001 AND 20006
-                          AND feature_name IN ('Projector','Projection screen','Whiteboard','Power outlets','Desks','Chairs')
+                        WHERE EXISTS (SELECT 1 FROM ClassroomFeatures cf WHERE cf.featureId = Features.featureId)
+                          AND NOT EXISTS (SELECT 1 FROM BuildingFeatures bf WHERE bf.featureId = Features.featureId)
                           AND feature_scope = 'unspecified'
                         """);
             }

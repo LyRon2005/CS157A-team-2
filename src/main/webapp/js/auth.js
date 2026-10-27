@@ -4,7 +4,7 @@
  * This file sends forms to the Servlet and reads JSON responses.
  * Tomcat keeps login state in an HttpOnly cookie; do not store passwords in browser storage.
  */
-// Authentication UI only. Map behavior stays in app.js; account data lives on the server.
+// Authentication UI only. Map behavior stays in campus-map.js; account data lives on the server.
 (() => {
   const byId = (id) => document.getElementById(id);
   const dialog = byId("auth-dialog");

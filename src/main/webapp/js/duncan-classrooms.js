@@ -1,7 +1,27 @@
-// Read-only Duncan Hall integration. All demo inventory is clearly labeled.
+// Native dialogs keep the selected floor behind the room overlay.
+window.ClassroomOverlay = (() => {
+  const dialogs=[document.getElementById('duncan-classroom'),document.getElementById('classroom-preview')];
+  const origins=new WeakMap();
+  for(const dialog of dialogs) dialog.addEventListener('close',()=>{
+    if(!dialogs.some(value=>value.open))document.body.classList.remove('room-overlay-open');
+    const origin=origins.get(dialog);
+    if(origin?.isConnected && origin.getClientRects().length)origin.focus({preventScroll:true});
+  });
+  function open(dialog) {
+    if(!dialog.open){origins.set(dialog,document.activeElement);dialog.showModal();}
+    document.body.classList.add('room-overlay-open');
+    const body=dialog.querySelector('.room-overlay-body');if(body)body.scrollTop=0;
+    dialog.querySelector('h2').focus({preventScroll:true});
+  }
+  document.getElementById('close-classroom').onclick=()=>dialogs[0].close();
+  document.getElementById('close-classroom-preview').onclick=()=>dialogs[1].close();
+  return {open,close:dialog=>{if(dialog.open)dialog.close();}};
+})();
+
+// Duncan Hall room details and review selection. All demo inventory is clearly labeled.
 window.DuncanClassrooms = (() => {
   const el = id => document.getElementById(id);
-  let rooms = [], version = 0;
+  let version = 0;
   const make = (tag, text, className) => {
     const node = document.createElement(tag);
     node.textContent = text;
@@ -14,43 +34,29 @@ window.DuncanClassrooms = (() => {
     if (!response.ok) throw new Error(data.error || 'Classroom data is unavailable.');
     return data;
   }
-  async function load() {
-    try { rooms = (await api('api/classrooms')).rooms; }
-    catch { rooms = []; }
-  }
+  const available = () => window.BUILDING_DIRECTORY?.W25774763?.roomsAvailable !== false;
   function hide() {
     version++;
-    el('duncan-classroom').hidden = true;
+    window.ClassroomReviews?.select(null);
+    window.ClassroomOverlay.close(el('duncan-classroom'));
   }
-  function summary(buildingId, number) {
-    if (buildingId !== 20) return '';
-    const room = rooms.find(value => value.number === number);
-    if (!room) return '';
-    return (room.demo ? 'Demo · ' : '') + room.features.length + (room.features.length === 1 ? ' listed feature' : ' listed features');
-  }
-  async function show(number) {
+  async function show(room) {
+    if (!available()) { hide(); return; }
     const request = ++version;
-    el('duncan-classroom').hidden = false;
-    el('duncan-title').textContent = 'Duncan Hall · Room ' + number;
-    el('duncan-title').focus({preventScroll:true});
-    el('duncan-classroom').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
+    window.ClassroomReviews?.select(null);
+    el('duncan-title').textContent = 'Duncan Hall · Room ' + room.number;
+    window.ClassroomOverlay.open(el('duncan-classroom'));
+    el('duncan-classroom').querySelector('.room-overview').hidden = false;
+    el('duncan-classroom').classList.remove('reviews-only');
     el('duncan-status').textContent = 'Loading room details…';
-    el('duncan-provenance').textContent = '';
     el('duncan-features').replaceChildren();
     el('duncan-reviews').replaceChildren();
     el('duncan-search-link').href = 'classrooms';
     try {
-      if (!rooms.length) await load();
-      if (request !== version) return;
-      const found = rooms.filter(room => room.number === number);
-      if (found.length !== 1) throw new Error(found.length ? 'Multiple records use this room number. Check classroom search.' : 'This room is not available in the database yet.');
-      const data = await api('api/classrooms?id=' + found[0].id);
+      const data = await api('api/classrooms?id=' + room.id);
       if (request !== version) return;
       el('duncan-status').textContent = data.room.capacity == null
-        ? 'Capacity is not verified.' : 'Capacity: ' + data.room.capacity;
-      el('duncan-provenance').textContent = data.room.demo
-        ? 'DEMO DATA · Features and quantities are simulated. The room number comes from a historical plan; current classroom use is not verified.'
-        : 'Inventory from the project database. No listed feature does not necessarily mean it is unavailable.';
+        ? '' : 'Capacity: ' + data.room.capacity;
       el('duncan-search-link').href = 'classrooms?id=' + data.room.id;
       for (const feature of data.room.features) {
         const card = make('div', '', 'feature-item');
@@ -58,28 +64,19 @@ window.DuncanClassrooms = (() => {
         el('duncan-features').append(card);
       }
       if (!data.room.features.length) el('duncan-features').append(
-        make('p', data.room.demo ? 'This demo room has no assigned features.' : 'No features recorded.', 'empty-state'));
-      if (!data.reviews.length) el('duncan-reviews').append(make('p','No classroom reviews yet.','empty-state'));
-      const labels = {wifi_rating:'Wi-Fi',cleanliness_rating:'Cleanliness',ac_rating:'AC',
-        desk_space_rating:'Desk space',seating_comfort_rating:'Comfort',spaciousness_rating:'Space',
-        lighting_rating:'Lighting',technology_rating:'Technology'};
-      for (const review of data.reviews) {
-        const card = make('article','','review-card');
-        card.append(make('strong',review.author), make('p',review.text));
-        const time = make('time',new Date(review.created).toLocaleDateString('en-US'));
-        time.dateTime = review.created; card.append(time);
-        const ratings = make('div','','rating-list');
-        for (const [key,label] of Object.entries(labels))
-          ratings.append(make('span',label + ': ' + (review.ratings[key] == null ? 'Not rated' : review.ratings[key] + '/5')));
-        card.append(ratings); el('duncan-reviews').append(card);
-      }
+        make('p', 'Amenities coming soon.', 'empty-state'));
+      const noDetails = data.room.capacity == null && !data.room.features.length;
+      el('duncan-classroom').querySelector('.room-overview').hidden = noDetails;
+      el('duncan-classroom').classList.toggle('reviews-only', noDetails);
+      window.ClassroomReviews.select({databaseId:data.room.id,name:'Duncan Hall · Room '+data.room.number});
     } catch (error) {
       if (request !== version) return;
       el('duncan-status').textContent = error.message;
       const retry = make('button','Try again');
-      retry.type = 'button'; retry.onclick = () => show(number);
+      retry.type = 'button'; retry.onclick = () => show(room);
       el('duncan-features').append(retry);
     }
   }
-  return {load,show,hide,summary};
+  el('duncan-classroom').addEventListener('close',()=>{version++;window.ClassroomReviews?.select(null);});
+  return {show,hide};
 })();

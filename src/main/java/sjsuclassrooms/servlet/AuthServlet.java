@@ -44,11 +44,11 @@ public final class AuthServlet extends HttpServlet {
     @Override protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String path = request.getPathInfo();
         if (path == null || !Set.of("/me", "/signup", "/login", "/logout").contains(path)) {
-            Http.error(response, 404, "API route not found."); return;
+            HttpSupport.error(response, 404, "API route not found."); return;
         }
         String method = path.equals("/me") ? "GET" : "POST";
         if (!method.equals(request.getMethod())) {
-            response.setHeader("Allow", method); Http.error(response, 405, "Method not allowed."); return;
+            response.setHeader("Allow", method); HttpSupport.error(response, 405, "Method not allowed."); return;
         }
         // GET /me reads the existing session. It does not create an anonymous session.
         if (method.equals("GET")) { respond(request, response, 200); return; }
@@ -59,12 +59,12 @@ public final class AuthServlet extends HttpServlet {
                 + ((request.isSecure() && port == 443 || !request.isSecure() && port == 80) ? "" : ":" + port);
         if (!origin.equals(request.getHeader("Origin"))
                 || !"SJSUClassrooms".equals(request.getHeader("X-Requested-With"))) {
-            Http.error(response, 403, "Open the form from this website and try again."); return;
+            HttpSupport.error(response, 403, "Open the form from this website and try again."); return;
         }
         // The CSRF token is a random session value. Require it before ending a login.
         if (path.equals("/logout")) {
             if (request.getSession(false) != null && !UserSession.validToken(request)) {
-                Http.error(response, 403, "Refresh the page and try again."); return;
+                HttpSupport.error(response, 403, "Refresh the page and try again."); return;
             }
             UserSession.end(request);
             respond(request, response, 200); return;
@@ -72,29 +72,29 @@ public final class AuthServlet extends HttpServlet {
 
         if (rateLimited(request.getRemoteAddr())) {
             response.setHeader("Retry-After", "900");
-            Http.error(response, 429, "Too many attempts. Try again in 15 minutes."); return;
+            HttpSupport.error(response, 429, "Too many attempts. Try again in 15 minutes."); return;
         }
         String type = request.getContentType();
         if (type == null || !type.split(";")[0].trim().equalsIgnoreCase("application/x-www-form-urlencoded")) {
-            Http.error(response, 415, "Expected a form submission."); return;
+            HttpSupport.error(response, 415, "Expected a form submission."); return;
         }
         try {
-            Map<String, String> form = Http.form(request);
+            Map<String, String> form = HttpSupport.form(request);
             boolean signup = path.equals("/signup");
             User user = signup ? service.signUp(form) : service.signIn(form);
-            if (user == null) { Http.error(response, 401, "Student ID or password is incorrect."); return; }
+            if (user == null) { HttpSupport.error(response, 401, "Student ID or password is incorrect."); return; }
             UserSession.start(request, user);
             respond(request, response, signup ? 201 : 200);
         // Return safe field errors. Do not return SQL statements, passwords or database settings.
         } catch (AuthService.ValidationException e) {
-            Http.json(response, 400, "{\"error\":" + Http.quote(e.getMessage()) + ",\"field\":" + Http.quote(e.field) + "}");
+            HttpSupport.json(response, 400, "{\"error\":" + HttpSupport.quote(e.getMessage()) + ",\"field\":" + HttpSupport.quote(e.field) + "}");
         } catch (IllegalArgumentException e) {
-            Http.error(response, 400, e.getMessage());
+            HttpSupport.error(response, 400, e.getMessage());
         } catch (SQLException e) {
-            if (e.getErrorCode() == 1062) Http.error(response, 409, "That student ID or email is already registered. Please sign in.");
+            if (e.getErrorCode() == 1062) HttpSupport.error(response, 409, "That student ID or email is already registered. Please sign in.");
             else {
                 getServletContext().log("Database unavailable: SQLState " + e.getSQLState());
-                Http.error(response, 503, "Accounts are temporarily unavailable. Please try again later.");
+                HttpSupport.error(response, 503, "Accounts are temporarily unavailable. Please try again later.");
             }
         }
     }
@@ -102,10 +102,10 @@ public final class AuthServlet extends HttpServlet {
     // Send only public account data and the session CSRF token. Never send a password hash.
     private void respond(HttpServletRequest request, HttpServletResponse response, int status) throws IOException {
         User user = UserSession.current(request);
-        if (user == null) { Http.json(response, status, "{\"user\":null}"); return; }
-        Http.json(response, status, "{\"user\":{\"studentId\":" + Http.quote(user.userId())
-                + ",\"firstName\":" + Http.quote(user.firstName()) + ",\"lastName\":" + Http.quote(user.lastName())
-                + ",\"email\":" + Http.quote(user.sjsuEmail()) + "},\"csrfToken\":"
-                + Http.quote(UserSession.token(request)) + "}");
+        if (user == null) { HttpSupport.json(response, status, "{\"user\":null}"); return; }
+        HttpSupport.json(response, status, "{\"user\":{\"studentId\":" + HttpSupport.quote(user.userId())
+                + ",\"firstName\":" + HttpSupport.quote(user.firstName()) + ",\"lastName\":" + HttpSupport.quote(user.lastName())
+                + ",\"email\":" + HttpSupport.quote(user.sjsuEmail()) + "},\"csrfToken\":"
+                + HttpSupport.quote(UserSession.token(request)) + "}");
     }
 }

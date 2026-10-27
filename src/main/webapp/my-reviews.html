@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>My reviews · SJSUClassrooms</title>
+  <link rel="stylesheet" href="css/my-reviews.css?v=organized-20261027">
+  <link rel="stylesheet" href="css/reviews.css?v=organized-20261027">
+</head>
+<body class="personal-reviews">
+  <header class="personal-header"><a class="personal-brand" href="./">SJSU <span>CLASSROOMS</span></a><nav aria-label="Main navigation"><a href="./">Explore campus</a><a href="my-reviews.html" aria-current="page">My reviews</a></nav></header>
+  <main class="personal-main">
+    <div class="personal-intro"><span class="eyebrow">YOUR CAMPUS JOURNAL</span><h1>My reviews</h1><p>Every place. Every perspective. All your reviews, together.</p></div>
+    <p id="personal-status" role="status" aria-live="polite">Checking your session…</p>
+    <section id="personal-gate" hidden><h2>Sign in to see your reviews</h2><p>Your building and classroom reviews are private to your account here.</p><a class="primary" href="./">Go to campus &amp; sign in →</a><button id="session-retry" type="button">Check session again</button></section>
+    <section id="personal-list-view" hidden aria-label="Your review history">
+      <div class="personal-filters"><label>Review type<select id="personal-type"><option value="all">All reviews</option><option value="building">Buildings</option><option value="classroom">Classrooms</option></select></label><label>Sort<select id="personal-sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></label><span id="personal-count"></span></div>
+      <div id="personal-list"></div>
+      <button id="personal-more" type="button" hidden>Load more reviews</button><button id="personal-retry" type="button" hidden>Try again</button>
+    </section>
+    <section id="personal-edit-view" hidden aria-labelledby="personal-edit-title">
+      <button id="personal-back" class="text-button" type="button">← Back to My reviews</button>
+      <div class="edit-heading"><span class="eyebrow" id="personal-kind"></span><h2 id="personal-edit-title" tabindex="-1">Edit review</h2><p id="personal-date"></p></div>
+      <form id="personal-edit-form">
+        <fieldset id="personal-edit-fields"><label for="personal-text">Your experience</label><textarea id="personal-text" maxlength="1000" rows="5" required></textarea><div class="editor-meta"><span>Be helpful and respectful.</span><output id="personal-length">0 / 1,000</output></div>
+        <h3>Your ratings</h3><p class="hint">Choose 1–5 stars. N/A clears a score and excludes it from the average.</p><div id="personal-ratings" class="rating-editor"></div>
+        <div class="edit-actions"><button id="personal-save" type="submit" class="primary">Save changes</button><button id="personal-cancel" type="button">Cancel</button><button id="personal-delete" type="button" class="danger">Delete review</button></div></fieldset>
+        <p id="personal-edit-message" role="status"></p>
+      </form>
+    </section>
+    <dialog id="personal-delete-dialog" aria-labelledby="personal-delete-title"><h2 id="personal-delete-title">Delete this review?</h2><p>Your text and ratings will be removed. This cannot be undone.</p><form method="dialog"><button value="cancel">Keep review</button><button value="delete" class="danger">Delete review</button></form></dialog>
+  </main>
+  <footer>Made for campus life. <a href="./">Back to campus →</a></footer>
+  <script src="js/review-criteria.js?v=organized-20261027"></script><script src="js/my-reviews.js?v=organized-20261027"></script>
+</body>
+</html>

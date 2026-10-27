@@ -14,8 +14,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Http {
-    private Http() {}
+public final class HttpSupport {
+    private HttpSupport() {}
     // Escape quotes, backslashes and control characters before putting a string in JSON.
     public static String quote(String text) {
         StringBuilder out = new StringBuilder("\"");
@@ -42,8 +42,11 @@ public final class Http {
     // Read at most 8193 bytes to detect a form larger than the 8192-byte limit.
     // Reject duplicate keys instead of letting one value silently replace another.
     public static Map<String, String> form(HttpServletRequest x) throws IOException {
-        byte[] body = x.getInputStream().readNBytes(8193);
-        if (body.length > 8192) throw new IllegalArgumentException("Form is too large.");
+        return form(x, 8192);
+    }
+    public static Map<String, String> form(HttpServletRequest x, int limit) throws IOException {
+        byte[] body = x.getInputStream().readNBytes(limit + 1);
+        if (body.length > limit) throw new IllegalArgumentException("Form is too large.");
         Map<String, String> values = new HashMap<>();
         for (String pair : new String(body, StandardCharsets.ISO_8859_1).split("&", -1)) {
             String[] parts = pair.split("=", 2);

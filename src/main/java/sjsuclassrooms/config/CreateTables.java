@@ -17,15 +17,15 @@ public final class CreateTables {
         }
         // Create parent tables before tables that reference them.
         try (Connection c = database.connect(); Statement s = c.createStatement()) {
-            SchemaAlignment.migrate(c);
+            SchemaMigration.migrate(c);
             runSqlFile(s, "database/001_users.sql");
             runSqlFile(s, "database/002_locations.sql");
             runSqlFile(s, "database/002_buildingData.sql");
             runSqlFile(s, "database/003_reviews.sql");
             runSqlFile(s, "database/004_review_ratings.sql");
             runSqlFile(s, "database/005_features.sql");
-            runSqlFile(s, "database/006_duncan_demo.sql");
-            runSqlFile(s, "database/007_remaining_erd.sql");
+            runSqlFile(s, "database/006_courses_administration.sql");
+            runSqlFile(s, "database/007_duncan_classrooms.sql");
             // Older review tables used IDs chosen by Java. Keep rows and let MySQL assign new IDs.
             try (var columns = c.getMetaData().getColumns(database.name(), null, "%", "reviewID")) {
                 boolean upgrade = false;

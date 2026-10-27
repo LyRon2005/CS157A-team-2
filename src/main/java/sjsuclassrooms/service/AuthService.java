@@ -14,7 +14,7 @@ import java.text.Normalizer;
 public final class AuthService {
     private final UserDAO users;
     // For an unknown account, still check a hash to reduce login timing differences.
-    private final String dummyHash = Passwords.hash("Timing-only-placeholder-not-an-account");
+    private final String dummyHash = PasswordHasher.hash("Timing-only-placeholder-not-an-account");
     public AuthService(UserDAO users) { this.users = users; }
     // Include the field name so the browser can show the error under the correct input.
     public static final class ValidationException extends IllegalArgumentException {
@@ -42,7 +42,7 @@ public final class AuthService {
             invalid("email", "Use a valid SJSU email: 1–64 characters before @sjsu.edu, with no spaces or empty dot segments.");
         if (!password.equals(form.get("confirmPassword"))) invalid("confirmPassword", "Passwords do not match.");
         User user = new User(id, first, last, email);
-        users.insert(user, Passwords.hash(password));
+        users.insert(user, PasswordHasher.hash(password));
         return user;
     }
     // Use the same public error for an unknown ID and a wrong password.
@@ -51,7 +51,7 @@ public final class AuthService {
         fields(form, Set.of("studentId", "password"));
         String id = studentId(form), password = password(form);
         UserDAO.Credentials credentials = users.find(id);
-        boolean valid = Passwords.verify(password, credentials == null ? dummyHash : credentials.passwordHash());
+        boolean valid = PasswordHasher.verify(password, credentials == null ? dummyHash : credentials.passwordHash());
         return valid && credentials != null ? credentials.user() : null;
     }
     // Accept exactly nine ASCII digits. Do not convert the value to an integer.

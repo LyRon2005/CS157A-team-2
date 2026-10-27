@@ -44,7 +44,7 @@ window.showBuildingPhoto = function (building) {
   const detail = kind === 'map' ? ' · Official location diagram, not a building photograph.'
     : kind === 'interior' ? ' · Interior reference; not an exterior view.'
     : ' · Resized for display; exterior may differ today.';
-  caption.append(source, license, document.createTextNode(detail));figure.append(image, caption);
+  caption.append(source, license);figure.append(image, caption);
   image.onload = () => { if (image.parentElement !== figure) return; figure.hidden = false;status.hidden = true; };
   image.onerror = () => { if (image.parentElement === figure) outline('The photograph could not load.'); };
   image.src = photo.src;

@@ -1,0 +1,118 @@
+/* Compact room browsing and accessible score controls. */
+#review-dialog{width:min(680px,calc(100vw - 28px));max-height:90dvh;overflow:auto}
+.rating-editor{border:0;padding:0;margin:20px 0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.star-field{border:1px solid #dcded7;border-radius:12px;padding:10px;min-width:0}
+.star-field legend{font-size:.8rem;font-weight:650;padding:0 4px}
+.star-options{display:flex;gap:4px;align-items:center}
+.star-options label{position:relative;cursor:pointer;flex:1;margin:0!important}
+.star-options input{position:absolute;width:1px;height:1px;opacity:0}
+.star-options span{display:grid;place-items:center;height:36px;border-radius:6px;color:#6c716c;background:#f2f2ec;font-size:20px}
+.star-options label:first-child span{font:600 11px system-ui}
+.star-options input:checked+span{background:#183747;color:#ffda83;box-shadow:0 0 0 2px #183747}
+.star-options label:has(~label input:checked):not(:first-child) span{color:#866020;background:#f4e8c8}
+.star-options input:focus-visible+span{outline:3px solid #b58c36;outline-offset:3px}
+.rating-overview{background:#f4f3ec;border:1px solid #deded3;padding:16px;border-radius:14px;margin:14px 0}
+.rating-overview summary,.review-score-details summary{cursor:pointer;font-weight:650;font-size:.9rem}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.score-item{display:flex;flex-direction:column;gap:4px;font-size:.8rem}
+.score-item strong{color:#84621d;font-size:.9rem}.score-item small,.rating-overview>small{color:#66716f;font-size:.72rem}
+.review-score-details{border-top:1px solid #e2e3db;padding-top:12px}
+.classroom-review-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:28px}
+#indoor-view .indoor-hero{min-height:0;padding:24px 0;align-items:center;gap:24px}
+#indoor-view .indoor-hero h1{font-size:clamp(28px,4vw,46px);margin:8px 0}
+#indoor-view .indoor-hero>div>p:first-of-type{display:none}
+#indoor-view #lobby-photo{max-height:190px;overflow:hidden;border-radius:16px}
+#indoor-view #lobby-photo img{height:145px;width:100%;object-fit:cover}
+#indoor-view .indoor-layout{grid-template-columns:150px minmax(0,1fr);gap:24px}
+#indoor-view .floor-workspace{grid-template-columns:minmax(0,1fr) minmax(180px,.7fr);gap:20px}
+#indoor-view #plan-frame{max-height:350px;overflow:auto;background:#f6f4ed}
+#indoor-view #plan-frame img{max-height:340px;object-fit:contain}
+#room-list{max-height:330px;overflow:auto;align-content:start}
+#duncan-classroom{max-width:980px;margin:26px auto;padding:26px;background:#fffefa;border:1px solid #e2e3d9;border-radius:20px;scroll-margin-top:90px}
+#duncan-title{font-size:clamp(24px,3vw,34px);margin:8px 0}
+#duncan-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px}
+#duncan-features .feature-item{padding:12px;border-radius:10px;background:#f1f3ec;box-shadow:none}
+#duncan-provenance{font-size:.78rem;line-height:1.5}
+#duncan-reviews .review-card{padding:18px;border:1px solid #e3e4dc;border-radius:12px;margin:12px 0}
+@media(max-width:700px){#indoor-view .indoor-layout,#indoor-view .floor-workspace{grid-template-columns:1fr}#floor-list{display:flex;overflow-x:auto;gap:8px}#floor-list button{flex-shrink:0}#room-list{max-height:220px}#duncan-classroom{padding:16px;margin:16px 0}.rating-editor{grid-template-columns:1fr}.classroom-review-heading{align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){#duncan-classroom{scroll-behavior:auto}}
+
+/* Classroom details stay in a modal; the floor directory never moves. */
+body.room-overlay-open{overflow:hidden}
+#duncan-classroom.room-overlay,#classroom-preview.room-overlay{position:fixed;inset:0;width:min(1080px,calc(100vw - 40px));max-width:1080px;height:min(780px,calc(100dvh - 48px));max-height:calc(100dvh - 48px);margin:auto;padding:0;border:1px solid #d8ded3;border-radius:22px;background:#fffefa;color:#193542;box-shadow:0 25px 100px #09233255;overflow:hidden}
+.room-overlay:not([open]){display:none!important}.room-overlay[open]{display:flex;flex-direction:column}
+.room-overlay::backdrop{background:#102b3c99;backdrop-filter:blur(7px)}
+.room-overlay .room-overlay-header{position:static;display:flex;align-items:center;justify-content:space-between;flex:none;padding:22px 28px;border-bottom:1px solid #e1e4d9;background:#fffefa;gap:18px;box-shadow:none;width:auto;min-height:0}
+.room-overlay .room-overlay-header h2{margin:6px 0 0;font-size:clamp(23px,3vw,33px)}
+.room-overlay-header>button{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:1px solid #d7ddd2;border-radius:50%;background:#f2f4ec;color:#193542;font-size:26px;cursor:pointer}
+.room-overlay .room-overlay-body{overflow-y:auto;overscroll-behavior:contain;min-height:0;padding:24px 28px;display:grid;grid-template-columns:minmax(230px,.8fr) minmax(0,1.2fr);gap:28px;align-items:start}
+.room-overlay .room-overview{position:sticky;top:0;padding-right:24px;border-right:1px solid #e0e4d8}
+.room-overlay h3{margin:0 0 14px;font-size:17px}
+.room-overlay .classroom-review-heading{margin:0 0 18px;align-items:center;gap:10px}
+.room-overlay .classroom-review-heading h3{margin:0}
+.room-overlay #duncan-features{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:20px}
+.room-overlay .rating-overview{margin:0 0 20px}
+.room-overlay .room-community{min-width:0}
+.room-overlay #duncan-search-link{display:inline-block;margin-top:18px;font-size:12px}
+#classroom-preview .room-overlay-body{display:block}
+@media(max-width:760px){#duncan-classroom.room-overlay,#classroom-preview.room-overlay{width:calc(100vw - 20px);height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);border-radius:16px}.room-overlay .room-overlay-header{padding:16px 18px}.room-overlay .room-overlay-body{grid-template-columns:1fr;padding:18px;gap:22px}.room-overlay .room-overview{position:static;border-right:0;border-bottom:1px solid #e0e4d8;padding:0 0 20px}.room-overlay .classroom-review-heading{flex-direction:row}.room-overlay .room-overlay-header h2{font-size:24px}}
+
+/* Override the main navigation header's fixed height inside the dialog. */
+.room-overlay .room-overlay-header{height:auto}
+#duncan-classroom .room-overlay-header h2,#classroom-preview .room-overlay-header h2{font-size:clamp(23px,3vw,33px);line-height:1.2}
+/* Room directory: quiet surfaces, clear hierarchy, compact navigation. */
+#indoor-view{max-width:1180px;margin:0 auto;padding:30px 32px 56px}
+#indoor-view .indoor-hero{display:grid;grid-template-columns:1fr 240px;padding:22px 0 30px;border-bottom:1px solid #dddcd4;margin-bottom:28px}
+#indoor-view .indoor-hero h1{font-family:Georgia,serif;font-weight:400;letter-spacing:-1.5px;font-size:clamp(32px,4vw,48px)}
+#indoor-view .indoor-hero>div>p:first-of-type{display:block;font-size:14px;color:#6b756e;margin:12px 0 0}
+#indoor-view #lobby-photo{margin:0;max-height:155px;border-radius:12px;position:relative}
+#indoor-view #lobby-photo img{height:155px;object-fit:cover}
+#indoor-view #lobby-photo figcaption{position:absolute;bottom:0;inset-inline:0;padding:8px 12px;background:#17392dd9;color:#fff;font-size:10px;display:flex;justify-content:space-between;gap:8px}
+#indoor-view #lobby-photo figcaption a{color:inherit}
+#indoor-view .indoor-layout{grid-template-columns:128px minmax(0,1fr);gap:32px}
+#indoor-view .floor-nav{border:0;background:transparent;padding:0}
+#floor-list{margin-top:16px;display:grid;gap:4px}
+#floor-list button{border:0;background:transparent;text-align:left;padding:12px 16px;border-radius:9px;font-size:13px;color:#5b6860;transition:background .15s,color .15s}
+#floor-list button:hover{background:#eaece4}
+#floor-list button[aria-pressed=true]{background:#193e34;color:#fff;box-shadow:none}
+#indoor-view .floor-content{padding:24px;border:1px solid #e3e3db;border-radius:16px;background:#fffefa;min-width:0}
+#floor-title{font:400 27px Georgia,serif;margin:0 0 10px}
+#plan-source,#plan-large{font-size:11px;color:#64736a;text-underline-offset:4px}
+#indoor-view .floor-workspace{grid-template-columns:minmax(0,1.35fr) minmax(200px,.8fr);gap:24px;margin-top:22px}
+#indoor-view #plan-frame{max-height:440px;border:1px solid #ebebe5;border-radius:10px;background:#f7f7f2}
+#indoor-view #plan-frame img{max-height:430px}
+#room-search{width:100%;box-sizing:border-box;border:1px solid #dce0d7;border-radius:9px;padding:12px 14px;margin:8px 0 14px;background:white;font:inherit}
+#room-list{grid-template-columns:1fr;max-height:360px;gap:8px;padding-right:4px}
+#room-list .room-card{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;min-height:58px;border:1px solid #e1e5dc;border-radius:10px;background:#fff;box-shadow:none;text-align:left;gap:12px}
+#room-list .room-card strong{font-size:14px}#room-list .room-card small{font-size:11px;color:#6a776e}
+#room-list .room-card:hover{background:#f0f3eb;border-color:#b5c5b7}#room-list .room-card[aria-pressed=true]{border-color:#244d3d;background:#edf2e8}
+#plan-status:empty,#duncan-status:empty{display:none}
+#plan-status{font-size:12px;color:#68786b}
+.classroom-directory{margin:0;background:#f7f7f2;color:#1d3b32;font:14px/1.6 'Segoe UI',sans-serif}
+.classroom-directory main{max-width:1040px;margin:48px auto;padding:0 28px}
+.classroom-directory h1{font:400 clamp(30px,5vw,48px)/1.15 Georgia,serif;letter-spacing:-1px;margin:18px 0 28px}
+.classroom-directory a{color:#285640;text-underline-offset:4px}.classroom-directory .eyebrow{font-size:10px;letter-spacing:2px}
+.classroom-directory form{display:flex;gap:16px;align-items:end;padding:24px;background:#fffefa;border:1px solid #dedfd5;border-radius:14px}
+.classroom-directory label{display:grid;gap:6px;flex:1;font-size:12px;color:#607165}
+.classroom-directory input{min-width:0;border:1px solid #d7ddd2;background:white;border-radius:8px;padding:12px;font:inherit}
+.classroom-directory button{border:0;border-radius:8px;padding:13px 28px;background:#193e34;color:white;font:inherit;cursor:pointer}
+.classroom-directory hr{border:0;border-top:1px solid #dfe3d9;margin:24px 0}
+.classroom-directory .directory-table{overflow-x:auto;border:1px solid #dfe3d9;border-radius:12px;background:#fffefa;margin-top:24px}
+.classroom-directory table{border-collapse:collapse;width:100%;text-align:left;white-space:nowrap}
+.classroom-directory th{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#667468;background:#edf0e7}
+.classroom-directory th,.classroom-directory td{padding:15px 20px;border-bottom:1px solid #e7e9e1}
+.classroom-directory tr:last-child td{border-bottom:0}.classroom-directory footer{margin:32px 0;font-size:12px}
+@media(max-width:760px){#indoor-view{padding:22px 18px 40px}#indoor-view .indoor-hero{grid-template-columns:1fr 120px;gap:14px}#indoor-view #lobby-photo img{height:110px}#indoor-view #lobby-photo figcaption{display:none}#indoor-view .indoor-layout,#indoor-view .floor-workspace{grid-template-columns:1fr;gap:18px}#floor-list{display:flex;overflow-x:auto;margin-top:10px}#floor-list button{white-space:nowrap}#indoor-view .floor-content{padding:18px}#room-list{max-height:300px}.classroom-directory form{flex-direction:column;align-items:stretch}.classroom-directory main{margin:24px auto;padding:0 18px}}
+#duncan-classroom.reviews-only{width:min(760px,calc(100vw - 40px))}
+.room-overlay.reviews-only .room-overlay-body{display:block}
+.room-overlay .rating-overview{border:1px solid #e2e6dc;background:#f6f7f1;border-radius:12px;padding:16px}
+.room-overlay .rating-overview summary{font-size:13px;cursor:pointer}
+.room-overlay .score-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.room-overlay .room-community .review-card{border:0;border-bottom:1px solid #e1e5dc;border-radius:0;padding:20px 0;margin:0}
+.room-overlay .room-community .review-card:last-child{border-bottom:0}
+.room-overlay .primary{border-radius:8px;font-size:12px;padding:11px 17px}
+@media(max-width:760px){#duncan-classroom.reviews-only{width:calc(100vw - 20px)}}
+#duncan-classroom.reviews-only{height:fit-content;max-height:calc(100dvh - 40px)}
+#duncan-classroom.reviews-only .room-overlay-body{max-height:calc(100dvh - 180px)}
+#indoor-view #lobby-photo{height:155px}
+@media(max-width:760px){#indoor-view #lobby-photo{height:110px}#indoor-view .indoor-hero{padding:18px 0 22px}#duncan-classroom.reviews-only .room-overlay-body{max-height:calc(100dvh - 170px)}}

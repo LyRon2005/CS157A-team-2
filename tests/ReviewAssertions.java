@@ -12,6 +12,34 @@ public final class ReviewAssertions {
     public static void main(String[] args) throws Exception {
         Database db=Database.load(Path.of(""));
         if(!db.name().matches("sjsu_auth_test_[a-f0-9]{12}")) throw new IllegalStateException("Test database only.");
+        if (args.length == 1 && args[0].equals("sort-fixtures")) {
+            try (var c=db.connect()) {
+                c.setAutoCommit(false);
+                for (String subtype : new String[]{"BuildingReviews", "ClassroomReviews"}) {
+                    for (int i=0;i<24;i++) {
+                        int id;
+                        try (var s=c.prepareStatement("INSERT INTO Reviews(userID,written_review,date_created) VALUES ('009876543',?,?)", Statement.RETURN_GENERATED_KEYS)) {
+                            s.setString(1,"Sort fixture " + i);
+                            s.setString(2,i%2==0 ? "2020-01-01 12:00:00" : "2019-01-01 12:00:00");
+                            s.executeUpdate();try(var r=s.getGeneratedKeys()){r.next();id=r.getInt(1);}
+                        }
+                        String target=subtype.equals("BuildingReviews") ? "buildingId" : "classroomId";
+                        try(var s=c.prepareStatement("INSERT INTO " + subtype + "(reviewID," + target + ") VALUES (?,?)")) {
+                            s.setInt(1,id);s.setInt(2,subtype.equals("BuildingReviews") ? 57 : 200031);s.executeUpdate();
+                        }
+                    }
+                }
+                c.commit();
+            }
+            return;
+        }
+        if (args.length == 1 && args[0].equals("seed")) {
+            try (var c=db.connect(); var s=c.createStatement()) {
+                String[] names={"Projector","Projection screen","Whiteboard","Power outlets","Desks","Chairs"};
+                for (int i=0;i<names.length;i++) s.executeUpdate("INSERT INTO Features VALUES ("+(20001+i)+",'"+names[i]+"','classroom')");
+            }
+            return;
+        }
         try(var c=db.connect();var s=c.createStatement()) {
             s.execute("SET FOREIGN_KEY_CHECKS=0");
             try{s.executeUpdate("ALTER TABLE Reviews MODIFY reviewID INT NOT NULL");}
@@ -32,7 +60,7 @@ public final class ReviewAssertions {
             try{dao.insertBuildingReview(new BuildingReview(0,"001234567","Rollback",LocalDateTime.now(),999999));throw new AssertionError("Invalid target accepted");}
             catch(SQLException expected){if(!"23000".equals(expected.getSQLState()))throw expected;}
             try(var r=s.executeQuery("SELECT COUNT(*) FROM Reviews")){r.next();if(r.getInt(1)!=before)throw new AssertionError("Orphan review after rollback");}
-            s.executeUpdate("INSERT INTO Classrooms VALUES (9001,'Test',20,'Test',22)");
+            s.executeUpdate("INSERT INTO Classrooms (classroomId,classroom_num,capacity,classroom_type,buildingId) VALUES (9001,'Test',20,'Test',22)");
         }
         int classroomId=dao.insertClassroomReview(new ClassroomReview(0,"001234567","Classroom DAO",LocalDateTime.now(),9001));
         if(dao.delete(classroomId,22,"001234567"))throw new AssertionError("Building delete touched classroom review");
@@ -48,6 +76,7 @@ public final class ReviewAssertions {
                     if (expected.getErrorCode()!=3819) throw expected;
                 }
             }
+            statement.executeUpdate("INSERT INTO ClassroomFeatures VALUES (200031,20001,1)");
             try {
                 statement.executeUpdate("UPDATE ClassroomFeatures SET quantity=0 WHERE featureId=20001");
                 throw new AssertionError("Zero feature quantity accepted");

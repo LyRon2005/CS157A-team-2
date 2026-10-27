@@ -10,11 +10,11 @@ import java.util.Base64;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-public final class Passwords {
+public final class PasswordHasher {
     private static final int ITERATIONS = 600_000;
     private static final SecureRandom RANDOM = new SecureRandom();
     // This class has only static helper methods. No object needs to be created.
-    private Passwords() {}
+    private PasswordHasher() {}
     // Use a new random salt for every account, even when two users choose the same password.
     // Store algorithm, iteration count, salt and hash together so verify() can read them.
     public static String hash(String password) {

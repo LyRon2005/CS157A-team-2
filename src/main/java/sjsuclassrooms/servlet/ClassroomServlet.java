@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.StringJoiner;
 
-// Read-only API for the map UI. Writing classroom reviews remains a future feature.
+// Room directory API. Reviews are written through ReviewServlet.
 @WebServlet("/api/classrooms")
 public final class ClassroomServlet extends HttpServlet {
     private ClassroomDAO classrooms;
@@ -27,51 +27,56 @@ public final class ClassroomServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             String idText = request.getParameter("id");
-            var rooms = classrooms.listDuncanRooms();
+            int buildingId = request.getParameter("buildingId") == null ? 20 : Integer.parseInt(request.getParameter("buildingId"));
+            Integer floor = request.getParameter("floor") == null ? null : Integer.valueOf(request.getParameter("floor"));
+            if (buildingId < 1 || (floor != null && (floor < -32768 || floor > 32767))) throw new IllegalArgumentException("Invalid room filter.");
+            var rooms = classrooms.listRooms(buildingId, floor);
             if (idText == null) {
                 StringJoiner json = new StringJoiner(",");
                 for (var room : rooms) json.add(roomJson(room));
-                Http.json(response, 200, "{\"buildingId\":20,\"rooms\":[" + json + "]}");
+                HttpSupport.json(response, 200, "{\"buildingId\":" + buildingId + ",\"rooms\":[" + json + "]}");
                 return;
             }
             if (!idText.matches("[1-9][0-9]{0,8}")) {
-                Http.error(response, 400, "Invalid classroom ID.");
+                HttpSupport.error(response, 400, "Invalid classroom ID.");
                 return;
             }
             int id = Integer.parseInt(idText);
             var room = rooms.stream().filter(value -> value.id() == id).findFirst();
             if (room.isEmpty()) {
-                Http.error(response, 404, "Duncan Hall classroom not found.");
+                HttpSupport.error(response, 404, "Duncan Hall classroom not found.");
                 return;
             }
             StringJoiner reviews = new StringJoiner(",");
             for (var review : classrooms.reviews(id)) {
                 StringJoiner ratings = new StringJoiner(",");
                 for (var rating : review.ratings().entrySet()) {
-                    ratings.add(Http.quote(rating.getKey()) + ":" + rating.getValue());
+                    ratings.add(HttpSupport.quote(rating.getKey()) + ":" + rating.getValue());
                 }
-                reviews.add("{\"author\":" + Http.quote(review.author())
-                        + ",\"text\":" + Http.quote(review.text())
-                        + ",\"created\":" + Http.quote(review.created())
+                reviews.add("{\"author\":" + HttpSupport.quote(review.author())
+                        + ",\"text\":" + HttpSupport.quote(review.text())
+                        + ",\"created\":" + HttpSupport.quote(review.created())
                         + ",\"ratings\":{" + ratings + "}}");
             }
-            Http.json(response, 200, "{\"room\":" + roomJson(room.get())
+            HttpSupport.json(response, 200, "{\"room\":" + roomJson(room.get())
                     + ",\"reviews\":[" + reviews + "],\"reviewLimit\":100}");
+        } catch (IllegalArgumentException error) {
+            HttpSupport.error(response, 400, "Invalid room filter.");
         } catch (SQLException error) {
             getServletContext().log("Classroom query failed: " + error.getSQLState());
-            Http.error(response, 503, "Classroom data is unavailable. Please try again.");
+            HttpSupport.error(response, 503, "Classroom data is unavailable. Please try again.");
         }
     }
 
     private String roomJson(ClassroomDAO.Room room) {
         StringJoiner features = new StringJoiner(",");
         for (var feature : room.features()) {
-            features.add("{\"name\":" + Http.quote(feature.name())
+            features.add("{\"name\":" + HttpSupport.quote(feature.name())
                     + ",\"quantity\":" + feature.quantity() + "}");
         }
-        return "{\"id\":" + room.id() + ",\"number\":" + Http.quote(room.number())
-                + ",\"capacity\":" + room.capacity()
-                + ",\"type\":" + (room.type() == null ? "null" : Http.quote(room.type()))
+        return "{\"id\":" + room.id() + ",\"number\":" + HttpSupport.quote(room.number())
+                + ",\"floor\":" + room.floor() + ",\"capacity\":" + room.capacity()
+                + ",\"type\":" + (room.type() == null ? "null" : HttpSupport.quote(room.type()))
                 + ",\"demo\":" + room.demo() + ",\"features\":[" + features + "]}";
     }
 }

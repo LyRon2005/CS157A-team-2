@@ -12,13 +12,19 @@ public final class ClassroomDAO {
     }
 
     public record Feature(String name, int quantity) {}
-    public record Room(int id, String number, Integer capacity, String type, boolean demo, List<Feature> features) {}
+    public record Room(int id, String number, Integer capacity, String type, Integer floor, boolean demo, List<Feature> features) {}
 
     // Located in: every returned room belongs to Duncan Hall (buildingId = 20).
-    public List<Room> listDuncanRooms() throws SQLException {
+    public List<Room> listDuncanRooms() throws SQLException { return listRooms(20, null); }
+
+    public List<Room> listRooms(int buildingId, Integer floor) throws SQLException {
         String roomSql = """
-                SELECT classroomId, classroom_num, capacity, classroom_type
-                FROM Classrooms WHERE buildingId = 20
+                SELECT classroomId, classroom_num, capacity, classroom_type, room_floor
+                FROM (
+                    SELECT c.*, CASE WHEN classroom_num REGEXP '^[0-9]'
+                        THEN CAST(LEFT(classroom_num, 1) AS UNSIGNED) ELSE NULL END AS room_floor
+                    FROM Classrooms c WHERE buildingId = ?
+                ) rooms WHERE (? IS NULL OR room_floor = ?)
                 ORDER BY classroom_num, classroomId
                 """;
         String featureSql = """
@@ -26,30 +32,37 @@ public final class ClassroomDAO {
                 FROM ClassroomFeatures cf
                 JOIN Features f ON f.featureId = cf.featureId
                 JOIN Classrooms c ON c.classroomId = cf.classroomId
-                WHERE c.buildingId = 20 ORDER BY f.feature_name
+                WHERE c.buildingId = ? ORDER BY f.feature_name
                 """;
         List<Room> rooms = new ArrayList<>();
         Map<Integer, List<Feature>> byRoom = new HashMap<>();
         try (Connection connection = database.connect()) {
-            try (PreparedStatement statement = connection.prepareStatement(featureSql);
-                 ResultSet result = statement.executeQuery()) {
+            try (PreparedStatement statement = connection.prepareStatement(featureSql)) {
+                statement.setInt(1, buildingId);
+                try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     int id = result.getInt("classroomId");
                     byRoom.computeIfAbsent(id, key -> new ArrayList<>()).add(
                             new Feature(result.getString("feature_name"), result.getInt("quantity")));
                 }
             }
-            try (PreparedStatement statement = connection.prepareStatement(roomSql);
-                 ResultSet result = statement.executeQuery()) {
+            }
+            try (PreparedStatement statement = connection.prepareStatement(roomSql)) {
+                statement.setInt(1, buildingId);
+                if (floor == null) { statement.setNull(2, Types.SMALLINT); statement.setNull(3, Types.SMALLINT); }
+                else { statement.setInt(2, floor); statement.setInt(3, floor); }
+                try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     int id = result.getInt("classroomId");
                     String type = result.getString("classroom_type");
                     Integer capacity = (Integer) result.getObject("capacity");
-                    rooms.add(new Room(id, result.getString("classroom_num"), capacity, type,
+                    Number roomFloor = (Number) result.getObject("room_floor");
+                    rooms.add(new Room(id, result.getString("classroom_num"), capacity, type, roomFloor == null ? null : roomFloor.intValue(),
                             "Demo classroom - historical room number".equals(type),
                             byRoom.getOrDefault(id, List.of())));
                 }
             }
+        }
         }
         return rooms;
     }
