@@ -103,9 +103,9 @@ public final class AuthServlet extends HttpServlet {
     private void respond(HttpServletRequest request, HttpServletResponse response, int status) throws IOException {
         User user = UserSession.current(request);
         if (user == null) { Http.json(response, status, "{\"user\":null}"); return; }
-        Http.json(response, status, "{\"user\":{\"studentId\":" + Http.quote(user.studentId())
+        Http.json(response, status, "{\"user\":{\"studentId\":" + Http.quote(String.valueOf(user.userId()))
                 + ",\"firstName\":" + Http.quote(user.firstName()) + ",\"lastName\":" + Http.quote(user.lastName())
-                + ",\"email\":" + Http.quote(user.email()) + "},\"csrfToken\":"
+                + ",\"email\":" + Http.quote(user.sjsuEmail()) + "},\"csrfToken\":"
                 + Http.quote(UserSession.token(request)) + "}");
     }
 }

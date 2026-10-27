@@ -41,7 +41,7 @@ public final class AuthService {
         if (local.length() > 64 || !local.matches("[a-z0-9_%+\\-]+(?:\\.[a-z0-9_%+\\-]+)*"))
             invalid("email", "Use a valid SJSU email: 1–64 characters before @sjsu.edu, with no spaces or empty dot segments.");
         if (!password.equals(form.get("confirmPassword"))) invalid("confirmPassword", "Passwords do not match.");
-        User user = new User(id, first, last, email);
+        User user = new User(Integer.parseInt(id), first, last, email);
         users.insert(user, Passwords.hash(password));
         return user;
     }

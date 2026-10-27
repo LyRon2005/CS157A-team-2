@@ -40,7 +40,7 @@ public final class Database {
     }
     // A database name is part of SQL syntax, so allow only a small safe set of characters.
     public String name() {
-        String name = value("db.name", "DB_NAME", "sjsu_classrooms");
+        String name = value("db.name", "DB_NAME", "SJSUClassrooms");
         if (!name.matches("[a-zA-Z][a-zA-Z0-9_]{0,63}")) throw new IllegalArgumentException("Invalid database name.");
         return name;
     }
