@@ -14,19 +14,19 @@ public final class ClassroomDAO {
     public record Feature(String name, int quantity) {}
     public record Room(int id, String number, Integer capacity, String type, boolean demo, List<Feature> features) {}
 
-    // Located in: every returned room belongs to Duncan Hall (Building_ID = 20).
+    // Located in: every returned room belongs to Duncan Hall (buildingId = 20).
     public List<Room> listDuncanRooms() throws SQLException {
         String roomSql = """
-                SELECT Classroom_id, Classroom_Num, Capacity, Classroom_Type
-                FROM Classrooms WHERE Building_ID = 20
-                ORDER BY Classroom_Num, Classroom_id
+                SELECT classroomId, classroom_num, capacity, classroom_type
+                FROM Classrooms WHERE buildingId = 20
+                ORDER BY classroom_num, classroomId
                 """;
         String featureSql = """
-                SELECT cf.Classroom_id, f.Feature_Name, cf.Quantity
+                SELECT cf.classroomId, f.feature_name, cf.quantity
                 FROM ClassroomFeatures cf
-                JOIN Features f ON f.FeatureId = cf.FeatureId
-                JOIN Classrooms c ON c.Classroom_id = cf.Classroom_id
-                WHERE c.Building_ID = 20 ORDER BY f.Feature_Name
+                JOIN Features f ON f.featureId = cf.featureId
+                JOIN Classrooms c ON c.classroomId = cf.classroomId
+                WHERE c.buildingId = 20 ORDER BY f.feature_name
                 """;
         List<Room> rooms = new ArrayList<>();
         Map<Integer, List<Feature>> byRoom = new HashMap<>();
@@ -34,18 +34,18 @@ public final class ClassroomDAO {
             try (PreparedStatement statement = connection.prepareStatement(featureSql);
                  ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
-                    int id = result.getInt("Classroom_id");
+                    int id = result.getInt("classroomId");
                     byRoom.computeIfAbsent(id, key -> new ArrayList<>()).add(
-                            new Feature(result.getString("Feature_Name"), result.getInt("Quantity")));
+                            new Feature(result.getString("feature_name"), result.getInt("quantity")));
                 }
             }
             try (PreparedStatement statement = connection.prepareStatement(roomSql);
                  ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
-                    int id = result.getInt("Classroom_id");
-                    String type = result.getString("Classroom_Type");
-                    Integer capacity = (Integer) result.getObject("Capacity");
-                    rooms.add(new Room(id, result.getString("Classroom_Num"), capacity, type,
+                    int id = result.getInt("classroomId");
+                    String type = result.getString("classroom_type");
+                    Integer capacity = (Integer) result.getObject("capacity");
+                    rooms.add(new Room(id, result.getString("classroom_num"), capacity, type,
                             "Demo classroom - historical room number".equals(type),
                             byRoom.getOrDefault(id, List.of())));
                 }
@@ -58,16 +58,16 @@ public final class ClassroomDAO {
 
     public List<ReviewEntry> reviews(int classroomId) throws SQLException {
         String sql = """
-                SELECT u.First_Name, r.written_review, r.date_created,
-                       r.wifi_Rating, r.Cleanliness_Rating, r.ac_rating,
-                       cr.desk_space_rating, cr.comfort_rating, cr.spaciousness_rating,
+                SELECT u.first_name, r.written_review, r.date_created,
+                       r.wifi_rating, r.cleanliness_rating, r.ac_rating,
+                       cr.desk_space_rating, cr.seating_comfort_rating, cr.spaciousness_rating,
                        cr.lighting_rating, cr.technology_rating
-                FROM ClassroomReview cr
-                JOIN Reviews r ON r.Review_Id = cr.Review_Id
-                JOIN Users u ON u.UserId = r.UserId
-                JOIN Classrooms c ON c.Classroom_id = cr.Classroom_id
-                WHERE cr.Classroom_id = ? AND c.Building_ID = 20
-                ORDER BY r.date_created DESC, r.Review_Id DESC LIMIT 100
+                FROM ClassroomReviews cr
+                JOIN Reviews r ON r.reviewID = cr.reviewID
+                JOIN Users u ON u.userID = r.userID
+                JOIN Classrooms c ON c.classroomId = cr.classroomId
+                WHERE cr.classroomId = ? AND c.buildingId = 20
+                ORDER BY r.date_created DESC, r.reviewID DESC LIMIT 100
                 """;
         List<ReviewEntry> reviews = new ArrayList<>();
         try (Connection connection = database.connect();
@@ -76,13 +76,13 @@ public final class ClassroomDAO {
             try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     Map<String, Integer> ratings = new LinkedHashMap<>();
-                    for (String name : List.of("wifi_Rating", "Cleanliness_Rating", "ac_rating",
-                            "desk_space_rating", "comfort_rating", "spaciousness_rating",
+                    for (String name : List.of("wifi_rating", "cleanliness_rating", "ac_rating",
+                            "desk_space_rating", "seating_comfort_rating", "spaciousness_rating",
                             "lighting_rating", "technology_rating")) {
                         Number value = (Number) result.getObject(name);
                         ratings.put(name, value == null ? null : value.intValue());
                     }
-                    reviews.add(new ReviewEntry(result.getString("First_Name"),
+                    reviews.add(new ReviewEntry(result.getString("first_name"),
                             result.getString("written_review"),
                             result.getTimestamp("date_created").toLocalDateTime() + "Z", ratings));
                 }

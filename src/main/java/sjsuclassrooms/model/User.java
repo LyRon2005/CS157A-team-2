@@ -1,6 +1,4 @@
 package sjsuclassrooms.model;
 
-// Holds the user ID, name, and email. It does not hold a password.
-// Java creates the constructor and getters for this record.
-
-public record User(String studentId, String firstName, String lastName, String email) {}
+// Student IDs are text so all nine digits, including leading zeros, are kept.
+public record User(String userId, String firstName, String lastName, String sjsuEmail) {}

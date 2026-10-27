@@ -1,4 +1,4 @@
-INSERT INTO Building (Building_ID, Building_name) VALUES
+INSERT INTO Building (buildingId, building_name) VALUES
 (1, 'Administration Building'),
 (2, 'Art and Design Building'),
 (3, 'Associated Students House'),
@@ -56,4 +56,4 @@ INSERT INTO Building (Building_ID, Building_name) VALUES
 (55, 'Ancillary structure · OSM w791962171'),
 (56, 'Ancillary structure · OSM w973338163'),
 (57, 'Ancillary structure · OSM w973338176')
-ON DUPLICATE KEY UPDATE Building_ID = Building.Building_ID;
+ON DUPLICATE KEY UPDATE buildingId = Building.buildingId;

@@ -42,10 +42,13 @@ with tempfile.TemporaryDirectory(prefix='sjsu-tomcat-test-') as folder:
     shutil.copytree(ROOT/'src/main/webapp', app)
     classes = app/'WEB-INF/classes'; classes.mkdir()
     sources = [str(p) for p in (ROOT/'src/main/java').rglob('*.java')]
-    subprocess.run(['javac','--release','17','-encoding','UTF-8','-cp',str(TOMCAT/'lib/servlet-api.jar'),'-d',str(classes),*sources,str(ROOT/'tests/DatabaseAssertions.java'),str(ROOT/'tests/ReviewAssertions.java')], check=True, creationflags=FLAGS)
+    subprocess.run(['javac','--release','17','-encoding','UTF-8','-cp',str(TOMCAT/'lib/servlet-api.jar'),'-d',str(classes),*sources,str(ROOT/'tests/DatabaseAssertions.java'),str(ROOT/'tests/ReviewAssertions.java'),str(ROOT/'tests/SchemaAlignmentAssertions.java')], check=True, creationflags=FLAGS)
     cp = str(classes) + os.pathsep + str(app/'WEB-INF/lib/*')
     def java(main, *args):
-        return subprocess.run([JAVA,'-cp',cp,main,*args],cwd=work,env=env,check=True,creationflags=FLAGS)
+        result = subprocess.run([JAVA,'-cp',cp,main,*args],cwd=work,env=env,capture_output=True,text=True,creationflags=FLAGS)
+        if result.returncode: raise RuntimeError(result.stdout + result.stderr)
+        print(result.stdout, end='')
+        return result
     # Ask the OS for an available port so the running demo can stay online.
     with socket.socket() as sock:
         sock.bind(('127.0.0.1',0)); port=sock.getsockname()[1]
@@ -153,10 +156,12 @@ with tempfile.TemporaryDirectory(prefix='sjsu-tomcat-test-') as folder:
         java('sjsuclassrooms.tests.ReviewAssertions')
         detail=json.loads(request('/api/classrooms?id=200010')[1])
         assert detail['reviews'][0]['text']=='Duncan classroom test'
-        assert detail['reviews'][0]['ratings']['comfort_rating']==4
-        assert detail['reviews'][0]['ratings']['wifi_Rating'] is None
+        assert detail['reviews'][0]['ratings']['seating_comfort_rating']==4
+        assert detail['reviews'][0]['ratings']['wifi_rating'] is None
         assert '001234567' not in request('/classrooms?id=200010')[1]
         print('PASS: Duncan search, room features, demo distribution, review reading, rating boundaries and rerun preservation.',flush=True)
+        java('sjsuclassrooms.tests.SchemaAlignmentAssertions')
+        assert request('/api/classrooms?id=200010')[0]==200
         if os.environ.get('REVIEW_UI_TEST'):
             print('UI_URL='+url,flush=True)
             print('UI_STOP_FILE='+str(work/'finish-ui'),flush=True)

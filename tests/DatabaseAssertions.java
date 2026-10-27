@@ -23,13 +23,13 @@ public final class DatabaseAssertions {
             return;
         }
         try (Connection c = database.connect(); Statement s = c.createStatement()) {
-            try (var rs = s.executeQuery("SELECT UserId, Password, Sjsu_Email FROM Users WHERE UserId='001234567'")) {
+            try (var rs = s.executeQuery("SELECT userID, password_hash, sjsu_email FROM Users WHERE userID='001234567'")) {
                 if (!rs.next() || !rs.getString(1).equals("001234567") || !rs.getString(2).startsWith("pbkdf2-sha256$600000$")
                         || !rs.getString(3).equals("integration@sjsu.edu")) throw new AssertionError("Persisted account mismatch");
             }
             try (var rs = s.executeQuery("SHOW COLUMNS FROM Users")) {
                 int columns = 0;
-                while (rs.next()) { columns++; if (rs.getString("Field").equals("UserId") && !rs.getString("Type").equals("char(9)")) throw new AssertionError("ID type"); }
+                while (rs.next()) { columns++; if (rs.getString("Field").equals("userID") && !rs.getString("Type").equals("char(9)")) throw new AssertionError("ID type"); }
                 if (columns != 5) throw new AssertionError("Users must match the five ERD attributes");
             }
             // These intentionally bad INSERT statements must fail inside MySQL.

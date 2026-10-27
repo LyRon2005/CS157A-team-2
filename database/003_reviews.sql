@@ -1,31 +1,31 @@
 CREATE TABLE IF NOT EXISTS Reviews (
-    Review_Id INT AUTO_INCREMENT PRIMARY KEY,
-    UserId CHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    reviewID INT AUTO_INCREMENT PRIMARY KEY,
+    userID CHAR(9) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     written_review VARCHAR(1000) NOT NULL,
     date_created DATETIME NOT NULL,
 
-    FOREIGN KEY (UserId)
-        REFERENCES Users(UserId)
+    FOREIGN KEY (userID)
+        REFERENCES Users(userID)
 );
 
-CREATE TABLE IF NOT EXISTS BuildingReview (
-    Review_Id INT PRIMARY KEY,
-    Building_ID INT NOT NULL,
+CREATE TABLE IF NOT EXISTS BuildingReviews (
+    reviewID INT PRIMARY KEY,
+    buildingId INT NOT NULL,
 
-    FOREIGN KEY (Review_Id)
-        REFERENCES Reviews(Review_Id),
+    FOREIGN KEY (reviewID)
+        REFERENCES Reviews(reviewID),
 
-    FOREIGN KEY (Building_ID)
-        REFERENCES Building(Building_ID)
+    FOREIGN KEY (buildingId)
+        REFERENCES Building(buildingId)
 );
 
-CREATE TABLE IF NOT EXISTS ClassroomReview (
-    Review_Id INT PRIMARY KEY,
-    Classroom_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS ClassroomReviews (
+    reviewID INT PRIMARY KEY,
+    classroomId INT NOT NULL,
 
-    FOREIGN KEY (Review_Id)
-        REFERENCES Reviews(Review_Id),
+    FOREIGN KEY (reviewID)
+        REFERENCES Reviews(reviewID),
 
-    FOREIGN KEY (Classroom_id)
-        REFERENCES Classrooms(Classroom_id)
+    FOREIGN KEY (classroomId)
+        REFERENCES Classrooms(classroomId)
 );

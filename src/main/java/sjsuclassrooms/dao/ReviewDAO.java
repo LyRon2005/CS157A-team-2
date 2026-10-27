@@ -24,13 +24,13 @@ public final class ReviewDAO {
     public int insertClassroomReview(ClassroomReview review) throws SQLException {
         String reviewSql = """
                 INSERT INTO Reviews
-                    (UserId, written_review, date_created)
+                    (userID, written_review, date_created)
                 VALUES (?, ?, ?)
                 """;
 
         String classroomSql = """
-                INSERT INTO ClassroomReview
-                    (Review_Id, Classroom_id)
+                INSERT INTO ClassroomReviews
+                    (reviewID, classroomId)
                 VALUES (?, ?)
                 """;
 
@@ -46,13 +46,13 @@ public final class ReviewDAO {
     public int insertBuildingReview(BuildingReview review) throws SQLException {
         String reviewSql = """
                 INSERT INTO Reviews
-                    (UserId, written_review, date_created)
+                    (userID, written_review, date_created)
                 VALUES (?, ?, ?)
                 """;
 
         String buildingSql = """
-                INSERT INTO BuildingReview
-                    (Review_Id, Building_ID)
+                INSERT INTO BuildingReviews
+                    (reviewID, buildingId)
                 VALUES (?, ?)
                 """;
 
@@ -121,16 +121,16 @@ public final class ReviewDAO {
     // Read 20 reviews and one extra row to check if another page exists.
     public List<Entry> list(int buildingId, String viewer, int offset, boolean oldest) throws SQLException {
         String sql = """
-                SELECT r.Review_Id, r.UserId, u.First_Name, r.written_review, r.date_created
+                SELECT r.reviewID, r.userID, u.first_name, r.written_review, r.date_created
                 FROM Reviews r
-                JOIN BuildingReview b ON b.Review_Id = r.Review_Id
-                JOIN Users u ON u.UserId = r.UserId
-                WHERE b.Building_ID = ?
+                JOIN BuildingReviews b ON b.reviewID = r.reviewID
+                JOIN Users u ON u.userID = r.userID
+                WHERE b.buildingId = ?
                 """;
         if (oldest) {
-            sql += " ORDER BY r.Review_Id ASC";
+            sql += " ORDER BY r.reviewID ASC";
         } else {
-            sql += " ORDER BY r.Review_Id DESC";
+            sql += " ORDER BY r.reviewID DESC";
         }
         sql += " LIMIT 21 OFFSET ?";
 
@@ -143,11 +143,11 @@ public final class ReviewDAO {
             try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     entries.add(new Entry(
-                            result.getInt("Review_Id"),
-                            result.getString("First_Name"),
+                            result.getInt("reviewID"),
+                            result.getString("first_name"),
                             result.getString("written_review"),
                             result.getTimestamp("date_created").toLocalDateTime().toString() + "Z",
-                            result.getString("UserId").equals(viewer)
+                            result.getString("userID").equals(viewer)
                     ));
                 }
             }
@@ -159,9 +159,9 @@ public final class ReviewDAO {
     public boolean update(int reviewId, int buildingId, String userId, String text) throws SQLException {
         String sql = """
                 UPDATE Reviews r
-                JOIN BuildingReview b ON b.Review_Id = r.Review_Id
+                JOIN BuildingReviews b ON b.reviewID = r.reviewID
                 SET r.written_review = ?
-                WHERE r.Review_Id = ? AND r.UserId = ? AND b.Building_ID = ?
+                WHERE r.reviewID = ? AND r.userID = ? AND b.buildingId = ?
                 """;
         try (Connection connection = database.connect();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -175,14 +175,14 @@ public final class ReviewDAO {
 
     public boolean delete(int reviewId, int buildingId, String userId) throws SQLException {
         String findSql = """
-                SELECT r.Review_Id
+                SELECT r.reviewID
                 FROM Reviews r
-                JOIN BuildingReview b ON b.Review_Id = r.Review_Id
-                WHERE r.Review_Id = ? AND r.UserId = ? AND b.Building_ID = ?
+                JOIN BuildingReviews b ON b.reviewID = r.reviewID
+                WHERE r.reviewID = ? AND r.userID = ? AND b.buildingId = ?
                 FOR UPDATE
                 """;
-        String deleteBuildingSql = "DELETE FROM BuildingReview WHERE Review_Id = ?";
-        String deleteReviewSql = "DELETE FROM Reviews WHERE Review_Id = ?";
+        String deleteBuildingSql = "DELETE FROM BuildingReviews WHERE reviewID = ?";
+        String deleteReviewSql = "DELETE FROM Reviews WHERE reviewID = ?";
 
         try (Connection connection = database.connect()) {
             connection.setAutoCommit(false);
@@ -221,9 +221,9 @@ public final class ReviewDAO {
 
     public boolean buildingExists(int buildingId) throws SQLException {
         String sql = """
-                SELECT Building_ID
+                SELECT buildingId
                 FROM Building
-                WHERE Building_ID = ?
+                WHERE buildingId = ?
                 """;
         try (Connection connection = database.connect();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -236,9 +236,9 @@ public final class ReviewDAO {
 
     public int findBuildingId(String buildingName) throws SQLException {
         String sql = """
-                SELECT Building_ID
+                SELECT buildingId
                 FROM Building
-                WHERE Building_name = ?
+                WHERE building_name = ?
                 """;
 
         try (Connection connection = database.connect();
@@ -249,7 +249,7 @@ public final class ReviewDAO {
                 if (!result.next()) {
                     return -1;
                 }
-                return result.getInt("Building_ID");
+                return result.getInt("buildingId");
             }
         }
     }

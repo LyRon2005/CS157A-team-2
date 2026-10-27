@@ -60,8 +60,8 @@ window.DuncanClassrooms = (() => {
       if (!data.room.features.length) el('duncan-features').append(
         make('p', data.room.demo ? 'This demo room has no assigned features.' : 'No features recorded.', 'empty-state'));
       if (!data.reviews.length) el('duncan-reviews').append(make('p','No classroom reviews yet.','empty-state'));
-      const labels = {wifi_Rating:'Wi-Fi',Cleanliness_Rating:'Cleanliness',ac_rating:'AC',
-        desk_space_rating:'Desk space',comfort_rating:'Comfort',spaciousness_rating:'Space',
+      const labels = {wifi_rating:'Wi-Fi',cleanliness_rating:'Cleanliness',ac_rating:'AC',
+        desk_space_rating:'Desk space',seating_comfort_rating:'Comfort',spaciousness_rating:'Space',
         lighting_rating:'Lighting',technology_rating:'Technology'};
       for (const review of data.reviews) {
         const card = make('article','','review-card');

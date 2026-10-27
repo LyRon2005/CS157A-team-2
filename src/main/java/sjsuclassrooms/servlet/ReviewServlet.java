@@ -64,7 +64,7 @@ public final class ReviewServlet extends HttpServlet {
             User user = UserSession.current(request);
             String viewerId = null;
             if (user != null) {
-                viewerId = user.studentId();
+                viewerId = user.userId();
             }
             List<ReviewDAO.Entry> reviews = reviewDAO.list(
                     buildingId, viewerId, offset, sort.equals("oldest")
@@ -155,7 +155,7 @@ public final class ReviewServlet extends HttpServlet {
             }
 
             if (action.equals("delete")) {
-                boolean deleted = reviewDAO.delete(reviewId, buildingId, user.studentId());
+                boolean deleted = reviewDAO.delete(reviewId, buildingId, user.userId());
                 if (!deleted) {
                     Http.error(response, 404, "Your review was not found.");
                     return;
@@ -168,7 +168,7 @@ public final class ReviewServlet extends HttpServlet {
                     // Zero is a placeholder. MySQL gives the new review its real ID.
                     BuildingReview review = new BuildingReview(
                             0,
-                            user.studentId(),
+                            user.userId(),
                             writtenReview,
                             LocalDateTime.now(ZoneOffset.UTC),
                             buildingId
@@ -176,7 +176,7 @@ public final class ReviewServlet extends HttpServlet {
                     reviewId = reviewDAO.insertBuildingReview(review);
                 } else {
                     boolean updated = reviewDAO.update(
-                            reviewId, buildingId, user.studentId(), writtenReview
+                            reviewId, buildingId, user.userId(), writtenReview
                     );
                     if (!updated) {
                         Http.error(response, 404, "Your review was not found.");

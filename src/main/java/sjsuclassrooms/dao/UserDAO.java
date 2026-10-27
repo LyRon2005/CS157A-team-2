@@ -19,24 +19,29 @@ public final class UserDAO {
     // Find one account by its string ID. Return null if no account exists.
     // Keeping the ID as text preserves leading zeros.
     public Credentials find(String studentId) throws SQLException {
-        try (Connection c = database.connect(); PreparedStatement s = c.prepareStatement(
-                "SELECT UserId, First_Name, Last_Name, Sjsu_Email, Password FROM Users WHERE UserId = ?")) {
-            s.setString(1, studentId);
-            try (ResultSet rs = s.executeQuery()) {
-                if (!rs.next()) return null;
-                return new Credentials(new User(rs.getString("UserId"), rs.getString("First_Name"),
-                        rs.getString("Last_Name"), rs.getString("Sjsu_Email")), rs.getString("Password"));
-            }
+	String sql = "SELECT userID, first_name, last_name, sjsu_email, password_hash " + "FROM Users WHERE userID = ?";
+        try (Connection c = database.connect(); PreparedStatement s = c.prepareStatement(sql)) {
+	s.setString(1,  studentId);
+	try (ResultSet rs = s.executeQuery()) {
+		if (!rs.next()) return null;
+		User user = new User(rs.getString("userID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("sjsu_email"));
+		String passwordHash = rs.getString("password_hash");
+		return new Credentials(user, passwordHash);
+	}
         }
     }
     // Save one account and its password hash. MySQL rejects duplicate IDs or emails.
     // Let the Servlet turn that SQL error into a safe message for the user.
     public void insert(User user, String hash) throws SQLException {
-        try (Connection c = database.connect(); PreparedStatement s = c.prepareStatement(
-                "INSERT INTO Users (UserId, First_Name, Last_Name, Sjsu_Email, Password) VALUES (?, ?, ?, ?, ?)")) {
-            s.setString(1, user.studentId()); s.setString(2, user.firstName());
-            s.setString(3, user.lastName()); s.setString(4, user.email()); s.setString(5, hash);
-            s.executeUpdate();
+	String sql = "INSERT INTO Users " + "(userID, first_name, last_name, sjsu_email, password_hash) "
+	+ "VALUES (?, ?, ?, ?, ?)";
+        try (Connection c = database.connect(); PreparedStatement s = c.prepareStatement(sql)) {
+	s.setString(1, user.userId());
+	s.setString(2,  user.firstName());
+	s.setString(3,  user.lastName());
+	s.setString(4, user.sjsuEmail());
+	s.setString(5,  hash);
+	s.executeUpdate();
         }
     }
 }

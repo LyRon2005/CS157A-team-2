@@ -7,7 +7,7 @@
 # For a remote MySQL server, use VERIFY_IDENTITY with a trusted certificate authority.
 db.host=localhost
 db.port=3306
-db.name=sjsu_classrooms
+db.name=SJSUClassrooms
 db.user=sjsu_app
 db.password=replace-locally
 db.sslMode=PREFERRED

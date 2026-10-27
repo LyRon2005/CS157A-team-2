@@ -17,6 +17,7 @@ public final class CreateTables {
         }
         // Create parent tables before tables that reference them.
         try (Connection c = database.connect(); Statement s = c.createStatement()) {
+            SchemaAlignment.migrate(c);
             runSqlFile(s, "database/001_users.sql");
             runSqlFile(s, "database/002_locations.sql");
             runSqlFile(s, "database/002_buildingData.sql");
@@ -24,8 +25,9 @@ public final class CreateTables {
             runSqlFile(s, "database/004_review_ratings.sql");
             runSqlFile(s, "database/005_features.sql");
             runSqlFile(s, "database/006_duncan_demo.sql");
+            runSqlFile(s, "database/007_remaining_erd.sql");
             // Older review tables used IDs chosen by Java. Keep rows and let MySQL assign new IDs.
-            try (var columns = c.getMetaData().getColumns(database.name(), null, "%", "Review_Id")) {
+            try (var columns = c.getMetaData().getColumns(database.name(), null, "%", "reviewID")) {
                 boolean upgrade = false;
                 while (columns.next()) {
                     if ("Reviews".equalsIgnoreCase(columns.getString("TABLE_NAME"))
@@ -33,7 +35,7 @@ public final class CreateTables {
                 }
                 if (upgrade) {
                     s.execute("SET FOREIGN_KEY_CHECKS=0");
-                    try { s.executeUpdate("ALTER TABLE Reviews MODIFY Review_Id INT NOT NULL AUTO_INCREMENT"); }
+                    try { s.executeUpdate("ALTER TABLE Reviews MODIFY reviewID INT NOT NULL AUTO_INCREMENT"); }
                     finally { s.execute("SET FOREIGN_KEY_CHECKS=1"); }
                 }
             }

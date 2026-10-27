@@ -5,9 +5,9 @@ file from main commit eb052d7 without replacing the existing building review UI.
 
 ## What changed in the teammate file
 - Keep the GET search page, JOIN + LIKE search, and View Reviews page.
-- Match ERD/SQL names: Classroom_id, Building_ID, Review_Id, ClassroomReview.
-- Use comfort_rating, as named in the ERD.
-- Scope search and review lookup to Duncan Hall (Building_ID 20).
+- Match ERD/SQL names: classroomId, buildingId, reviewID, ClassroomReviews.
+- Use seating_comfort_rating, as named in the ERD.
+- Scope search and review lookup to Duncan Hall (buildingId 20).
 - Show the author's first name instead of exposing the student ID.
 - Add a demo notice. No classroom review POST/write endpoint is added.
 
@@ -15,8 +15,8 @@ file from main commit eb052d7 without replacing the existing building review UI.
 - 004_review_ratings.sql adds the 12 ERD rating attributes to Reviews and its subtypes.
   NULL means not rated. CHECK allows only integer values 1 through 5.
 - 005_features.sql creates Features, ClassroomFeatures and BuildingFeatures.
-  Relationship tables have a composite primary key, foreign keys and positive Quantity.
-- Located in is Classrooms.Building_ID -> Building.Building_ID.
+  Relationship tables have a composite primary key, foreign keys and positive quantity.
+- Located in is Classrooms.buildingId -> Building.buildingId.
 - 006_duncan_demo.sql inserts only Duncan Hall demo classrooms and their features.
 - CreateTables.java runs these files after the original SQL files. It skips existing
   ADD COLUMN statements using metadata, so running setup again preserves data.
@@ -53,3 +53,14 @@ It checks existing building reviews, Duncan search/API, feature distribution,
 missing ratings, read-only classroom behavior, foreign keys, rating bounds and
 setup reruns that preserve edited quantities. ReviewAssertions.java supplies the
 temporary review fixture. No test reviews are inserted into the real database.
+
+## Team schema alignment
+Merged team branch feature/erd-database-alignment (7413dcd).
+SQL table and column names follow the supplied SJSUClassrooms.sql dump.
+SchemaAlignment.java renames old tables/columns before setup without dropping data.
+007_remaining_erd.sql adds Administrators, Course, Section, ClassMeeting, Reports,
+and Suspension. These tables are ready for future work; their UI is not implemented.
+Student IDs and their foreign keys stay CHAR(9), not INT, to keep leading zeros.
+Review IDs remain AUTO_INCREMENT. Existing name/email limits and rating checks stay.
+The team dump is a naming reference, not a file to import over current accounts.
+Unknown existing feature scopes become unspecified; Duncan demo features use classroom.
